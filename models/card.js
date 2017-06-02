@@ -8,6 +8,7 @@ var CardSchema = new Schema({
 	title: { type: String, required: true, trim: true },
 
 	portrait: { type: Schema.Types.ObjectId, ref: 'Image', required: true },
+	background: { type: Schema.Types.ObjectId, ref: 'Image', default: null },
 	icon: { type: Schema.Types.ObjectId, ref: 'Image', required: true },
 
 	// a card that dose not have parent is the first version of the card
@@ -21,6 +22,10 @@ var CardSchema = new Schema({
 
 	ma_init: { type: Number, required: true },
 	ma_max: { type: Number, required: true },
+
+	status: { type: String, enum: [ 'Suspended', 'Accepted', 'Rejected' ], default: 'Suspended' },
+	vote_up: { type: Number, default: 0 },
+	vote_down: { type: Number, default: 0 },
 });
 
 module.exports = mongoose.model('Card', CardSchema);

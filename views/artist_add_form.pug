@@ -1,0 +1,22 @@
+extends layout
+
+block content
+  h1= title
+
+  form(method='POST' action='' encType='multipart/form-data')
+    div.form-group
+      label(for='name') Name (DO NOT CHANGE):
+      input#name.form-control(type='text', placeholder='dairi' name='name' value=(body === undefined ? '' : body.name))
+    div.form-group
+      label(for='homepage') Homepage URL:
+      input#homepage.form-control(type='text', placeholder='http://seiga.nicovideo.jp/seiga/im3189645' name='homepage' value=(body === undefined ? '' : body.homepage))
+
+    button.btn.btn-primary(type='submit') Add
+
+  if errors
+    hr
+    for error in errors
+      if error.msg
+        div.alert.alert-danger= error.msg
+      if error.message
+        div.alert.alert-danger= error.message

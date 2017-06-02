@@ -2,4 +2,21 @@ extends layout
 
 block content
   h1= title
-  p Welcome to #{title}
+  h4 Welcome to #[em #{title}]
+
+  hr
+
+  if user
+    p It's #[em really nice] to have you back, #[mark #{user.name}].
+    a.btn.btn-default(href='/users/logout') Logout
+  else
+    p Please, #[strong login] or #[strong register].
+    div.row
+      div.col-sm-1
+        a.btn.btn-primary(href='/users/login') Login
+      div.col-sm-1
+        a.btn.btn-default(href='/users/register') Register
+
+  hr
+
+  

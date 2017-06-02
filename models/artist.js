@@ -2,11 +2,15 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var ArtistSchema = new Schema({
-	name: { type: String, required: true },
+	name: { type: String, required: true, trim: true, index: true, unique: true },
+	avatar: { type: Schema.Types.ObjectId, ref: 'Image', default: null },
 
-	avatar: { type: Schema.Types.ObjectId, ref: 'Image' },
+	// should be a valid url
+	homepage: { type: String, required: true, trim: true }
+});
 
-	homepage: { type: String, required: true }
+ArtistSchema.virtual('url_detail').get(function () {
+	return '/artists/' + this._id;
 });
 
 module.exports = mongoose.model('Artist', ArtistSchema);

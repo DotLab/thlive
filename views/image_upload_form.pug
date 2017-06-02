@@ -1,0 +1,35 @@
+extends layout
+
+block content
+  h1= title
+
+  form(method='POST' action='' encType='multipart/form-data')
+    div.form-group
+      label(for='artist') Artist ID:
+      input#artist.form-control(type='text', placeholder='593005504179372a5c073d15' name='artist' value=(body === undefined ? '' : body.artist), autocomplete='off')
+    
+    div.form-group
+      label(for='files') Image Files:
+      input#files.form-control(type='file', name='files', accept='image/*', multiple)
+
+    button.btn.btn-primary(type='submit') Submit
+
+  if success
+    hr
+    div.alert.alert-success= success
+
+  if warnings && warnings.length
+    hr
+    for warning in warnings
+      if warning.msg
+        div.alert.alert-warning= warning.msg
+      if warning.message
+        div.alert.alert-warning= warning.message
+
+  if errors && errors.length
+    hr
+    for error in errors
+      if error.msg
+        div.alert.alert-danger= error.msg
+      if error.message
+        div.alert.alert-danger= error.message

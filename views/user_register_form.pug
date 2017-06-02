@@ -1,0 +1,24 @@
+extends layout
+
+block content
+  h1 #{title}
+
+  form(method='POST' action='')
+    div.form-group
+      label(for='name') User Name:
+      input#name.form-control(type='text', placeholder='Reimu_Hakurei' name='name' value=(body === undefined ? '' : body.name))
+    div.form-group
+      label(for='email') Email:
+      input#email.form-control(type='email', placeholder='reimuhakurei@redevil.gs' name='email' value=(body === undefined ? '' : body.email))
+    div.form-group
+      label(for='password') Password:
+      input#password.form-control(type='password', placeholder='*********' name='password' value=(body === undefined ? '' : body.password))
+    button.btn.btn-primary(type='submit') Register
+
+  if errors
+    hr
+    for error in errors
+      if error.msg
+        div.alert.alert-danger= error.msg
+      if error.message
+        div.alert.alert-danger= error.message
