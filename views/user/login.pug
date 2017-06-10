@@ -1,0 +1,13 @@
+extends ../layout
+
+block content
+  h1= title
+
+  form(method='POST', action='')
+    div.form-group
+      label.control-label Email:
+      input.form-control(type='email', placeholder='reimuhakurei@gia.com' name='email' value=body.email)
+    div.form-group
+      label.control-label Password:
+      input.form-control(type='password', placeholder='*********' name='password' value=body.password)
+    button.btn.btn-primary(type='submit') Login

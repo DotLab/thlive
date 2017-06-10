@@ -1,0 +1,20 @@
+extends ../layout
+
+block content
+  h1 #{character.name_jp} #[small (#{character.name_en}) #{character.name_zh}]
+  p Please, reference by #[strong #{character._id}]
+  hr
+
+  dl.dl-horizontal
+    dt Japanese Name
+    dd= character.name_jp
+    dt Chainese Name
+    dd= character.name_zh
+    dt English Name
+    dd= character.name_en
+    
+    dt Age
+    dd= character.age
+    dt Race
+    dd= character.race
+  

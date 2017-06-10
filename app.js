@@ -2,27 +2,29 @@ var path = require('path');
 global.appRoot = path.resolve(__dirname);
 
 var express = require('express');
+var favicon = require('serve-favicon');
+
 var session = require('express-session');
 var MongoStore = require('connect-mongo')(session);
 var validator = require('express-validator');
 var fileupload = require('express-fileupload');
 
-var favicon = require('serve-favicon');
-
-var logger = require('morgan');
-var hasher = require('pbkdf2-password')();
-
-var cookieParser = require('cookie-parser');
+var morgan = require('morgan');
 var bodyParser = require('body-parser');
+var cookieParser = require('cookie-parser');
 
 var index = require('./routes/index');
 var users = require('./routes/users');
 var artists = require('./routes/artists');
 var images = require('./routes/images');
+var characters = require('./routes/characters');
+var cards = require('./routes/cards');
+var api = require('./routes/api');
 
 var app = express();
 
 var mongoose = require('mongoose');
+mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://localhost:27017/thlive');
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
@@ -31,12 +33,12 @@ db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
-// uncomment after placing your favicon in /public
-app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
-app.use(logger('dev'));
+// middlewares
+// app.use(morgan('dev'));
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.static(path.join(__dirname, 'public')));
+app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+
 app.use(session({
 	resave: false, // don't save session if unmodified
 	saveUninitialized: false, // don't create session until something stored
@@ -44,17 +46,22 @@ app.use(session({
 	store: new MongoStore({ mongooseConnection: db })
 }));
 
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(validator());
 app.use(fileupload());
+// app.use(cookieParser());
 
-app.use(cookieParser());
-
-app.use(express.static(path.join(__dirname, 'public')));
-
+// routes
 app.use('/', index);
+
+app.use('/api', api);
+
 app.use('/users', users);
 app.use('/artists', artists);
 app.use('/images', images);
+app.use('/characters', characters);
+app.use('/cards', cards);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -71,7 +78,7 @@ app.use(function(err, req, res, next) {
 
 	// render the error page
 	res.status(err.status || 500);
-	res.render('error', { title: 'Error: ' + err.message, error: err });
+	res.render('error', { title: err.name, error: err });
 });
 
 module.exports = app;

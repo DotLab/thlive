@@ -1,0 +1,31 @@
+extends ../layout
+
+block content
+  h1 #{image.title} #[small #{image.name_original} - #{image.sha1.substring(0,7)}]
+  h3 by #[a(href=image.artist.url_detail) #{image.artist.name}]
+  p Please, reference by #[strong #{image._id}]
+  hr
+
+  div.row
+    div.col-sm-8
+      p Uploaded by #[a(href=image.uploader.url_detail) #{image.uploader.name}] 
+      p Uploaded at #[mark #{image.date}]
+      p Originally named #[em #{image.name_original}]
+      p Now named #[strong #{image.name_local}]
+      p Keyworded #[mark #{image.keywords.join(', ')}]
+    div.col-sm-4
+      p
+        samp format: #{image.format}
+      p
+        samp size: #{image.width}x#{image.height}
+      p
+        samp space: #{image.space}
+      p
+        samp depth: #{image.depth}
+      p
+        samp hasAlpha: #{image.hasAlpha}
+  hr
+  img.abs.shadow-card(src=image.url_src)
+
+
+  

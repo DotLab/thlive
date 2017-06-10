@@ -21,10 +21,10 @@ exports.list = function (req, res, next) {
 	if (req.query.populate != null)
 		q = q.populate(req.query.populate);
 
-	q.exec(function (err, docs) {
+	q.exec((err, docs) => {
 		if (err) return next(err);
 
-		res.render('user_list', {
+		res.render('user/list', {
 			title: 'Users',
 			users: docs,
 			user: req.session.user
@@ -33,7 +33,7 @@ exports.list = function (req, res, next) {
 };
 
 exports.register_form = function (req, res, next) {
-	return res.render('user_register_form', { title: 'Join Touhou! Live!' });
+	res.render('user/register', { title: 'Join THLIVE', body: {} });
 };
 
 exports.register = function (req, res, next) {
@@ -44,47 +44,51 @@ exports.register = function (req, res, next) {
 	req.sanitize('name').trim();
 	req.sanitize('email').trim();
 
-	var errors = req.validationErrors();
+	var errs = req.validationErrors();
 
-	if (!errors) errors = [];
+	if (!errs) errs = [];
 
 	if (!/^[^\s\@]{1,20}$/.test(req.body.name))
-		errors.push({ msg: 'User name should have a length between 1 and 20 and not have any spaces' });
+		errs.push({ msg: 'User name should have a length between 1 and 20 and not have any spaces' });
 
 	if (!/^.{6,}$/.test(req.body.password))
-		errors.push({ msg: 'Password should have a length bigger than 6' });
+		errs.push({ msg: 'Password should have a length bigger than 6' });
 
-	if (errors.length > 0) {
-		return res.render('user_register_form', {
-			title: 'Join Touhou! Live!',
+	if (errs.length > 0) {
+		return res.render('user/register', {
+			title: 'Join THLIVE',
 			body: req.body,
-			errors: errors
-		});
-	} else {
-		hasher({ password: req.body.password }, function (err, pass, salt, hash) {
-			if (err) return next(err);
-
-			new User({
-				name: req.body.name,
-				email: req.body.email,
-				salt: salt,
-				hash: hash
-			}).save(function (err, user) {
-				if (err)
-					return res.render('user_register_form', {
-						title: 'Join Touhou! Live!',
-						body: req.body,
-						errors: [ err ]
-					});
-
-				return res.redirect(user.url_detail);
-			});
+			errors: errs
 		});
 	}
+
+	var p = new Promise((resolve, reject) => {
+		hasher({ password: req.body.password }, function (err, pass, salt, hash) {
+			if (err) reject(err);
+			else resolve({ pass, salt, hash });
+		});
+	});
+
+	p.then(({ pass, salt, hash }) => {
+		return new User({
+			name: req.body.name,
+			email: req.body.email,
+			salt: salt,
+			hash: hash
+		}).save();
+	}).then(user => {
+		res.redirect(user.url_detail);
+	}).catch(err => {
+		res.render('user/register', {
+			title: 'Join THLIVE',
+			body: req.body,
+			error: err
+		});
+	});
 };
 
 exports.login_form = function (req, res, next) {
-	return res.render('user_login_form', { title: 'Login Touhou! Live!' });
+	res.render('user/login', { title: 'Login THLIVE', body: {} });
 };
 
 exports.login = function (req, res, next) {
@@ -92,52 +96,46 @@ exports.login = function (req, res, next) {
 
 	req.sanitize('email').trim();
 
-	User.findOne({ email: req.body.email }, function (err, doc) {
-		if (err)
-			return res.render('user_register_form', {
-				title: 'Login Touhou! Live!',
-				body: req.body,
-				errors: [ err ]
+	User.findOne({ email: req.body.email }).exec().then(doc => {
+		if (!doc) throw new Error('Nonexistent user');
+
+		return new Promise((resolve, reject) => {
+			hasher({ password: req.body.password, salt: doc.salt }, function (err, pass, salt, hash) {
+				if (err) 
+					reject(err);
+				else if (hash != doc.hash) 
+					reject(new Error('Wrong password'));
+				else
+					resolve(doc);
 			});
-
-		if (!doc)
-			return res.render('user_register_form', {
-				title: 'Login Touhou! Live!',
-				body: req.body,
-				errors: [{ msg: 'User "' + req.body.email + '" does not exist' }]
-			});
-
-		hasher({ password: req.body.password, salt: doc.salt }, function (err, pass, salt, hash) {
-			if (err) return next(err);
-
-			if (hash !== doc.hash)
-				return res.render('user_register_form', {
-					title: 'Login Touhou! Live!',
-					body: req.body,
-					errors: [{ msg: 'Wrong password' }]
-				});
-
-			req.session.regenerate(function () {
-				req.session.user = doc;
-				return res.redirect(doc.url_detail);
-			});
+		});
+	}).then(user => {
+		req.session.regenerate(function () {
+			req.session.user = user;
+			res.redirect(user.url_detail);
+		});
+	}).catch(err => {
+		res.render('user/login', {
+			title: 'Login THLIVE',
+			body: req.body,
+			error: err
 		});
 	});
 };
 
+// destroy the user's session to log them out
+// will be re-created next request
 exports.logout = function (req, res, next) {
-	// destroy the user's session to log them out
-	// will be re-created next request
-	req.session.destroy(function(){
+	req.session.destroy(function () {
 		return res.redirect('back');
 	});
 }
 
 exports.detail = function (req, res, next) {
-	User.findById(req.params.id, function (err, doc) {
+	User.findById(req.params.id, (err, doc) => {
 		if (err) return next(err);
 
-		return res.render('user_detail', {
+		res.render('user/detail', {
 			title: 'User: ' + doc.name,
 			user: doc,
 			isSelf: (req.session && req.session.user && req.session.user._id == doc._id)

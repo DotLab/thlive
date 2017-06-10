@@ -1,11 +1,14 @@
-extends layout
+extends ../layout
 
 block content
   h1 #{user.name} #[small #{user.email}]
   h4 #[em #{user.reputation}] REPUTATION
+
   hr
+    
   p Joined #[em Touhou! Live! at] #[mark #{user.date_joined}]
   p The #[em secret] is #[mark #{user.salt.substring(0,20)}]
+
   if isSelf
     p You #[strong are] #[mark #{user.name}].
 

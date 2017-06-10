@@ -22,7 +22,7 @@ exports.list = function (req, res, next) {
 	q.exec(function (err, docs) {
 		if (err) return next(err);
 
-		res.render('artist_list', {
+		res.render('artist/list', {
 			title: 'Artists',
 			artists: docs,
 			user: req.session.user
@@ -31,7 +31,7 @@ exports.list = function (req, res, next) {
 };
 
 exports.add_form = function (req, res, next) {
-	return res.render('artist_add_form', { title: 'Add Artist' });
+	res.render('artist/add', { title: 'Add Artist', body: {} });
 };
 
 exports.add = function (req, res, next) {
@@ -44,16 +44,16 @@ exports.add = function (req, res, next) {
 	var errors = req.validationErrors();
 
 	if (errors)
-		return res.render('artist_add_form', { title: 'Add Artist', body: req.body, errors: errors });
+		return res.render('artist/add', { title: 'Add Artist', body: req.body, errors: errors });
 
 	new Artist({
 		name: req.body.name,
 		homepage: req.body.homepage
 	}).save(function (err, doc) {
 		if (err)
-			return res.render('artist_add_form', { title: 'Add Artist', body: req.body, errors: [ err ] });
+			return res.render('artist/add', { title: 'Add Artist', body: req.body, error: err });
 
-		return res.redirect(doc.url_detail);
+		res.redirect(doc.url_detail);
 	});
 };
 
@@ -61,6 +61,6 @@ exports.detail = function (req, res, next) {
 	Artist.findById(req.params.id, function (err, doc) {
 		if (err) return next(err);
 
-		return res.render('artist_detail', { title: 'Artist: ' + doc.name, artist: doc });
+		res.render('artist/detail', { title: 'Artist: ' + doc.name, artist: doc });
 	});
 };

@@ -1,0 +1,14 @@
+extends ../layout
+
+block content
+  h1= title
+
+  form(method='POST' action='')
+    div.form-group
+      label.control-label Name (DO NOT CHANGE):
+      input.form-control(type='text', placeholder='dairi' name='name' value=body.name)
+    div.form-group
+      label.control-label Homepage URL:
+      input.form-control(type='text', placeholder='http://seiga.nicovideo.jp/seiga/im3189645' name='homepage' value=body.homepage)
+
+    button.btn.btn-primary(type='submit') Add

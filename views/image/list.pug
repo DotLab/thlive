@@ -1,0 +1,53 @@
+extends ../layout
+
+block content
+  h1= title
+  a.btn.btn-primary(href='/images/upload') Upload
+
+  hr
+  
+  form(method='GET', action='')
+    div.row
+      div.col-sm-6
+        div.form-group
+          input.form-control(type='text', placeholder='Keywords...', name='keywords', value=query.keywords)
+      div.col-sm-6
+        div.form-group
+          input.form-control(type='text', placeholder='Artist ID...', name='artist', value=query.artist)
+    button.btn.btn-primary(type='submit') Search
+  
+  hr
+
+  mixin pager
+    nav
+      ul.pager
+        if parseInt(query.skip) > 0
+          li.previous 
+            a(href='?'+pre) #[span ←] Preivous
+        if images.length == 20
+          li.next 
+            a(href='?'+next) Next #[span →]
+
+  div
+    each image in images
+      div.pull-left
+        a(href=image.url_detail)
+          img.height-100(src=image.url_src, title=image.title)
+  div.clearfix
+
+  +pager
+
+  ul.media-list
+    each image in images
+      li.media
+        div.media-left
+          a(href=image.url_detail) #[img.media-object.height-64(src=image.url_src, title=image.title)]
+        div.media-body
+          h4.media-heading= image.title
+          p #{image.name_original} - #[em #{image.sha1.substring(0,7)}] - #[mark #{image.width}x#{image.height}] by #[a(href=image.artist.url_detail) #{image.artist.name}]
+            br
+            | Ref #[strong #{image._id}]
+
+  hr
+
+  +pager

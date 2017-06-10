@@ -19,6 +19,7 @@
     "morgan": "~1.8.1",
     "pbkdf2-password": "^1.2.1",
     "pug": "~2.0.0-beta11",
+    "qs": "^6.4.0",
     "rusha": "^0.8.6",
     "serve-favicon": "~2.4.2",
     "sharp": "^0.18.1"

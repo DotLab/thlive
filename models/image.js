@@ -32,7 +32,7 @@ ImageSchema.virtual('title').get(function () {
 });
 
 ImageSchema.virtual('url_src').get(function () {
-	return '/resources/images/' + this.name_local;
+	return '/res/img/' + this.name_local;
 });
 
 ImageSchema.virtual('url_detail').get(function () {

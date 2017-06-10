@@ -1,9 +1,10 @@
-extends layout
+extends ../layout
 
 block content
   h1 #{artist.name} #[small #{artist.homepage}]
+  p Please, reference by #[strong #{artist._id}]
+  
   hr
 
-  p Please, reference by #[strong #{artist._id}]
 
   
