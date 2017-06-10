@@ -13,6 +13,9 @@ var CharacterSchema = new Schema({
 
 	skills: [{ type: String, trim: true }],
 	titles: [{ type: String, trim: true }]
+}, {
+	toObject: { virtuals: true },
+	toJSON: { virtuals: true }
 });
 
 CharacterSchema.virtual('url_detail').get(function () {

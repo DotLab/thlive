@@ -1,19 +1,22 @@
-extends layout
+extends ../layout
 
 block include_js
   script(src='/js/lib/validator.min.js')
-  script(src='/js/cardEditor.js')
+  script(src='/js/card-editor.js')
 
 block content
   h1= title
 
   form(method='POST', action='')
+    div.form-group
+      label.control-label Parent ID (Readonly):
+      input.form-control(type='text', value=body.parent, readonly)
     div.row
       //- character --------------------------------------------------------------------------------------------------------------------
       div.col-sm-6
         div#character_group.form-group(oninput='onCharacterChange()')
           label.control-label Character ID:
-          input#character.form-control(type='text', placeholder='59315799f1e2161c50218655', name='character', value=body.character, autocomplete='off')
+          input#character.form-control(type='text', placeholder='59315799f1e2161c50218655', name='character', value=body.character)
         div.form-group(oninput='onCharacterParamChange()')
           label.control-label Rarity:
           select#rarity.form-control(name='rarity')
@@ -32,7 +35,7 @@ block content
           span.help-block Generate normally-distributed random values
       //- parameters --------------------------------------------------------------------------------------------------------------------
       div.col-sm-6(oninput='onParameterChange()')
-        div#sp-group.row
+        div.row
           div.col-sm-6
             div#sp_init_group.form-group
               label.control-label Initial SP:
@@ -303,8 +306,8 @@ block content
     hr
 
     div.btn-toolbar
-      button.btn.btn-primary(type='submit', formaction='/cards/add') Save
-      button.btn.btn-danger(type='submit', formaction='/cards/add') Submit for Review
+      button.btn.btn-primary(type='submit', formaction='/cards/add') Save as New
+      button.btn.btn-danger(type='submit', formaction='/cards/add') Overwrite Parent
 
     br
 

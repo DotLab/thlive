@@ -53,6 +53,9 @@ var CardSchema = new Schema({
 
 	votes_up: { type: Number, default: 0 },
 	votes_down: { type: Number, default: 0 },
+}, {
+	toObject: { virtuals: true },
+	toJSON: { virtuals: true }
 });
 
 module.exports = mongoose.model('Card', CardSchema);

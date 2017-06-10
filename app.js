@@ -34,7 +34,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
 // middlewares
-// app.use(morgan('dev'));
+app.use(morgan('dev'));
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));

@@ -7,6 +7,9 @@ var ArtistSchema = new Schema({
 
 	// should be a valid url
 	homepage: { type: String, required: true, trim: true }
+}, {
+	toObject: { virtuals: true },
+	toJSON: { virtuals: true }
 });
 
 ArtistSchema.virtual('url_detail').get(function () {

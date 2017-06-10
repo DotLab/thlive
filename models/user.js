@@ -13,6 +13,9 @@ var UserSchema = new Schema({
 	reputation: { type: Number, default: 0 },
 
 	date_joined: { type: Date, default: Date.now }
+}, {
+	toObject: { virtuals: true },
+	toJSON: { virtuals: true }
 });
 
 UserSchema.virtual('url_detail').get(function () {

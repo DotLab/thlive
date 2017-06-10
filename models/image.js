@@ -21,6 +21,9 @@ var ImageSchema = new Schema({
 	depth: { type: String, required: true },
 
 	hasAlpha: { type: Boolean, required: true }
+}, {
+	toObject: { virtuals: true },
+	toJSON: { virtuals: true }
 });
 
 ImageSchema.virtual('title').get(function () {
