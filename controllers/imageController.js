@@ -67,7 +67,7 @@ exports.list = function (req, res, next) {
 };
 
 exports.upload_form = function (req, res, next) {
-	return res.render('image/upload', { title: 'Upload Images', body: {} });
+	return res.render('image/upload', { title: 'Upload Images', body: req.body });
 };
 
 exports.upload = function (req, res, next) {
@@ -85,7 +85,7 @@ exports.upload = function (req, res, next) {
 
 	req.checkBody('artist', 'Invalid Artist ID').isMongoId();
 
-	req.sanitize('artist').trim();
+	req.sanitizeBody('artist').trim();
 
 	var errors = req.validationErrors();
 
@@ -123,7 +123,7 @@ exports.upload = function (req, res, next) {
 					});
 				});
 			}).then(() => {
-				return new Image({
+				Image.create({
 					artist: req.body.artist,
 					uploader: req.session.user._id,
 
@@ -141,7 +141,7 @@ exports.upload = function (req, res, next) {
 					depth: bind.meta.depth,
 
 					hasAlpha: bind.meta.hasAlpha
-				}).save();
+				});
 			}).then(image => {
 				return null;
 			}).catch(err => {

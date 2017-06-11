@@ -1,6 +1,8 @@
 var path = require('path');
 global.appRoot = path.resolve(__dirname);
 
+var marked = require('marked');
+
 var express = require('express');
 var favicon = require('serve-favicon');
 
@@ -21,13 +23,20 @@ var characters = require('./routes/characters');
 var cards = require('./routes/cards');
 var api = require('./routes/api');
 
-var app = express();
+marked.setOptions({
+	highlight: function (code) {
+		return require('highlight.js').highlightAuto(code).value;
+	},
+	langPrefix:'hljs '
+});
 
 var mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://localhost:27017/thlive');
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
+
+var app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -48,7 +57,20 @@ app.use(session({
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(validator());
+app.use(validator({
+errorFormatter: function(param, msg, value) {
+	var namespace = param.split('.'), root = namespace.shift(), formParam = root;
+
+	while(namespace.length) {
+		formParam += '[' + namespace.shift() + ']';
+	}
+
+	return {
+		name: formParam,
+		message: msg + ' "' + value + '"',
+	};
+}
+}));
 app.use(fileupload());
 // app.use(cookieParser());
 

@@ -37,11 +37,14 @@ mixin error_alert(error)
       else
         +alert_danger(error.name, error.message)
 
-mixin error_footer()
+mixin error_section(hr_top, hr_bottom)
   if error || errors
-    hr
-    div#error_footer
+    if hr_top
+      hr
+    div.error_section
       +error_alert(error)
       if errors
         for error in errors
           +error_alert(error)
+    if hr_bottom
+      hr

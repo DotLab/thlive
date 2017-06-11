@@ -31,25 +31,25 @@ exports.list = function (req, res, next) {
 };
 
 exports.add_form = function (req, res, next) {
-	res.render('artist/add', { title: 'Add Artist', body: {} });
+	res.render('artist/add', { title: 'Add Artist', body: req.body });
 };
 
 exports.add = function (req, res, next) {
 	req.checkBody('name', 'Empty artist name').notEmpty();
 	req.checkBody('homepage', 'Homepage address is not a URL').isURL();
 
-	req.sanitize('name').trim();
-	req.sanitize('homepage').trim();
+	req.sanitizeBody('name').trim();
+	req.sanitizeBody('homepage').trim();
 
 	var errors = req.validationErrors();
 
 	if (errors)
 		return res.render('artist/add', { title: 'Add Artist', body: req.body, errors: errors });
 
-	new Artist({
+	Artist.create({
 		name: req.body.name,
 		homepage: req.body.homepage
-	}).save(function (err, doc) {
+	}, function (err, doc) {
 		if (err)
 			return res.render('artist/add', { title: 'Add Artist', body: req.body, error: err });
 

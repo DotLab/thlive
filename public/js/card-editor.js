@@ -206,9 +206,7 @@ var onCharacterChange = function () {
 	if (!validator.isMongoId(id))
 		return appendErrorHelp(s.character_group, 'Invalide Character ID');
 
-	$.getJSON('/api/characters/' + id, null, function (data) {
-		console.log(data);
-
+	$.getJSON('/api/characters/' + id, function (data) {
 		if (!data._id)
 			return appendErrorHelp(s.character_group, 'Nonexistent Character ID');
 
@@ -273,17 +271,12 @@ var onBackgroundChange = function () {
 	if (!validator.isMongoId(id))
 		return appendErrorHelp(s.background_group, 'Invalide Image ID');
 
-	$.ajax({
-		url: '/api/images/' + id,
-		dataType: 'json'
-	}).done(function (data, status) {
-		console.log(data, status);
-
+	$.getJSON('/api/images/' + id, function (data) {
 		if (!data._id)
 			return appendErrorHelp(s.background_group, 'Nonexistent Image ID');
 
-		appendSuccessHelp(s.background_group, data.name_original);
-		s.bg_img.attr('src', '/res/img/' + data.name_local);
+		appendSuccessHelp(s.background_group, data.title);
+		s.bg_img.attr('src', data.url_src);
 	});
 
 	onBackgroundParamChange();
@@ -303,17 +296,12 @@ var onIdolizedBackgroundChange = function () {
 	if (!validator.isMongoId(id))
 		return appendErrorHelp(s.background_idolized_group, 'Invalide Image ID');
 
-	$.ajax({
-		url: '/api/images/' + id,
-		dataType: 'json'
-	}).done(function (data, status) {
-		console.log(data, status);
-
+	$.getJSON('/api/images/' + id, function (data) {
 		if (!data._id)
 			return appendErrorHelp(s.background_idolized_group, 'Nonexistent Image ID');
 
-		appendSuccessHelp(s.background_idolized_group, data.name_original);
-		s.bg_id_img.attr('src', '/res/img/' + data.name_local);
+		appendSuccessHelp(s.background_idolized_group, data.title);
+		s.bg_id_img.attr('src', data.url_src);
 	});
 
 	onIdolizedBackgroundParamChange();
@@ -339,17 +327,12 @@ var onPortraitChange = function () {
 	if (!validator.isMongoId(id))
 		return appendErrorHelp(s.portrait_group, 'Invalide Image ID');
 
-	$.ajax({
-		url: '/api/images/' + id,
-		dataType: 'json'
-	}).done(function (data, status) {
-		console.log(data, status);
-
+	$.getJSON('/api/images/' + id, function (data) {
 		if (!data._id)
 			return appendErrorHelp(s.portrait_group, 'Nonexistent Image ID');
 
-		appendSuccessHelp(s.portrait_group, data.name_original);
-		s.pt_img.attr('src', '/res/img/' + data.name_local);
+		appendSuccessHelp(s.portrait_group, data.title);
+		s.pt_img.attr('src', data.url_src);
 	});
 
 	onPortraitParamChange();
@@ -363,17 +346,12 @@ var onIdolizedPortraitChange = function () {
 	if (!validator.isMongoId(id))
 		return appendErrorHelp(s.portrait_idolized_group, 'Invalide Image ID');
 
-	$.ajax({
-		url: '/api/images/' + id,
-		dataType: 'json'
-	}).done(function (data, status) {
-		console.log(data, status);
-
+	$.getJSON('/api/images/' + id, function (data) {
 		if (!data._id)
 			return appendErrorHelp(s.portrait_idolized_group, 'Nonexistent Image ID');
 
-		appendSuccessHelp(s.portrait_idolized_group, data.name_original);
-		s.pt_id_img.attr('src', '/res/img/' + data.name_local);
+		appendSuccessHelp(s.portrait_idolized_group, data.title);
+		s.pt_id_img.attr('src', data.url_src);
 	});
 
 	onIdolizedPortraitParamChange()

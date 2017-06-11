@@ -33,7 +33,7 @@ exports.list = function (req, res, next) {
 };
 
 exports.register_form = function (req, res, next) {
-	res.render('user/register', { title: 'Join THLIVE', body: {} });
+	res.render('user/register', { title: 'Join THLIVE', body: req.body });
 };
 
 exports.register = function (req, res, next) {
@@ -41,8 +41,8 @@ exports.register = function (req, res, next) {
 	req.checkBody('email', 'Invalid email').isEmail();
 	req.checkBody('password', 'Empty password').notEmpty();
 
-	req.sanitize('name').trim();
-	req.sanitize('email').trim();
+	req.sanitizeBody('name').trim();
+	req.sanitizeBody('email').trim();
 
 	var errs = req.validationErrors();
 
@@ -94,7 +94,7 @@ exports.login_form = function (req, res, next) {
 exports.login = function (req, res, next) {
 	req.checkBody('email', 'Invalid email').isEmail();
 
-	req.sanitize('email').trim();
+	req.sanitizeBody('email').trim();
 
 	User.findOne({ email: req.body.email }).exec().then(doc => {
 		if (!doc) throw new Error('Nonexistent user');

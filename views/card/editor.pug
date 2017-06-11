@@ -8,9 +8,10 @@ block content
   h1= title
 
   form(method='POST', action='')
-    div.form-group
-      label.control-label Parent ID (Readonly):
-      input.form-control(type='text', value=body.parent, readonly)
+    if body.parent
+      div.form-group
+        label.control-label Parent ID (Readonly):
+        input.form-control(type='text', value=body.parent, readonly)
     div.row
       //- character --------------------------------------------------------------------------------------------------------------------
       div.col-sm-6
@@ -307,7 +308,8 @@ block content
 
     div.btn-toolbar
       button.btn.btn-primary(type='submit', formaction='/cards/add') Save as New
-      button.btn.btn-danger(type='submit', formaction='/cards/add') Overwrite Parent
+      if (body.parent)
+        button.btn.btn-danger(type='submit', formaction='/cards/add') Overwrite Parent
 
     br
 

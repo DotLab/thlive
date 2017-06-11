@@ -28,7 +28,7 @@ exports.list = function (req, res, next) {
 };
 
 exports.add_form = function (req, res, next) {
-	return res.render('character/add', { title: 'Add Character' });
+	return res.render('character/add', { title: 'Add Character', body: req.body });
 };
 
 exports.add = function (req, res, next) {
@@ -39,26 +39,26 @@ exports.add = function (req, res, next) {
 	req.checkBody('race', 'Empty character race').notEmpty();
 	req.checkBody('skill', 'Empty character skill').notEmpty();
 
-	req.sanitize('name_jp').trim();
-	req.sanitize('name_zh').trim();
-	req.sanitize('name_en').trim();
-	req.sanitize('age').trim();
-	req.sanitize('race').trim();
-	req.sanitize('skill').trim();
+	req.sanitizeBody('name_jp').trim();
+	req.sanitizeBody('name_zh').trim();
+	req.sanitizeBody('name_en').trim();
+	req.sanitizeBody('age').trim();
+	req.sanitizeBody('race').trim();
+	req.sanitizeBody('skill').trim();
 
 	var errors = req.validationErrors();
 
 	if (errors)
 		return res.render('character/add', { title: 'Add Character', body: req.body, errors: errors });
 
-	new Character({
+	Character.create({
 		name_jp: req.body.name_jp,
 		name_zh: req.body.name_zh,
 		name_en: req.body.name_en,
 		age: req.body.age,
 		race: req.body.race,
 		skill: req.body.skill,
-	}).save(function (err, doc) {
+	}, function (err, doc) {
 		if (err)
 			return res.render('character/add', { title: 'Add Character', body: req.body, error: err });
 
