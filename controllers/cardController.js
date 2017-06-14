@@ -1,7 +1,12 @@
+var qs = require('qs');
+var validator = require('validator');
+
 var Card = require('../models/card');
 
+var User = require('../models/user');
 var Image = require('../models/image');
 var Character = require('../models/character');
+var Comment = require('../models/comment');
 
 var s = {
 	limits: {
@@ -32,7 +37,8 @@ var checkBodyParam = function (req, limits, match, attribute) {
 };
 
 var checkCardEditorBody = function (req) {
-	req.checkBody('parent', 'Invalid Character ID').optional({ checkFalsy: true }).isMongoId();
+	req.checkBody('base', 'Invalid Base ID').optional({ checkFalsy: true }).isMongoId();
+
 	req.checkBody('character', 'Invalid Character ID').isMongoId();
 	req.checkBody('rarity', 'Invalid Rarity').isIn([ 'N', 'R', 'SR', 'SSR' ]);
 	req.checkBody('attribute', 'Invalid Attribute').isIn([ 'Haru', 'Rei', 'Ma' ]);
@@ -79,11 +85,73 @@ var checkCardEditorBody = function (req) {
 	req.checkBody('icon_idolized_scale', 'Invalid Idolized Icon Scale').isInt();
 };
 
-exports.add_form = function (req, res, next) {
-	return res.render('card/editor', { title: 'Add Card', body: req.body });	
+exports.list = function (req, res, next) {
+	var q = Card.find();
+	
+	if (req.query.status)
+		q = q.find({ status: req.query.status });
+	else
+		q = q.find({ status: 'Accepted' });
+
+	if (req.query.sort)
+		q = q.sort(req.query.sort);
+	else
+		q = q.sort('-date');
+
+	if (req.query.skip)
+		q = q.skip(parseInt(req.query.skip));
+
+	if (req.query.limit)
+		q = q.limit(parseInt(req.query.limit));
+	else
+		q = q.limit(20);
+
+	if (req.query.populate)
+		q = q.populate(req.query.populate);
+	else 
+		q = q.populate('editor character background portrait background_idolized portrait_idolized');
+
+	q.exec(function (err, docs) {
+		if (err) return next(err);
+
+		req.query.skip = req.query.skip || 0;
+		req.query.limit = req.query.limit || 20;
+
+		var skip = parseInt(req.query.skip);
+
+		req.query.skip = skip - parseInt(req.query.limit);
+		var url_pre = qs.stringify(req.query);
+		req.query.skip = skip + parseInt(req.query.limit);
+		var url_next = qs.stringify(req.query);
+
+		req.query.skip = skip;
+
+		res.render('card/list', { 
+			title: 'Cards', 
+			cards: docs,
+			query: req.query,
+
+			pre: url_pre,
+			next: url_next
+		});
+	});
+}
+
+exports.editor_form = function (req, res, next) {
+	if (!req.session.user) return res.redirect('/login');
+
+	if (req.query.base && validator.isMongoId(req.query.base)) {
+		Card.findById(req.query.base, function (err, doc) {
+			if (err) return next(err);
+
+			res.render('card/editor', { title: 'Card Editor - Derive', base: doc._id, body: doc });
+		});
+	} else {
+		res.render('card/editor', { title: 'Card Editor - New' });
+	}
 };
 
-exports.add = function (req, res, next) {
+exports.editor = function (req, res, next) {
 	if (!req.session.user) return res.redirect('/login');
 
 	checkCardEditorBody(req);
@@ -91,34 +159,78 @@ exports.add = function (req, res, next) {
 	var errors = req.validationErrors();
 
 	if (errors)
-		return res.render('card/editor', { title: 'Add Card', body: req.body, errors: errors });
+		return res.render('card/editor', { title: 'Card Editor - Error', errors: errors });
 
 	var ps = [
 		Character.findById(req.body.character).exec().then(doc => { 
 			if (!doc) throw new Error('Nonexistent Character ID'); 
 		}),
-
-		Image.findById(req.body.background).exec().then(doc => {
-			if (!doc) throw new Error('Nonexistent Background Image ID'); 
-		}),
 		Image.findById(req.body.portrait).exec().then(doc => { 
 			if (!doc) throw new Error('Nonexistent Portriat Image ID'); 
-		}),
-		Image.findById(req.body.background_idolized).exec().then(doc => { 
-			if (!doc) throw new Error('Nonexistent Idolized Background Image ID'); 
 		}),
 		Image.findById(req.body.portrait_idolized).exec().then(doc => { 
 			if (!doc) throw new Error('Nonexistent Idolized Portriat Image ID'); 
 		}),
+		User.findById(req.session.user._id).exec().then(doc => {
+			if (!doc) throw new Error('Nonexistent User ID');
+
+			if (req.query.action == 'create') {
+			if (Math.floor(parseInt(doc.reputation) / 10) < doc.count_card)
+					throw new Error('You reached your card limit: ' + Math.floor(1 + parseInt(doc.reputation) / 10));
+				
+				doc.count_card += 1;
+				doc.save();
+			}
+		})
 	];
+
+	if (req.query.action == 'overwrite')
+		ps.push(Card.findById(req.body.base).exec().then(doc => { 
+			if (!doc) throw new Error('Nonexistent Base Card ID'); 
+		}));
+
+	if (validator.isMongoId(req.body.background)) {
+		ps.push(Image.findById(req.body.background).exec().then(doc => {
+			if (!doc) throw new Error('Nonexistent Background Image ID'); 
+		}));
+	} else {
+		req.body.background = null;
+	}
+	
+	if (validator.isMongoId(req.body.background_idolized)) {
+		ps.push(Image.findById(req.body.background_idolized).exec().then(doc => { 
+			if (!doc) throw new Error('Nonexistent Idolized Background Image ID'); 
+		}));
+	} else {
+		req.body.background_idolized = null;
+	}
 
 	Promise.all(ps).then(results => {
 		req.body.editor = req.session.user._id;
 
-		return Card.create(req.body);
+		if (req.query.action == 'create') {
+			return Card.create(req.body);
+		} else { // req.query.action == 'overwrite'
+			return Card.findByIdAndUpdate(req.body.base, req.body);
+		}
 	}).then(doc => {
 		res.redirect(doc.url_detail);
 	}).catch(err => {
-		res.render('card/editor', { title: 'Add Card', body: req.body, error: err });
+		res.render('card/editor', { title: 'Card Editor - Error', error: err });
 	});
+};
+
+exports.detail = function (req, res, next) {
+	var ps = [
+		Card.findById(req.params.id).populate('editor character background portrait background_idolized portrait_idolized'),
+		Comment.find({ topic: req.params.id }).sort('date').populate('user')
+	];
+
+	Promise.all(ps).then(function (results) {
+		res.render('card/detail', {
+			title: 'Card: ' + results[0].character.name_en + ' ' + results[0].rarity,
+			card: results[0],
+			comments: results[1]
+		});
+	}).catch(err => next(err));
 };

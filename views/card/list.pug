@@ -1,0 +1,64 @@
+extends ../layout
+
+include ../mixins
+
+mixin card(card)
+  if (card.background)
+    div.bg_pos.abs.size-card-sm(style=`transform: translate(${card.background_x}%, ${card.background_y}%)`)
+      div.bg_rot.abs.size-card-sm.origin(style=`transform: rotate(${card.background_rotation}deg)`)
+        img.bg_img.height-full(style=`height: ${card.background_scale}%`, src=card.background.url_src)
+
+  div.pt_pos.abs.size-card-sm(style=`transform: translate(${card.portrait_x}%, ${card.portrait_y}%)`)
+    div.pt_rot.abs.size-card-sm.origin(style=`transform: rotate(${card.portrait_rotation}deg)`)
+      img.pt_img.height-full(style=`height: ${card.portrait_scale}%`, src=card.portrait.url_src)
+
+mixin card_idolized(card)
+  if (card.background_idolized)
+    div.bg_pos.abs.size-card-sm(style=`transform: translate(${card.background_idolized_x}%, ${card.background_idolized_y}%)`)
+      div.bg_rot.abs.size-card-sm.origin(style=`transform: rotate(${card.background_idolized_rotation}deg)`)
+        img.bg_img.height-full(style=`height: ${card.background_idolized_scale}%`, src=card.background_idolized.url_src)
+
+  div.pt_pos.abs.size-card-sm(style=`transform: translate(${card.portrait_idolized_x}%, ${card.portrait_idolized_y}%)`)
+    div.pt_rot.abs.size-card-sm.origin(style=`transform: rotate(${card.portrait_idolized_rotation}deg)`)
+      img.pt_img.height-full(style=`height: ${card.portrait_idolized_scale}%`, src=card.portrait_idolized.url_src)
+
+block content
+  h1= title
+  p Viewing #[strong #{query.status||'Accepted'}] cards.
+
+  div.btn-toolbar
+    a.btn.btn-success(href='?status=Accepted') Accepted Cards
+    a.btn.btn-warning(href='?status=Suspended') Suspended Cards
+    a.btn.btn-danger(href='?status=Rejected') Rejected Cards
+    a.btn.btn-danger(href='?status=Deprecated') Deprecated Cards
+  hr
+  
+  +pager((query.skip >= 20), (cards.length == 20))
+
+  div.row
+  each card in cards
+    div.col-lg-6
+      a(href=card.url_detail)
+        div.shadow-card(style='height: 360px; width: 512px')
+          //- card --------------------------------------------------------------------------------------------------------------------
+          div.abs.size-card-sm
+            div.abs.size-card-sm(style='clip-path: inset(0 0 0 0)')
+              +card(card)
+
+              img.co_img.abs.size-card-sm(src=`/img/card-overlay-${card.rarity.toLowerCase()}-${card.attribute.toLowerCase()}.png`)
+
+              div.abs(style='transform: translate(19px, 65px)')
+                div.abs.origin(style='transform: rotate(-90deg)')
+                  h4.ch_h.abs.outline-1(style='color: white; white-space: nowrap; right: 0; margin: 0')= card.character.name_en.toUpperCase()
+
+          div.abs.size-card-sm(style='margin-left: 256px')
+            div.abs.size-card-sm(style='clip-path: inset(0 0 0 0)')
+              +card_idolized(card)
+
+              img.co_img.abs.size-card-sm(src=`/img/card-overlay-${card.rarity.toLowerCase()}-${card.attribute.toLowerCase()}.png`)
+
+              div.abs(style='transform: translate(19px, 65px)')
+                div.abs.origin(style='transform: rotate(-90deg)')
+                  h4.ch_h.abs.outline-1(style='color: white; white-space: nowrap; right: 0; margin: 0')= card.character.name_en.toUpperCase()
+
+  +pager((query.skip >= 20), (cards.length == 20))

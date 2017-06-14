@@ -1,5 +1,7 @@
 extends ../layout
 
+include ../mixins
+
 block content
   h1 #{character.name_jp} #[small (#{character.name_en}) #{character.name_zh}]
   p Please, reference by #[strong #{character._id}]
@@ -17,4 +19,6 @@ block content
     dd= character.age
     dt Race
     dd= character.race
+
+  +commenting(character._id)
   

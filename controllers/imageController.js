@@ -1,5 +1,4 @@
 var path = require('path');
-var async = require('async');
 var qs = require('qs');
 
 var sharp = require('sharp');
@@ -9,6 +8,7 @@ var rusha = new Rusha();
 var User = require('../models/user');
 var Artist = require('../models/artist');
 var Image = require('../models/image');
+var Comment = require('../models/comment');
 
 exports.list = function (req, res, next) {
 	var q = Image.find();
@@ -40,18 +40,15 @@ exports.list = function (req, res, next) {
 	q.exec(function (err, docs) {
 		if (err) return next(err);
 
-		if (!req.query.skip)
-			req.query.skip = 0;
-
-		if (!req.query.limit)
-			req.query.limit = 20;
+		req.query.skip = req.query.skip || 0;
+		req.query.limit = req.query.limit || 20;
 
 		var skip = parseInt(req.query.skip);
 
 		req.query.skip = skip - parseInt(req.query.limit);
-		var p = qs.stringify(req.query);
+		var url_pre = qs.stringify(req.query);
 		req.query.skip = skip + parseInt(req.query.limit);
-		var n = qs.stringify(req.query);
+		var url_next = qs.stringify(req.query);
 
 		req.query.skip = skip;
 
@@ -60,14 +57,16 @@ exports.list = function (req, res, next) {
 			query: req.query,
 			images: docs,
 
-			pre: p,
-			next: n
+			pre: url_pre,
+			next: url_next
 		});
 	});
 };
 
 exports.upload_form = function (req, res, next) {
-	return res.render('image/upload', { title: 'Upload Images', body: req.body });
+	return res.render('image/upload', { 
+		title: 'Upload Images'
+	});
 };
 
 exports.upload = function (req, res, next) {
@@ -76,8 +75,7 @@ exports.upload = function (req, res, next) {
 	if (!req.files || !req.files.files || (!req.files.files.length && !req.files.files.name)) 
 		return res.render('image/upload', { 
 			title: 'Upload Images',
-			body: req.body,
-			error: { msg: 'No image is uploaded' } 
+			error: { msg: 'No image is uploaded' }
 		});
 
 	if (!req.files.files.length)
@@ -89,12 +87,12 @@ exports.upload = function (req, res, next) {
 
 	var errors = req.validationErrors();
 
-	if (errors)
+	if (errors) {
 		return res.render('image/upload', { 
 			title: 'Upload Images',
-			body: req.body,
 			errors: errors
 		});
+	}
 
 	Artist.findById(req.body.artist).exec().then(artist => {
 		if (!artist) throw new Error('Nonexistent artist: ' + req.body.artist);
@@ -157,92 +155,30 @@ exports.upload = function (req, res, next) {
 		if (results.length == 0)
 			User.findByIdAndUpdate(req.session.user._id, { $inc: { reputation: 1 } }).exec();
 
-		res.render('image/upload', { title: 'Update Images', body: req.body, errors: results, info: req.files.files.length + ' file(s) processed' });
+		res.render('image/upload', { 
+			title: 'Update Images', 
+			errors: results, 
+			info: req.files.files.length + ' file(s) processed'
+		});
 	}).catch(err => {
-		res.render('image/upload', { title: 'Update Images', body: req.body, error: err });
+		res.render('image/upload', { 
+			title: 'Update Images',
+			error: err
+		});
 	});
-
-	// Artist.findById(req.body.artist, function (err, artist) {
-	// 	if (err)
-	// 		return res.render('image/upload', { 
-	// 			title: 'Upload Images',
-	// 			body: req.body,
-	// 			errors: [ err ] 
-	// 		});
-
-	// 	if (!artist)
-	// 		return res.render('image/upload', { 
-	// 			title: 'Upload Images',
-	// 			body: req.body,
-	// 			errors: [{ msg: 'Artist "' + req.body.artist + '" dose not exist; Make sure to create the artist before uploading his/her image' }] 
-	// 		});
-
-	// 	async.concat(req.files.files, function (file, callback) {
-	// 		sharp(file.data).metadata(function (err, meta) {
-	// 			if (err) return callback(null, err);
-
-	// 			var sha1 = rusha.digestFromBuffer(file.data);
-
-	// 			Image.findOne({ sha1: sha1 }, function (err, image) {
-	// 				if (err) return callback(null, err);
-
-	// 				if (image) return callback(null, { msg: 'Image: ' + file.name + ' already exists' });
-
-	// 				file.mv(path.join(appRoot, 'public/res/img', sha1 + '.' + meta.format), function (err) {
-	// 					if (err) return callback(null, err);
-
-	// 					new Image({
-	// 						artist: req.body.artist,
-	// 						uploader: req.session.user._id,
-
-	// 						name_local: sha1 + '.' + meta.format,
-	// 						name_original: file.name,
-							
-	// 						title: req.body.title ? req.body.title : file.name,
-
-	// 						sha1: sha1,
-
-	// 						format: meta.format,
-	// 						width: meta.width,
-	// 						height: meta.height,
-	// 						space: meta.space,
-	// 						depth: meta.depth,
-
-	// 						hasAlpha: meta.hasAlpha
-	// 					}).save(function (err, doc) {
-	// 						if (err) return callback(null, err);
-
-	// 						return callback()
-	// 					});
-	// 				});
-	// 			});
-	// 		});
-	// 	}, function (err, results) {
-	// 		if (err)
-	// 			return res.render('image/upload', { 
-	// 				title: 'Upload Images',
-	// 				body: req.body,
-	// 				errors: [ err ] 
-	// 			});
-
-	// 		if (!results || !results.length)
-	// 			User.findByIdAndUpdate(req.session.user._id, { $inc: { reputation: 1 } }).exec();
-
-	// 		return res.render('image/upload', { 
-	// 			title: 'Upload Images',
-	// 			body: req.body,
-	// 			warnings: results,
-	// 			success: 'Successfully processed ' + req.files.files.length + ' images' 
-	// 		});
-	// 	});
-	// });
 };
 
 exports.detail = function (req, res, next) {
-	Image.findById(req.params.id).populate('artist uploader').exec(function (err, doc) {
-		if (err)
-			return next(err);
+	var ps = [
+		Image.findById(req.params.id).populate('artist uploader'),
+		Comment.find({ topic: req.params.id }).sort('date').populate('user')
+	];
 
-		res.render('image/detail', { title: 'Image: ' + doc._id, image: doc });
-	});
+	Promise.all(ps).then(function (results) {
+		res.render('image/detail', {
+			title: 'Image: ' + results[0].title,
+			image: results[0],
+			comments: results[1]
+		});
+	}).catch(err => next(err));
 };

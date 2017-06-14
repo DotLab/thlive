@@ -11,3 +11,4 @@ router.post('/add', artistController.add);
 router.get('/:id', artistController.detail);
 
 module.exports = router;
+

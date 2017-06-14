@@ -8,12 +8,13 @@ var CardSchema = new Schema({
 	reviewer: { type: Schema.Types.ObjectId, ref: 'User', default: null },
 	review: { type: String, default: '', trim: true },
 	status: { type: String, enum: [ 'Suspended', 'Accepted', 'Rejected', 'Deprecated' ], default: 'Suspended' },
+	date_review: { type: Date, default: null },
+	date_deprecate: { type: Date, default: null },
 
 	votes_up: { type: Number, default: 0 },
 	votes_down: { type: Number, default: 0 },
 
 	// main -------------------------------------------------------------------------
-	parent: { type: Schema.Types.ObjectId, ref: 'Card', default: null },
 	character: { type: Schema.Types.ObjectId, ref: 'Character', required: true },
 	
 	rarity: { type: String, required: true, enum: [ 'N', 'R', 'SR', 'UR' ] },

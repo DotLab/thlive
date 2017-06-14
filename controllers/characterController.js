@@ -1,34 +1,19 @@
 var Character = require('../models/character');
+var Comment = require('../models/comment');
 
 exports.list = function (req, res, next) {
-	var q = Character.find();
-
-	if (req.query.sort != null)
-		q = q.sort(req.query.sort);
-	else
-		q = q.sort('name_en');
-	
-	if (req.query.skip != null)
-		q = q.skip(parseInt(req.query.skip));
-
-	if (req.query.limit != null)
-		q = q.limit(parseInt(req.query.limit));
-	else
-		q = q.limit(20);
-
-	q.exec(function (err, docs) {
+	Character.find({}, function (err, docs) {
 		if (err) return next(err);
 
 		res.render('character/list', {
 			title: 'Characters',
-			characters: docs,
-			user: req.session.user
+			characters: docs
 		});
 	});
 };
 
 exports.add_form = function (req, res, next) {
-	return res.render('character/add', { title: 'Add Character', body: req.body });
+	return res.render('character/add', { title: 'Add Character' });
 };
 
 exports.add = function (req, res, next) {
@@ -48,8 +33,12 @@ exports.add = function (req, res, next) {
 
 	var errors = req.validationErrors();
 
-	if (errors)
-		return res.render('character/add', { title: 'Add Character', body: req.body, errors: errors });
+	if (errors) {
+		return res.render('character/add', { 
+			title: 'Add Character', 
+			errors: errors
+		});
+	}
 
 	Character.create({
 		name_jp: req.body.name_jp,
@@ -59,17 +48,28 @@ exports.add = function (req, res, next) {
 		race: req.body.race,
 		skill: req.body.skill,
 	}, function (err, doc) {
-		if (err)
-			return res.render('character/add', { title: 'Add Character', body: req.body, error: err });
+		if (err) {
+			return res.render('character/add', { 
+				title: 'Add Character',  
+				error: err
+			});
+		}
 
 		return res.redirect(doc.url_detail);
 	});
 };
 
 exports.detail = function (req, res, next) {
-	Character.findById(req.params.id, function (err, doc) {
-		if (err) return next(err);
+	var ps = [
+		Character.findById(req.params.id),
+		Comment.find({ topic: req.params.id }).sort('date').populate('user')
+	];
 
-		return res.render('character/detail', { title: 'Character: ' + doc.name_jp, character: doc });
-	});
+	Promise.all(ps).then(function (results) {
+		res.render('character/detail', {
+			title: 'Character: ' + results[0].name_jp,
+			character: results[0],
+			comments: results[1]
+		});
+	}).catch(err => next(err));
 };

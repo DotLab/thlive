@@ -1,5 +1,7 @@
 extends ../layout
 
+include ../mixins
+
 block content
   h1 #{image.title} #[small #{image.name_original} - #{image.sha1.substring(0,7)}]
   h3 by #[a(href=image.artist.url_detail) #{image.artist.name}]
@@ -25,7 +27,7 @@ block content
       p
         samp hasAlpha: #{image.hasAlpha}
   hr
-  img.abs.shadow-card(src=image.url_src)
+  img.img-responsive.shadow-card(src=image.url_src)
 
-
+  +commenting(image._id)
   

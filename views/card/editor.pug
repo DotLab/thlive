@@ -7,11 +7,11 @@ block include_js
 block content
   h1= title
 
-  form(method='POST', action='')
-    if body.parent
+  form(method='post')
+    if base
       div.form-group
-        label.control-label Parent ID (Readonly):
-        input.form-control(type='text', value=body.parent, readonly)
+        label.control-label Base ID (Readonly):
+        input.form-control(type='text', name='base', value=base, readonly)
     div.row
       //- character --------------------------------------------------------------------------------------------------------------------
       div.col-sm-6
@@ -307,9 +307,9 @@ block content
     hr
 
     div.btn-toolbar
-      button.btn.btn-primary(type='submit', formaction='/cards/add') Save as New
-      if (body.parent)
-        button.btn.btn-danger(type='submit', formaction='/cards/add') Overwrite Parent
+      button.btn.btn-primary(type='submit', formaction='?action=create') Save as New
+      if (base)
+        button.btn.btn-danger(type='submit', formaction='?action=overwrite') Overwrite Base
 
     br
 

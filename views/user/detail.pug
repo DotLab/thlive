@@ -1,5 +1,7 @@
 extends ../layout
 
+include ../mixins
+
 block content
   h1 #{user.name} #[small #{user.email}]
   h4 #[em #{user.reputation}] REPUTATION
@@ -9,8 +11,13 @@ block content
   p Joined #[em Touhou! Live! at] #[mark #{user.date_joined}]
   p The #[em secret] is #[mark #{user.salt.substring(0,20)}]
 
-  if isSelf
+  if mortal && mortal._id == user._id
     p You #[strong are] #[mark #{user.name}].
 
+    div.btn-toolbar
+      a.btn.btn-primary(href=mortal.url_detail+'/images') My Images
+      a.btn.btn-primary(href=mortal.url_detail+'/cards') My Cards
+      a.btn.btn-default Edit Information
 
+  +commenting(user._id)
   

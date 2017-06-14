@@ -6,8 +6,8 @@ block content
 
   hr
 
-  if user
-    p It's #[em really nice] to have you back, #[mark #{user.name}].
+  if mortal
+    p It's #[em really nice] to have you back, #[mark #{mortal.name}].
     a.btn.btn-default(href='/users/logout') Logout
   else
     p Please, #[strong login] or #[strong register].

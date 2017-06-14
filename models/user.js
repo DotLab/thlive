@@ -12,7 +12,11 @@ var UserSchema = new Schema({
 
 	reputation: { type: Number, default: 0 },
 
+	count_image: { type: Number, default: 0 },
+	count_card: { type: Number, default: 0 },
+
 	date_joined: { type: Date, default: Date.now }
+
 }, {
 	toObject: { virtuals: true },
 	toJSON: { virtuals: true }

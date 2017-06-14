@@ -1,39 +1,23 @@
 var hasher = require('pbkdf2-password')();
 
 var User = require('../models/user');
+var Comment = require('../models/comment');
 
 exports.list = function (req, res, next) {
-	var q = User.find();
-
-	if (req.query.sort != null)
-		q = q.sort(req.query.sort);
-	else
-		q = q.sort('-reputation');
-	
-	if (req.query.skip != null)
-		q = q.skip(parseInt(req.query.skip));
-
-	if (req.query.limit != null)
-		q = q.limit(parseInt(req.query.limit));
-	else
-		q = q.limit(20);
-
-	if (req.query.populate != null)
-		q = q.populate(req.query.populate);
-
-	q.exec((err, docs) => {
+	User.find({}, (err, docs) => {
 		if (err) return next(err);
 
 		res.render('user/list', {
 			title: 'Users',
-			users: docs,
-			user: req.session.user
+			users: docs
 		});
 	});
 };
 
 exports.register_form = function (req, res, next) {
-	res.render('user/register', { title: 'Join THLIVE', body: req.body });
+	res.render('user/register', { 
+		title: 'Join THLIVE'
+	});
 };
 
 exports.register = function (req, res, next) {
@@ -57,7 +41,6 @@ exports.register = function (req, res, next) {
 	if (errs.length > 0) {
 		return res.render('user/register', {
 			title: 'Join THLIVE',
-			body: req.body,
 			errors: errs
 		});
 	}
@@ -81,14 +64,15 @@ exports.register = function (req, res, next) {
 	}).catch(err => {
 		res.render('user/register', {
 			title: 'Join THLIVE',
-			body: req.body,
 			error: err
 		});
 	});
 };
 
 exports.login_form = function (req, res, next) {
-	res.render('user/login', { title: 'Login THLIVE', body: {} });
+	res.render('user/login', { 
+		title: 'Login THLIVE'
+	});
 };
 
 exports.login = function (req, res, next) {
@@ -117,7 +101,6 @@ exports.login = function (req, res, next) {
 	}).catch(err => {
 		res.render('user/login', {
 			title: 'Login THLIVE',
-			body: req.body,
 			error: err
 		});
 	});
@@ -132,13 +115,17 @@ exports.logout = function (req, res, next) {
 }
 
 exports.detail = function (req, res, next) {
-	User.findById(req.params.id, (err, doc) => {
-		if (err) return next(err);
+	var ps = [
+		User.findById(req.params.id),
+		Comment.find({ topic: req.params.id }).sort('date').populate('user')
+	];
 
+	Promise.all(ps).then(function (results) {
 		res.render('user/detail', {
-			title: 'User: ' + doc.name,
-			user: doc,
-			isSelf: (req.session && req.session.user && req.session.user._id == doc._id)
+			title: 'User: ' + results[0].name,
+			user: results[0],
+			isSelf: (req.session && req.session.user && req.session.user._id == results[0]._id),
+			comments: results[1]
 		});
-	});
+	}).catch(err => next(err));
 };

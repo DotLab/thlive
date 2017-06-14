@@ -126,6 +126,9 @@ $(function () {
 
 	onPortraitChange();
 	onIdolizedPortraitChange();
+
+	onIconParamChange();
+	onIdolizedIconParamChange();
 });
 
 // helper functions -----------------------------------------------------------------------------------------------------------------------------------
@@ -133,9 +136,9 @@ $(function () {
 var gaussianRandom = function (start, end) {
 	var gaussianRand = function () {
 		var rand = 0;
-		for (var i = 0; i < 4; i += 1)
+		for (var i = 0; i < 2; i++)
 			rand += Math.random();
-		return rand / 4;
+		return rand / 2;
 	};
 
 	return Math.round(start + gaussianRand() * (end - start));

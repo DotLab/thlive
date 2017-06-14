@@ -1,5 +1,7 @@
 extends ../layout
 
+include ../mixins
+
 block content
   h1= title
   a.btn.btn-primary(href='/images/upload') Upload
@@ -18,16 +20,6 @@ block content
   
   hr
 
-  mixin pager
-    nav
-      ul.pager
-        if parseInt(query.skip) > 0
-          li.previous 
-            a(href='?'+pre) #[span ←] Preivous
-        if images.length == 20
-          li.next 
-            a(href='?'+next) Next #[span →]
-
   div
     each image in images
       div.pull-left
@@ -35,7 +27,7 @@ block content
           img.height-100(src=image.url_src, title=image.title)
   div.clearfix
 
-  +pager
+  +pager((query.skip >= 20), (images.length == 20))
 
   ul.media-list
     each image in images
@@ -50,4 +42,4 @@ block content
 
   hr
 
-  +pager
+  +pager((query.skip >= 20), (images.length == 20))
