@@ -34,11 +34,11 @@ ImageSchema.virtual('title').get(function () {
 	});
 });
 
-ImageSchema.virtual('url_src').get(function () {
+ImageSchema.virtual('src').get(function () {
 	return '/res/img/' + this.name_local;
 });
 
-ImageSchema.virtual('url_detail').get(function () {
+ImageSchema.virtual('url').get(function () {
 	return '/images/' + this._id;
 });
 

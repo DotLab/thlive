@@ -4,6 +4,9 @@ global.appRoot = path.resolve(__dirname);
 var marked = require('marked');
 var hljs = require('highlight.js');
 
+var moment = require('moment');
+moment.locale();
+
 var express = require('express');
 
 var compression = require('compression');
@@ -68,6 +71,9 @@ app.use(validator({
 app.use(function (req, res, next) {
 	res.locals.mortal = req.session.user;
 	res.locals.body = req.body;
+
+	res.locals.url = req.url;
+	res.locals.urlSegments = req.url.split('/');
 
 	next();
 });

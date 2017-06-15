@@ -1,0 +1,10 @@
+mixin user_item(user)
+	div.media
+		if user.avatar
+			img.d-flex.align-self-start.mr-3.shadow-item(src=user.avatar.src, height='64px')
+		div.media-body
+			a.h5.font-weight-normal(href=user.url)= user.name
+			div.small.text-muted
+				span.d-block= user.tag
+				span.d-block #[strong= user.reputation]
+				span.d-block= user.date_joined_formated

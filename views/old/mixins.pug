@@ -92,7 +92,7 @@ mixin commenting(topic)
             h4.media-heading #[a(href=mortal.url_detail) #{mortal.name}] at #[small #{(new Date()).toString()}]
             div#preview
 
-  link(rel='stylesheet', href='/css/hljs/monokai-sublime.css')
-  script(src='//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js')
+  link(rel='stylesheet', href='/css/lib/hljs.min.css')
+  script(src='/js/lib/highlight.min.js')
   script(src='/js/lib/marked.min.js')
   script(src='/js/comment-editor.js')

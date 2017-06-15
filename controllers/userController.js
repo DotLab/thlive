@@ -1,17 +1,19 @@
 var hasher = require('pbkdf2-password')();
 
 var User = require('../models/user');
+var Image = require('../models/image');
 var Comment = require('../models/comment');
 
 exports.list = function (req, res, next) {
-	User.find({}, (err, docs) => {
-		if (err) return next(err);
-
+	User.find().sort(req.query.sort || '-requtation').populate('avatar').exec().then(docs => {
 		res.render('user/list', {
 			title: 'Users',
-			users: docs
+			section: 'users',
+
+			users: docs,
+			sort: req.query.sort
 		});
-	});
+	}).catch(err => next(err));
 };
 
 exports.register_form = function (req, res, next) {

@@ -12,6 +12,21 @@ exports.list = function (req, res, next) {
 	});
 };
 
+exports.detail = function (req, res, next) {
+	var ps = [
+		Artist.findById(req.params.id),
+		Comment.find({ topic: req.params.id }).sort('date').populate('user')
+	];
+
+	Promise.all(ps).then(function (results) {
+		res.render('artist/detail', {
+			title: 'Artist: ' + results[0].name,
+			artist: results[0],
+			comments: results[1]
+		});
+	}).catch(err => next(err));
+};
+
 exports.add_form = function (req, res, next) {
 	res.render('artist/add', { 
 		title: 'Add Artist'
@@ -47,19 +62,4 @@ exports.add = function (req, res, next) {
 
 		res.redirect(doc.url_detail);
 	});
-};
-
-exports.detail = function (req, res, next) {
-	var ps = [
-		Artist.findById(req.params.id),
-		Comment.find({ topic: req.params.id }).sort('date').populate('user')
-	];
-
-	Promise.all(ps).then(function (results) {
-		res.render('artist/detail', {
-			title: 'Artist: ' + results[0].name,
-			artist: results[0],
-			comments: results[1]
-		});
-	}).catch(err => next(err));
 };

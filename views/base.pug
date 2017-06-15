@@ -1,0 +1,24 @@
+include ./mixin/nav
+
+doctype html
+
+html(lang='en')
+	head
+		title= title
+
+		meta(charset='utf-8')
+		meta(name='viewport', content='width=device-width, initial-scale=1, shrink-to-fit=no')
+
+		link(rel='stylesheet', href='/css/lib/bootstrap.min.css')
+		link(rel='stylesheet', href='/css/lib/font-awesome.min.css')
+		link(rel='stylesheet', href='/css/base.css')
+
+	body
+		+navbar(section, mortal)
+
+		block main
+
+		script(src='/js/lib/jquery.min.js')
+		script(src='/js/lib/tether.min.js')
+		script(src='/js/lib/bootstrap.min.js')
+

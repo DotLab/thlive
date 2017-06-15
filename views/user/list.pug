@@ -1,15 +1,22 @@
-extends ../layout
+extends ../base
 
-block content
-  h1= title
+include ../mixin/user
 
-  if user
-    p You #[strong are] #[mark #{user.name}].
-    
-  hr
+block main
+	br
 
-  ul
-    each user in users
-      li
-        a(href=user.url_detail) #{user.name}
-        |  (#{user.salt.substring(0,7)}) #{user.reputation} REP
+	div.container
+		h2.h5.abs.font-weight-normal Users
+		nav.nav.nav-tabs.justify-content-end.small
+			a.nav-item.nav-link(href='?sort=-reputation', class=(!sort||sort=='-reputation')&&'active') reputation
+			a.nav-item.nav-link(href='?sort=-date_joined', class=(sort=='-date_joined')&&'active') new users
+			a.nav-item.nav-link(href='?sort=-vote', class=(sort=='-vote')&&'active') voters
+			a.nav-item.nav-link(href='?sort=-edit', class=(sort=='-edit')&&'active') editors
+			a.nav-item.nav-link(href='?sort=date_joined', class=(sort=='date_joined')&&'active') modurators
+
+		br
+
+		div.row
+			for user in users
+				div.col-md-3.mb-2
+					+user_item(user)
