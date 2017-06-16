@@ -70,10 +70,8 @@ app.use(validator({
 
 app.use(function (req, res, next) {
 	res.locals.mortal = req.session.user;
-	res.locals.body = req.body;
 
-	res.locals.url = req.url;
-	res.locals.urlSegments = req.url.split('/');
+	res.locals.body = req.body;
 
 	next();
 });

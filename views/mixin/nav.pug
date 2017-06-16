@@ -1,10 +1,6 @@
 mixin navbar(section, mortal)
-		nav.navbar.navbar-toggleable-md.navbar-inverse.bg-inverse 
-			button.navbar-toggler.navbar-toggler-right(type='button', data-toggle='collapse', data-target='#navbar')
-				span.navbar-toggler-icon
-				
+		nav.navbar.navbar-toggleable-sm.navbar-inverse.bg-inverse 
 			div.container
-
 				a.navbar-brand(href='/') 
 					i.fa.fa-music
 					|	THLIVE
@@ -25,7 +21,10 @@ mixin navbar(section, mortal)
 						a.nav-item.nav-link(href='/groups', class=section=='groups'&&'active') Group
 						a.nav-item.nav-link(href='/agencies', class=section=='agencies'&&'active') Agency
 
-				if mortal
-					a.navbar-text(href=mortal.url_detail) #{mortal.name}
-				else
-					a.btn.btn-sm.btn-outline-success(href='/users/login') Sign in
+			button.navbar-toggler.navbar-toggler-right(type='button', data-toggle='collapse', data-target='#navbar')
+				span.navbar-toggler-icon
+					
+			if mortal
+				a.navbar-text(href=mortal.url_detail) #{mortal.name}
+			else
+				a.btn.btn-sm.btn-outline-success(href='/users/login') Login

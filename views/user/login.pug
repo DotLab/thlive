@@ -1,0 +1,35 @@
+extends ../base
+
+include ../mixin/user
+
+block main
+	br
+
+	div.container
+		nav.nav.nav-tabs.small
+			a.nav-item.nav-link.active(href='login') Log in
+			a.nav-item.nav-link(href='signup') Sign up
+
+		br
+		h3.h4.font-weight-normal.text-center For the #[em Touhou] community. By the #[strong Touhou] community.
+		br
+
+		div.row.justify-content-md-center
+			div.col-md-6
+				div.card
+					br
+					div.card-block.mx-1
+						form
+							div.form-group
+								label Email
+								input.form-control(type='email', placeholder='reimuhakurei@gia.com' name='email' value=body.email)
+							div.form-group
+								label Password
+								input.form-control(type='password', placeholder='*********' name='password' value=body.password)
+							button.btn.btn-primary.float-right(type='submit') Log in
+					br
+				br
+				div.card.text-center
+					div.card-block
+						p.mb-0 Don't have an account? #[a(href='signup') Sign up]
+						p.mb-0 Forget your password? #[a(href='signup') Recover]

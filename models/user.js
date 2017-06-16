@@ -14,10 +14,11 @@ var UserSchema = new Schema({
 
 	reputation: { type: Number, default: 0 },
 
-	count_image: { type: Number, default: 0 },
-	count_card: { type: Number, default: 0 },
+	vote: { type: Number, default: 0 },
+	edit: { type: Number, default: 0 },
 
-	date_joined: { type: Date, default: Date.now }
+	date_joined: { type: Date, default: Date.now },
+	date_active: { type: Date, default: Date.now }
 
 }, {
 	toObject: { virtuals: true },
@@ -29,11 +30,15 @@ UserSchema.virtual('url').get(function () {
 });
 
 UserSchema.virtual('tag').get(function () {
-	return this._id.toString().substring(0, 7);
+	return this.hash.substring(0, 7);
 });
 
 UserSchema.virtual('date_joined_formated').get(function () {
-	return moment(this.date_joined).format('LLL');
+	return moment(this.date_joined).format('l');
+});
+
+UserSchema.virtual('date_active_formated').get(function () {
+	return moment(this.date_joined).format('l');
 });
 
 module.exports = mongoose.model('User', UserSchema);
