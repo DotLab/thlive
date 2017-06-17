@@ -4,25 +4,72 @@ var User = require('../models/user');
 var Image = require('../models/image');
 var Comment = require('../models/comment');
 
+var promiseHelper = require('./helpers/promiseHelper');
+
 exports.list = function (req, res, next) {
-	User.find().sort(req.query.sort || '-requtation').populate('avatar').exec().then(docs => {
+	var day = 1000 * 60 * 60 * 24;
+	var now = Date.now();
+	var week = new Date(now - day * 7), 
+		month = new Date(now - day * 30), 
+		quarter = new Date(now - day * 90), 
+		year = new Date(now - day * 360);
+
+	var q = User.find();
+
+	if (!req.query.range || req.query.range == 'week')
+		q = q.find({ date_joined: { $gt: week } });
+	else if (req.query.range == 'month')
+		q = q.find({ date_joined: { $gt: month } });
+	else if (req.query.range == 'quarter')
+		q = q.find({ date_joined: { $gt: quarter } });
+	else if (req.query.range == 'year')
+		q = q.find({ date_joined: { $gt: year } });
+
+	if (!req.query.sort || req.query.sort == 'requtation')
+		q = q.sort('-requtation');
+	else if (req.query.sort == 'new')
+		q = q.sort('-date_joined');
+	else if (req.query.sort == 'vote')
+		q = q.sort('-count_vote');
+	else if (req.query.sort == 'edit')
+		q = q.sort('-count_edit');
+
+	q.populate('avatar').exec().then(docs => {
 		res.render('user/list', {
 			title: 'Users',
 			section: 'users',
 
-			users: docs,
-			sort: req.query.sort
+			users: docs
 		});
 	}).catch(err => next(err));
 };
 
-exports.register_form = function (req, res, next) {
-	res.render('user/register', { 
-		title: 'Join THLIVE'
+exports.detail = function (req, res, next) {
+	var pm = {
+		user: User.findById(req.params.id).populate('avatar'),
+		comments: Comment.find({ topic: req.params.id }).sort('date').populate('user')
+	};
+
+	promiseHelper.mapAll(pm).then(map => {
+		res.render('user/detail', {
+			title: map.user.name,
+			section: 'users',
+
+			user: map.user,
+			isSelf: (req.session && req.session.user && req.session.user._id == map.user._id),
+			comments: map.comments
+		});
+	}).catch(err => next(err));
+};
+
+exports.signup_form = function (req, res, next) {
+	res.render('user/signup', { 
+		title: 'Join THLIVE',
+		section: 'users'
 	});
 };
 
-exports.register = function (req, res, next) {
+exports.signup = function (req, res, next) {
 	req.checkBody('name', 'Empty user name').notEmpty();
 	req.checkBody('email', 'Invalid email').isEmail();
 	req.checkBody('password', 'Empty password').notEmpty();
@@ -41,7 +88,7 @@ exports.register = function (req, res, next) {
 		errs.push({ msg: 'Password should have a length bigger than 6' });
 
 	if (errs.length > 0) {
-		return res.render('user/register', {
+		return res.render('user/signup', {
 			title: 'Join THLIVE',
 			errors: errs
 		});
@@ -64,7 +111,7 @@ exports.register = function (req, res, next) {
 	}).then(user => {
 		res.redirect(user.url_detail);
 	}).catch(err => {
-		res.render('user/register', {
+		res.render('user/signup', {
 			title: 'Join THLIVE',
 			error: err
 		});
@@ -73,7 +120,8 @@ exports.register = function (req, res, next) {
 
 exports.login_form = function (req, res, next) {
 	res.render('user/login', { 
-		title: 'Login THLIVE'
+		title: 'Login THLIVE',
+		section: 'users'
 	});
 };
 
@@ -115,19 +163,3 @@ exports.logout = function (req, res, next) {
 		return res.redirect('back');
 	});
 }
-
-exports.detail = function (req, res, next) {
-	var ps = [
-		User.findById(req.params.id),
-		Comment.find({ topic: req.params.id }).sort('date').populate('user')
-	];
-
-	Promise.all(ps).then(function (results) {
-		res.render('user/detail', {
-			title: 'User: ' + results[0].name,
-			user: results[0],
-			isSelf: (req.session && req.session.user && req.session.user._id == results[0]._id),
-			comments: results[1]
-		});
-	}).catch(err => next(err));
-};

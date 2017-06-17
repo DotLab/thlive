@@ -36,3 +36,23 @@ pre {
 .yellow { background: yellow; }
 
 .origin { transform-origin: 0 0 }
+
+.tiny { font-size: 60% }
+
+.h7 { font-size: 0.75rem }
+
+.line-1 { line-height: 1 }
+
+.border-between > [class*='col-']:before {
+	background: #e3e3e3;
+	bottom: 0;
+	content: " ";
+	left: 0;
+	position: absolute;
+	width: 1px;
+	top: 0;
+}
+
+.border-between > [class*='col-']:first-child:before {
+	display: none;
+}

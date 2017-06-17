@@ -21,10 +21,16 @@ mixin navbar(section, mortal)
 						a.nav-item.nav-link(href='/groups', class=section=='groups'&&'active') Group
 						a.nav-item.nav-link(href='/agencies', class=section=='agencies'&&'active') Agency
 
-			button.navbar-toggler.navbar-toggler-right(type='button', data-toggle='collapse', data-target='#navbar')
+			button.navbar-toggler.navbar-toggler-right(data-toggle='collapse', data-target='#navbar')
 				span.navbar-toggler-icon
 					
 			if mortal
-				a.navbar-text(href=mortal.url_detail) #{mortal.name}
+				a.navbar-text.hidden-sm-down(href=mortal.url_detail) #{mortal.name}
 			else
-				a.btn.btn-sm.btn-outline-success(href='/users/login') Login
+				a.btn.btn-sm.btn-outline-success.hidden-sm-down(href='/users/login') Login
+
+mixin nav_user_detail(user, tab)
+	nav.nav.nav-tabs.small
+		a.nav-item.nav-link(href=user.url, class=tab=='profile'&&'active') Profile
+		a.nav-item.nav-link(href=user.url+'/activity', class=tab=='activity'&&'active') Activity
+		a.nav-item.nav-link(href=user.url+'/settings', class=tab=='settings'&&'active') Settings

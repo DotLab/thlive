@@ -6,29 +6,21 @@ block main
 	br
 
 	div.container
-		h2.h5.abs.font-weight-normal Users
+		h2.h5.abs.font-weight-normal.hidden-sm-down Users
 		nav.nav.nav-tabs.justify-content-end.small
-			a.nav-item.nav-link(href='?sort=-reputation', class=(!query.sort||query.sort=='-reputation')&&'active') reputation
-			a.nav-item.nav-link(href='?sort=-date_joined', class=(query.sort=='-date_joined')&&'active') new users
-			a.nav-item.nav-link(href='?sort=-vote', class=(query.sort=='-vote')&&'active') voters
-			a.nav-item.nav-link(href='?sort=-edit', class=(query.sort=='-edit')&&'active') editors
-			a.nav-item.nav-link(href='?sort=date_joined', class=(query.sort=='date_joined')&&'active') modulators
-
-		-
-			var day = 1000 * 60 * 60 * 24;
-			var today = new Date();
-			var week = new Date(today - day * 7), 
-				month = new Date(today - day * 30), 
-				quarter = new Date(today - day * 90), 
-				year = new Date(today - day * 360);
+			a.nav-item.nav-link(href='?sort=reputation', class=(!query.sort||query.sort=='reputation')&&'active') reputation
+			a.nav-item.nav-link.hidden-sm-down(href='?sort=new', class=(query.sort=='new')&&'active') new users
+			a.nav-item.nav-link(href='?sort=vote', class=(query.sort=='vote')&&'active') voters
+			a.nav-item.nav-link(href='?sort=edit', class=(query.sort=='edit')&&'active') editors
+			a.nav-item.nav-link.hidden-sm-down(href='?sort=modulator', class=(query.sort=='modulator')&&'active') modulators
 
 		div.row.mt-3.align-items-center
-			div.col
+			div.col-sm-6
 				div.form-inline
 					div.input-group.input-group-sm
 						div.input-group-addon Find
 						input.form-control(type='text')
-			div.col
+			div.col-sm-6.hidden-sm-down
 				nav.nav.nav-pills.justify-content-end.small
 					a.nav-item.nav-link(href='?sort='+query.sort+'&range=week', class=(!query.range||query.range=='week')&&'active') week
 					a.nav-item.nav-link(href='?sort='+query.sort+'&range=month', class=(query.range=='month')&&'active') month

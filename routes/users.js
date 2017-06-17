@@ -5,8 +5,8 @@ var userController = require('../controllers/userController');
 
 router.get('/', userController.list);
 
-router.get('/register', userController.register_form);
-router.post('/register', userController.register);
+router.get('/signup', userController.signup_form);
+router.post('/signup', userController.signup);
 
 router.get('/login', userController.login_form);
 router.post('/login', userController.login);
