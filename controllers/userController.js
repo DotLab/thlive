@@ -44,20 +44,24 @@ exports.list = function (req, res, next) {
 	}).catch(err => next(err));
 };
 
-exports.detail = function (req, res, next) {
-	var pm = {
-		user: User.findById(req.params.id).populate('avatar'),
-		comments: Comment.find({ topic: req.params.id }).sort('date').populate('user')
-	};
-
-	promiseHelper.mapAll(pm).then(map => {
-		res.render('user/detail', {
-			title: map.user.name,
+exports.detail_profile = function (req, res, next) {
+	User.findById(req.params.id).populate('avatar').then(doc => {
+		res.render('user/detail_profile', {
+			title: doc.name,
 			section: 'users',
 
-			user: map.user,
-			isSelf: (req.session && req.session.user && req.session.user._id == map.user._id),
-			comments: map.comments
+			user: doc
+		});
+	}).catch(err => next(err));
+};
+
+exports.detail_activity = function (req, res, next) {
+	User.findById(req.params.id).populate('avatar').then(doc => {
+		res.render('user/detail_activity', {
+			title: doc.name,
+			section: 'users',
+
+			user: doc
 		});
 	}).catch(err => next(err));
 };

@@ -4,6 +4,9 @@
 	font-size: 12px;
 	font-weight: bold;
 	color: #535a60;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
 }
 
 .ubadge-gold {
@@ -27,6 +30,12 @@
 	border-radius: 4px; 
 }
 
+.ubadge-block {
+	color: #fff;
+	background: #2f3337;
+	border-radius: 4px; 
+}
+
 .ubadge-coin {
 	width: 8px; height: 8px; 
 	border-radius: 50%; 
@@ -43,4 +52,10 @@
 
 .ubadge-coin-brozen {
 	background: #D1A684;
+}
+
+.ucard {
+	background: #fafafb;
+	border: 1px solid #e0e0e0;
+	padding: 20px;
 }

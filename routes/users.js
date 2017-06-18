@@ -13,6 +13,8 @@ router.post('/login', userController.login);
 
 router.get('/logout', userController.logout);
 
-router.get('/:id', userController.detail);
+router.get('/:id', userController.detail_profile);
+
+router.get('/:id/activity', userController.detail_activity);
 
 module.exports = router;
