@@ -1,4 +1,5 @@
 var hasher = require('pbkdf2-password')();
+var recaptcha = require('express-recaptcha');
 
 var User = require('../models/user');
 var Image = require('../models/image');
@@ -69,7 +70,8 @@ exports.detail_activity = function (req, res, next) {
 exports.signup_form = function (req, res, next) {
 	res.render('user/signup', { 
 		title: 'Join THLIVE',
-		section: 'users'
+		section: 'users',
+		recaptcha: recaptcha.render()
 	});
 };
 
@@ -125,7 +127,8 @@ exports.signup = function (req, res, next) {
 exports.login_form = function (req, res, next) {
 	res.render('user/login', { 
 		title: 'Login THLIVE',
-		section: 'users'
+		section: 'users',
+		recaptcha: recaptcha.render()
 	});
 };
 
