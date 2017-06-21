@@ -9,6 +9,12 @@
 	text-overflow: ellipsis;
 }
 
+.text-ellip {
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+
 .ubadge-gold {
 	background: #fff8e2; 
 	border-color: #ece3c8;

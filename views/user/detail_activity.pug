@@ -6,7 +6,7 @@ block main
 	br
 
 	div.container
-		h1.abs.w-100.px-5.pt-1.h4.text-right.hidden-sm-down Jon Skeet
+		h1.abs.pt-1.h4.hidden-sm-down(style='right: 0') Jon Skeet
 		+nav_user_detail(user, 'activity')
 
 		div.row
@@ -38,6 +38,7 @@ block main
 												datasets: [{
 													data: [102945, 193355, 245321, 353724],
 													borderColor: '#5fba7d',
+													backgroundColor: '#5fba7d',
 													fill: false
 												}],
 												labels: ['2014', '2015', '2016', '2017']
@@ -131,57 +132,160 @@ block main
 		br
 
 		div.row
-			div.col-sm-6
-				div.d-flex
-					h4 #[a.h3(href='') Answers] #[small.text-muted (234,324,323)]
-					nav.nav.nav-pills.small.ml-auto
+			div.col-md-6.mb-4
+				div.d-flex.align-items-center
+					h4.h6 #[a(href='') Answers] #[small.text-muted (234,324,323)]
+					nav.nav.nav-pills.tiny.ml-auto.my-0.hidden-sm-down
 						a.nav-item.nav-link.active(href='') votes
 						a.nav-item.nav-link(href='') activity
 						a.nav-item.nav-link(href='') newest
-				hr
-				table.table-sm.small
+				hr.my-3
+				table.table-sm.mb-2.w-100
 					tr
-						td.text-center #[span.badge.badge-success(style='font-size: 0.75rem') 4325]
-						td #[a(href='') Why is subtracking these two times giving a strange result?]
+						td.text-center(style='width: 20px') #[span.badge.badge-success.font-weight-normal.p-1(style='font-size: 0.9rem') 4325]
+						td.text-ellip(style='max-width: 0') #[a(href='') Why is subtracting these two times (in 1927) giving a strange result?]
 					tr
-						td.text-center #[span.badge.badge-success(style='font-size: 0.75rem') 4325]
-						td #[a(href='') Why is subtracking these two times giving a strange result?]
+						td.text-center(style='width: 20px') #[span.badge.badge-success.font-weight-normal.p-1(style='font-size: 0.9rem') 4325]
+						td.text-ellip(style='max-width: 0') #[a(href='') Why is char preferred over String for passwords?]
 					tr
-						td.text-center #[span.badge.badge-success(style='font-size: 0.75rem') 4325]
-						td #[a(href='') Why is subtracking these two times giving a strange result?]
+						td.text-center(style='width: 20px') #[span.badge.badge-success.font-weight-normal.p-1(style='font-size: 0.9rem') 4325]
+						td.text-ellip(style='max-width: 0') #[a(href='') What is the difference between String and string in C#?]
 					tr
-						td.text-center #[span.badge.badge-success(style='font-size: 0.75rem') 4325]
-						td #[a(href='') Why is subtracking these two times giving a strange result?]
+						td.text-center(style='width: 20px') #[span.badge.badge-success.font-weight-normal.p-1(style='font-size: 0.9rem') 4325]
+						td.text-ellip(style='max-width: 0') #[a(href='') How do I call one constructor from another in Java?]
 					tr
-						td.text-center #[span.badge.badge-success(style='font-size: 0.75rem') 4325]
-						td #[a(href='') Why is subtracking these two times giving a strange result?]
-				br
-				a(href='') View more →
+						td.text-center(style='width: 20px') #[span.badge.badge-success.font-weight-normal.p-1(style='font-size: 0.9rem') 4325]
+						td.text-ellip(style='max-width: 0') #[a(href='') What are the correct version numbers for C#?]
+				a.small(href='') View more →
 
-			div.col-sm-6
-				div.d-flex
-					h4 #[a.h3(href='') Reputation] #[small.text-muted (234,324,323)]
-					span.small.ml-auto
+			div.col-md-6.mb-4
+				div.d-flex.align-items-center
+					h4.h6 #[a(href='') Reputation] #[small.text-muted (234,324,323)]
+					span.small.ml-auto.hidden-sm-down
 						a.active(href='') top #[strong 0.01%] overall
-				hr
-				table.table-sm.small
-					tr
-						td(colspan=2)
-							canvas#rep_stick_graph
-					tr
-						td.text-center #[span.badge.badge-success(style='font-size: 0.75rem') +324]
-						td #[a(href='') Why is subtracking these two times giving a strange result?]
-					tr
-						td.text-center #[span.badge.badge-success(style='font-size: 0.75rem') +324]
-						td #[a(href='') Why is subtracking these two times giving a strange result?]
-					tr
-						td.text-center #[span.badge.badge-success(style='font-size: 0.75rem') +324]
-						td #[a(href='') Why is subtracking these two times giving a strange result?]
-					tr
-						td.text-center #[span.badge.badge-success(style='font-size: 0.75rem') +324]
-						td #[a(href='') Why is subtracking these two times giving a strange result?]
-				br
-				a(href='') View more →
+				hr.mt-3.mb-2
+				div(style='position: relative; height: 40px; width: 100%')
+					canvas#rep_stick_graph
+				script.
+					var ctx = document.getElementById('rep_stick_graph').getContext('2d');
+					Chart.defaults.global.defaultFontSize = 10;
+					var myChart = new Chart(ctx, {
+						type: 'bar',
+						data: {
+							datasets: [{
+								data: [102945, 193355, 245321, 353724],
+								borderColor: '#5fba7d',
+								backgroundColor: '#5fba7d',
+								fill: false
+							}],
+							labels: ['2014', '2015', '2016', '2017']
+						},
+						options: {
+							responsive: true,
+							maintainAspectRatio: false,
 
+							legend: { display: false },
+							scales: {
+								yAxes: [{ display: false }],
+								xAxes: [{ ticks: { display: false } }]
+							},
+							elements: {
+								point: { radius: 0 }
+							},
+						}
+					});
+				table.table-sm.mb-2.w-100
+					tr
+						td.text-center(style='width: 20px') #[span.badge.badge-success.font-weight-normal.p-1(style='font-size: 0.9rem') +234]
+						td.text-ellip(style='max-width: 0') #[a(href='') Why is subtracting these two times (in 1927) giving a strange result?]
+					tr
+						td.text-center(style='width: 20px') #[span.badge.badge-success.font-weight-normal.p-1(style='font-size: 0.9rem') +234]
+						td.text-ellip(style='max-width: 0') #[a(href='') Why is subtracting these two times (in 1927) giving a strange result?]
+					tr
+						td.text-center(style='width: 20px') #[span.badge.badge-success.font-weight-normal.p-1(style='font-size: 0.9rem') +234]
+						td.text-ellip(style='max-width: 0') #[a(href='') Why is subtracting these two times (in 1927) giving a strange result?]
+					tr
+						td.text-center(style='width: 20px') #[span.badge.badge-success.font-weight-normal.p-1(style='font-size: 0.9rem') +234]
+						td.text-ellip(style='max-width: 0') #[a(href='') Why is subtracting these two times (in 1927) giving a strange result?]
+				a.small(href='') View more →
 
+		br
+
+		div.row
+			div.col-md-6.mb-4
+				div.d-flex.align-items-center
+					h4.h6 #[a(href='') Questions] #[small.text-muted (234,324,323)]
+					nav.nav.nav-pills.tiny.ml-auto.my-0.hidden-sm-down
+						a.nav-item.nav-link.active(href='') votes
+						a.nav-item.nav-link(href='') activity
+						a.nav-item.nav-link(href='') newest
+				hr.my-3
+				table.table-sm.mb-2.w-100
+					tr
+						td.text-center(style='width: 20px') #[span.badge.badge-success.font-weight-normal.p-1(style='font-size: 0.9rem') 4325]
+						td.text-ellip(style='max-width: 0') #[a(href='') Why is subtracting these two times (in 1927) giving a strange result?]
+					tr
+						td.text-center(style='width: 20px') #[span.badge.badge-success.font-weight-normal.p-1(style='font-size: 0.9rem') 4325]
+						td.text-ellip(style='max-width: 0') #[a(href='') Why is char preferred over String for passwords?]
+					tr
+						td.text-center(style='width: 20px') #[span.badge.badge-success.font-weight-normal.p-1(style='font-size: 0.9rem') 4325]
+						td.text-ellip(style='max-width: 0') #[a(href='') What is the difference between String and string in C#?]
+					tr
+						td.text-center(style='width: 20px') #[span.badge.badge-success.font-weight-normal.p-1(style='font-size: 0.9rem') 4325]
+						td.text-ellip(style='max-width: 0') #[a(href='') How do I call one constructor from another in Java?]
+					tr
+						td.text-center(style='width: 20px') #[span.badge.badge-success.font-weight-normal.p-1(style='font-size: 0.9rem') 4325]
+						td.text-ellip(style='max-width: 0') #[a(href='') What are the correct version numbers for C#?]
+				a.small(href='') View more →
+
+			div.col-md-6.mb-4
+				div.d-flex.align-items-center
+					h4.h6 #[a(href='') Tags] #[small.text-muted (234,324,323)]
+					span.small.ml-auto.hidden-sm-down
+						a.active(href='') top #[strong 0.01%] overall
+				hr.mt-3.mb-2
+				div(style='position: relative; height: 40px; width: 100%')
+					canvas#rep_stick_graph
+				script.
+					var ctx = document.getElementById('rep_stick_graph').getContext('2d');
+					Chart.defaults.global.defaultFontSize = 10;
+					var myChart = new Chart(ctx, {
+						type: 'bar',
+						data: {
+							datasets: [{
+								data: [102945, 193355, 245321, 353724],
+								borderColor: '#5fba7d',
+								backgroundColor: '#5fba7d',
+								fill: false
+							}],
+							labels: ['2014', '2015', '2016', '2017']
+						},
+						options: {
+							responsive: true,
+							maintainAspectRatio: false,
+
+							legend: { display: false },
+							scales: {
+								yAxes: [{ display: false }],
+								xAxes: [{ ticks: { display: false } }]
+							},
+							elements: {
+								point: { radius: 0 }
+							},
+						}
+					});
+				table.table-sm.mb-2.w-100
+					tr
+						td.text-center(style='width: 20px') #[span.badge.badge-success.font-weight-normal.p-1(style='font-size: 0.9rem') +234]
+						td.text-ellip(style='max-width: 0') #[a(href='') Why is subtracting these two times (in 1927) giving a strange result?]
+					tr
+						td.text-center(style='width: 20px') #[span.badge.badge-success.font-weight-normal.p-1(style='font-size: 0.9rem') +234]
+						td.text-ellip(style='max-width: 0') #[a(href='') Why is subtracting these two times (in 1927) giving a strange result?]
+					tr
+						td.text-center(style='width: 20px') #[span.badge.badge-success.font-weight-normal.p-1(style='font-size: 0.9rem') +234]
+						td.text-ellip(style='max-width: 0') #[a(href='') Why is subtracting these two times (in 1927) giving a strange result?]
+					tr
+						td.text-center(style='width: 20px') #[span.badge.badge-success.font-weight-normal.p-1(style='font-size: 0.9rem') +234]
+						td.text-ellip(style='max-width: 0') #[a(href='') Why is subtracting these two times (in 1927) giving a strange result?]
+				a.small(href='') View more →
 	link(rel='stylesheet', href='/css/user.css')
