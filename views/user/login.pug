@@ -1,6 +1,7 @@
 extends ../base
 
 include ../mixin/user
+include ../mixin/alert
 
 block main
 	br
@@ -19,15 +20,16 @@ block main
 				div.card
 					br
 					div.card-block.mx-1
-						form
+						form(method='post')
 							div.form-group
 								label Email
 								input.form-control(type='email', placeholder='reimuhakurei@gia.com' name='email' value=body.email)
 							div.form-group
 								label Password
 								input.form-control(type='password', placeholder='*********' name='password' value=body.password)
-							div.float-left!= recaptcha
+							div.float-left.mb-4!= recaptcha
 							button.btn.btn-primary.float-right(type='submit') Log in
+						+error_alerts(true, false)
 
 				br
 				div.card.text-center

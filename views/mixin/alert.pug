@@ -1,0 +1,48 @@
+mixin alert_success(title, message)
+	div.alert.alert-success
+		span.glyphicon.glyphicon-flag
+		if title
+			|	#[strong #{title}:] #{message}
+		else
+			|	#{message}
+
+mixin alert_info(title, message)
+	div.alert.alert-info
+		span.glyphicon.glyphicon-education
+		if title
+			|	#[strong #{title}:] #{message}
+		else
+			|	#{message}
+
+mixin alert_warning(title, message)
+	div.alert.alert-warning
+		span.glyphicon.glyphicon-alert
+		if title
+			|	#[strong #{title}:] #{message}
+		else
+			|	#{message}
+
+mixin alert_danger(title, message)
+	div.alert.alert-danger
+		span.glyphicon.glyphicon-exclamation-sign
+		if title
+			|	#[strong #{title}:] #{message}
+		else
+			|	#{message}
+
+//- errors ---------------------------------------------------------------------------
+mixin error_alert(error)
+	if error
+		+alert_danger(error.name, error.message)
+
+mixin error_alerts(hr_top, hr_bottom)
+	if error || errors
+		if hr_top
+			hr
+		div.error_alerts
+			+error_alert(error)
+			if errors
+				for error in errors
+					+error_alert(error)
+		if hr_bottom
+			hr

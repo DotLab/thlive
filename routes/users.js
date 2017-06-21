@@ -13,8 +13,7 @@ router.post('/login', userController.login);
 
 router.get('/logout', userController.logout);
 
-router.get('/:id', userController.detail_profile);
-
-router.get('/:id/activity', userController.detail_activity);
+router.get('/:id(/^[a-f\d]{24}$/i)', userController.detail_profile);
+router.get('/:id(/^[a-f\d]{24}$/i)/activity', userController.detail_activity);
 
 module.exports = router;

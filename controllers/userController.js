@@ -167,6 +167,6 @@ exports.login = function (req, res, next) {
 // will be re-created next request
 exports.logout = function (req, res, next) {
 	req.session.destroy(function () {
-		return res.redirect('back');
+		return res.redirect('/');
 	});
 }
