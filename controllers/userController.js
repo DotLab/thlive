@@ -45,9 +45,9 @@ exports.list = function (req, res, next) {
 	}).catch(err => next(err));
 };
 
-exports.detail_profile = function (req, res, next) {
+exports.detail = function (req, res, next) {
 	User.findById(req.params.id).populate('avatar').then(doc => {
-		res.render('user/detail_profile', {
+		res.render('user/detail', {
 			title: doc.name,
 			section: 'users',
 

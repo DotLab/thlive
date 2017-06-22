@@ -14,12 +14,12 @@ mixin navbar(section, mortal)
 						
 						a.nav-item.nav-link(href='/albums', class=section=='albums'&&'active') Album
 						a.nav-item.nav-link(href='/songs', class=section=='songs'&&'active') Song
-						a.nav-item.nav-link(href='/clips', class=section=='clips'&&'active') Clip
+						a.nav-item.nav-link.hidden-md-down(href='/clips', class=section=='clips'&&'active') Clip
 						
 						a.nav-item.nav-link(href='/characters', class=section=='characters'&&'active') Characters
 						a.nav-item.nav-link(href='/cards', class=section=='cards'&&'active') Cards
-						a.nav-item.nav-link(href='/groups', class=section=='groups'&&'active') Group
-						a.nav-item.nav-link(href='/agencies', class=section=='agencies'&&'active') Agency
+						a.nav-item.nav-link.hidden-md-down(href='/groups', class=section=='groups'&&'active') Group
+						a.nav-item.nav-link.hidden-md-down(href='/agencies', class=section=='agencies'&&'active') Agency
 
 			button.navbar-toggler.navbar-toggler-right(data-toggle='collapse', data-target='#navbar')
 				span.navbar-toggler-icon

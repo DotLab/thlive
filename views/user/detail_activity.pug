@@ -244,48 +244,243 @@ block main
 					span.small.ml-auto.hidden-sm-down
 						a.active(href='') top #[strong 0.01%] overall
 				hr.mt-3.mb-2
-				div(style='position: relative; height: 40px; width: 100%')
-					canvas#rep_stick_graph
-				script.
-					var ctx = document.getElementById('rep_stick_graph').getContext('2d');
-					Chart.defaults.global.defaultFontSize = 10;
-					var myChart = new Chart(ctx, {
-						type: 'bar',
-						data: {
-							datasets: [{
-								data: [102945, 193355, 245321, 353724],
-								borderColor: '#5fba7d',
-								backgroundColor: '#5fba7d',
-								fill: false
-							}],
-							labels: ['2014', '2015', '2016', '2017']
-						},
-						options: {
-							responsive: true,
-							maintainAspectRatio: false,
+				div.row
+					div.col-sm-6
+						table.table-sm.small(style='line-height: 2')
+							tr
+								td.text-muted.text-right 189k
+								td
+									span.py-1.px-2(style='font-size: 12px; color: #39739d; background: #E1ECF4') c#
+									span.pl-2 ×
+									span.pl-2 18521
+							tr
+								td.text-muted.text-right 89k
+								td
+									span.py-1.px-2(style='font-size: 12px; color: #39739d; background: #E1ECF4') java
+									span.pl-2 ×
+									span.pl-2 18521
+							tr
+								td.text-muted.text-right 69k
+								td
+									span.py-1.px-2(style='font-size: 12px; color: #39739d; background: #E1ECF4') .net
+									span.pl-2 ×
+									span.pl-2 18521
+							tr
+								td.text-muted.text-right 14k
+								td
+									span.py-1.px-2(style='font-size: 12px; color: #39739d; background: #E1ECF4') string
+									span.pl-2 ×
+									span.pl-2 18521
+							tr
+								td.text-muted.text-right 14k
+								td
+									span.py-1.px-2(style='font-size: 12px; color: #39739d; background: #E1ECF4') string
+									span.pl-2 ×
+									span.pl-2 18521
+					div.col-sm-6.hidden-xs-down
+						table.table-sm.small(style='line-height: 2')
+							tr
+								td.text-muted.text-right 189k
+								td
+									span.py-1.px-2(style='font-size: 12px; color: #39739d; background: #E1ECF4') c#
+									span.pl-2 ×
+									span.pl-2 18521
+							tr
+								td.text-muted.text-right 89k
+								td
+									span.py-1.px-2(style='font-size: 12px; color: #39739d; background: #E1ECF4') java
+									span.pl-2 ×
+									span.pl-2 18521
+							tr
+								td.text-muted.text-right 69k
+								td
+									span.py-1.px-2(style='font-size: 12px; color: #39739d; background: #E1ECF4') .net
+									span.pl-2 ×
+									span.pl-2 18521
+							tr
+								td.text-muted.text-right 14k
+								td
+									span.py-1.px-2(style='font-size: 12px; color: #39739d; background: #E1ECF4') string
+									span.pl-2 ×
+									span.pl-2 18521
+							tr
+								td.text-muted.text-right 14k
+								td
+									span.py-1.px-2(style='font-size: 12px; color: #39739d; background: #E1ECF4') string
+									span.pl-2 ×
+									span.pl-2 18521
+				a.small(href='') View more →
+		br
+		div.row
+			div.col-md-6.mb-4
+				div.d-flex.align-items-center
+					h4.h6 #[a(href='') Accounts] #[small.text-muted (234,324,323)]
+				hr.my-3
+				table.table-sm.small.mb-2.w-100
+					tr
+						td #[i.fa.fa-stack-overflow]
+						td.h6.font-weight-normal #[a(href='') Stack Overflow]
+						td #[strong 234,532] rep
+						td.font-weight-bold.text-muted #[span.ubadge-coin.ubadge-coin-gold] 564 #[span.ubadge-coin.ubadge-coin-silver] 564 #[span.ubadge-coin.ubadge-coin-brozen] 564
+					tr
+						td #[i.fa.fa-stack-overflow]
+						td.h6.font-weight-normal #[a(href='') Stack Overflow]
+						td #[strong 234,532] rep
+						td.font-weight-bold.text-muted #[span.ubadge-coin.ubadge-coin-gold] 564 #[span.ubadge-coin.ubadge-coin-silver] 564 #[span.ubadge-coin.ubadge-coin-brozen] 564
+					tr
+						td #[i.fa.fa-stack-overflow]
+						td.h6.font-weight-normal #[a(href='') Stack Overflow]
+						td #[strong 234,532] rep
+						td.font-weight-bold.text-muted #[span.ubadge-coin.ubadge-coin-gold] 564 #[span.ubadge-coin.ubadge-coin-silver] 564 #[span.ubadge-coin.ubadge-coin-brozen] 564
+					tr
+						td #[i.fa.fa-stack-overflow]
+						td.h6.font-weight-normal #[a(href='') Stack Overflow]
+						td #[strong 234,532] rep
+						td.font-weight-bold.text-muted #[span.ubadge-coin.ubadge-coin-gold] 564 #[span.ubadge-coin.ubadge-coin-silver] 564 #[span.ubadge-coin.ubadge-coin-brozen] 564
+					tr
+						td #[i.fa.fa-stack-overflow]
+						td.h6.font-weight-normal #[a(href='') Stack Overflow]
+						td #[strong 234,532] rep
+						td.font-weight-bold.text-muted #[span.ubadge-coin.ubadge-coin-gold] 564 #[span.ubadge-coin.ubadge-coin-silver] 564 #[span.ubadge-coin.ubadge-coin-brozen] 564
+				a.small(href='') View more →
 
-							legend: { display: false },
-							scales: {
-								yAxes: [{ display: false }],
-								xAxes: [{ ticks: { display: false } }]
-							},
-							elements: {
-								point: { radius: 0 }
-							},
-						}
-					});
+			div.col-md-6.mb-4
+				div.d-flex.align-items-center
+					h4.h6 #[a(href='') Badges] #[small.text-muted (234,324,323)]
+					nav.nav.nav-pills.tiny.ml-auto.my-0.hidden-sm-down
+						a.nav-item.nav-link.active(href='') recent
+						a.nav-item.nav-link(href='') class
+						a.nav-item.nav-link(href='') name
+				hr.mt-3.mb-2
+				div.row
+					div.col-sm-6
+						table.table-sm.small(style='line-height: 2')
+							tr
+								td
+									span.ubadge.ubadge-block.py-1.px-2.text-center
+										span.ubadge-coin.ubadge-coin-silver
+										|	Guru
+									span.pl-2 ×
+									span.pl-2 18521
+							tr
+								td
+									span.ubadge.ubadge-block.py-1.px-2.text-center
+										span.ubadge-coin.ubadge-coin-silver
+										|	Guru
+									span.pl-2 ×
+									span.pl-2 18521
+							tr
+								td
+									span.ubadge.ubadge-block.py-1.px-2.text-center
+										span.ubadge-coin.ubadge-coin-silver
+										|	Guru
+									span.pl-2 ×
+									span.pl-2 18521
+							tr
+								td
+									span.ubadge.ubadge-block.py-1.px-2.text-center
+										span.ubadge-coin.ubadge-coin-silver
+										|	Guru
+									span.pl-2 ×
+									span.pl-2 18521
+							tr
+								td
+									span.ubadge.ubadge-block.py-1.px-2.text-center
+										span.ubadge-coin.ubadge-coin-silver
+										|	Guru
+									span.pl-2 ×
+									span.pl-2 18521
+					div.col-sm-6.hidden-xs-down
+						table.table-sm.small(style='line-height: 2')
+							tr
+								td
+									span.ubadge.ubadge-block.py-1.px-2.text-center
+										span.ubadge-coin.ubadge-coin-silver
+										|	Guru
+									span.pl-2 ×
+									span.pl-2 18521
+							tr
+								td
+									span.ubadge.ubadge-block.py-1.px-2.text-center
+										span.ubadge-coin.ubadge-coin-silver
+										|	Guru
+									span.pl-2 ×
+									span.pl-2 18521
+							tr
+								td
+									span.ubadge.ubadge-block.py-1.px-2.text-center
+										span.ubadge-coin.ubadge-coin-silver
+										|	Guru
+									span.pl-2 ×
+									span.pl-2 18521
+							tr
+								td
+									span.ubadge.ubadge-block.py-1.px-2.text-center
+										span.ubadge-coin.ubadge-coin-silver
+										|	Guru
+									span.pl-2 ×
+									span.pl-2 18521
+							tr
+								td
+									span.ubadge.ubadge-block.py-1.px-2.text-center
+										span.ubadge-coin.ubadge-coin-silver
+										|	Guru
+									span.pl-2 ×
+									span.pl-2 18521
+				a.small(href='') View more →
+		br
+		div.row
+			div.col-md-6.mb-4
+				div.d-flex.align-items-center
+					h4.h6 #[a(href='') Bounties] #[small.text-muted (234,324,323)]
+					nav.nav.nav-pills.tiny.ml-auto.my-0.hidden-sm-down
+						a.nav-item.nav-link.active(href='') active
+						a.nav-item.nav-link(href='') offered
+						a.nav-item.nav-link(href='') earned
+				hr.my-3
 				table.table-sm.mb-2.w-100
 					tr
-						td.text-center(style='width: 20px') #[span.badge.badge-success.font-weight-normal.p-1(style='font-size: 0.9rem') +234]
+						td.text-center(style='width: 20px') #[span.badge.badge-success.font-weight-normal.p-1(style='font-size: 0.75rem; background: #0077dd') +234]
 						td.text-ellip(style='max-width: 0') #[a(href='') Why is subtracting these two times (in 1927) giving a strange result?]
 					tr
-						td.text-center(style='width: 20px') #[span.badge.badge-success.font-weight-normal.p-1(style='font-size: 0.9rem') +234]
+						td.text-center(style='width: 20px') #[span.badge.badge-success.font-weight-normal.p-1(style='font-size: 0.75rem; background: #0077dd') +234]
 						td.text-ellip(style='max-width: 0') #[a(href='') Why is subtracting these two times (in 1927) giving a strange result?]
 					tr
-						td.text-center(style='width: 20px') #[span.badge.badge-success.font-weight-normal.p-1(style='font-size: 0.9rem') +234]
+						td.text-center(style='width: 20px') #[span.badge.badge-success.font-weight-normal.p-1(style='font-size: 0.75rem; background: #0077dd') +234]
 						td.text-ellip(style='max-width: 0') #[a(href='') Why is subtracting these two times (in 1927) giving a strange result?]
 					tr
-						td.text-center(style='width: 20px') #[span.badge.badge-success.font-weight-normal.p-1(style='font-size: 0.9rem') +234]
+						td.text-center(style='width: 20px') #[span.badge.badge-success.font-weight-normal.p-1(style='font-size: 0.75rem; background: #0077dd') +234]
+						td.text-ellip(style='max-width: 0') #[a(href='') Why is subtracting these two times (in 1927) giving a strange result?]
+					tr
+						td.text-center(style='width: 20px') #[span.badge.badge-success.font-weight-normal.p-1(style='font-size: 0.75rem; background: #0077dd') +234]
 						td.text-ellip(style='max-width: 0') #[a(href='') Why is subtracting these two times (in 1927) giving a strange result?]
 				a.small(href='') View more →
+
+			div.col-md-6.mb-4
+				div.d-flex.align-items-center
+					h4.h6 #[a(href='') Votes Cast] #[small.text-muted (234,324,323)]
+				hr.mt-3.mb-2
+				table.table-sm.w-100
+					tr
+						td.text-right all time
+						td
+						td.text-right by type
+						td
+						td.hidden-xs-down month
+						td.hidden-xs-down week
+						td.hidden-xs-down day
+					tr
+						td.font-weight-bold.text-muted.text-right 13,532
+						td.tiny up
+						td.font-weight-bold.text-muted.text-right 5,324
+						td.tiny question
+						td.hidden-xs-down.font-weight-bold.text-muted 34
+						td.hidden-xs-down.font-weight-bold.text-muted 12
+						td.hidden-xs-down.font-weight-bold.text-muted 2
+					tr
+						td.font-weight-bold.text-muted.text-right 13,532
+						td.tiny down
+						td.font-weight-bold.text-muted.text-right 5,324
+						td.tiny answer
+
 	link(rel='stylesheet', href='/css/user.css')
