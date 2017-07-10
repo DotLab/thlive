@@ -27,7 +27,8 @@ var ImageSchema = new Schema({
 });
 
 ImageSchema.virtual('title').get(function () {
-	return this.keywords.join(' ');
+	if (this.keywords)
+		return this.keywords.join(' ');
 }).set(function (v) {
 	this.keywords = v.split(/[\-\－\—\_\ \　\(\)\（\）\.]+/).filter(function (item, pos, self) { 
 		return item && self.indexOf(item) == pos; 

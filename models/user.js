@@ -5,10 +5,11 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var UserSchema = new Schema({
-	name: { type: String, required: true, index: true, unique: true, trim: true, match: /^[^ ]{1,20}$/ },
+	name: { type: String, required: true, index: 'text', unique: true, trim: true, match: /^[^ ]{1,20}$/ },
 	email: { type: String, required: true, index: true, unique: true, trim: true, match: /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/ },
 
 	title: { type: String, default: '' },
+	location: { type: String, default: '' },
 	markdown: { type: String, default: '' },
 
 	salt: { type: String, required: true },
@@ -22,6 +23,10 @@ var UserSchema = new Schema({
 	vote: { type: Number, default: 0 },
 	edit: { type: Number, default: 0 },
 
+	badge_gold: { type: Number, default: 0 },
+	badge_silver: { type: Number, default: 0 },
+	badge_brozen: { type: Number, default: 0 },
+
 	date_joined: { type: Date, default: Date.now },
 	date_active: { type: Date, default: Date.now }
 }, {
@@ -34,19 +39,20 @@ UserSchema.virtual('url').get(function () {
 });
 
 UserSchema.virtual('html').get(function () {
-	return marked(this.markdown);
-});
-
-UserSchema.virtual('tag').get(function () {
-	return this.hash.substring(0, 7);
+	if (this.markdown)
+		return marked(this.markdown);
 });
 
 UserSchema.virtual('date_joined_formated').get(function () {
-	return moment(this.date_joined).format('l');
+	return moment(this.date_joined).format('ll');
 });
 
 UserSchema.virtual('date_active_formated').get(function () {
-	return moment(this.date_joined).format('l');
+	return moment(this.date_joined).format('ll');
+});
+
+UserSchema.virtual('country_and_region').get(function () {
+	return this.region + ', ' + this.country;
 });
 
 module.exports = mongoose.model('User', UserSchema);

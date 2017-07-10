@@ -25,7 +25,7 @@ mixin navbar(section, mortal)
 				span.navbar-toggler-icon
 					
 			if mortal
-				a.navbar-text.hidden-sm-down(href=mortal.url_detail) #{mortal.name}
+				a.navbar-text.hidden-sm-down(href='') #{mortal.name}
 			else
 				a.btn.btn-sm.btn-outline-success.hidden-sm-down(href='/users/login') Login
 
