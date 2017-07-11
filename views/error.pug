@@ -1,8 +1,7 @@
 extends ./base
 
 block main
-	br
 	div.container
-		h1 #{error.name} #[small.text-muted #{error.message}]
+		h1.my-4 #{error.name} #[small.text-muted #{error.message}]
 		
-		pre= error.stack
+		pre.rounded.p-3= error.stack

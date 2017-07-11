@@ -1,25 +1,19 @@
 extends ../base
 
-include ../mixin/user
 include ../mixin/alert
 
 block main
-	br
-
-	div.container
+	div.pt-4.container
 		nav.nav.nav-tabs.small
 			a.nav-item.nav-link.active(href='login') Log in
 			a.nav-item.nav-link(href='signup') Sign up
 
-		br
-		h3.h4.font-weight-normal.text-center For the community. By the community.
-		br
+		h3.my-4.h4.font-weight-normal.text-center For the community. By the community.
 
 		div.row.justify-content-md-center
 			div.col-md-6
 				div.card
-					br
-					div.card-block.mx-1
+					div.card-block.mx-1.my-4
 						form(method='post')
 							div.form-group
 								label Email
@@ -27,12 +21,11 @@ block main
 							div.form-group
 								label Password
 								input.form-control(type='password', placeholder='*********' name='password' value=body.password)
-							div.float-left.mb-2!= recaptcha
-							button.btn.btn-primary.float-right(type='submit') Log in
-						+error_alerts(true, false)
+							button.btn.btn-primary(type='submit') Log in
 
-				br
-				div.card.text-center
+						+alert_errors(true, false)
+
+				div.mt-4.card.text-center
 					div.card-block
 						p.mb-0 Don't have an account? #[a(href='signup') Sign up]
-						p.mb-0 Forget your password? #[a(href='signup') Recover]
+						p.mb-0 Forget your password? #[strong Contact Kailang!]

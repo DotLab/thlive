@@ -1,9 +1,0 @@
-extends ../layout
-
-include ../mixins
-
-block content
-  h1 #{artist.name} #[small #{artist.homepage}]
-  p Please, reference by #[strong #{artist._id}]
-
-  +commenting(artist._id)

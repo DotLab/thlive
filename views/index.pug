@@ -6,15 +6,11 @@ block main
 			h1.display-3 Touhou! Live!
 			p.lead The Holy Place for music lovers like you and me.
 
-	div.container
-		br
-
+	div.pt-4.container
 		h2.h1.text-center.font-weight-normal Build your own card.
 		p.lead.text-center Choose from lots of carefully crafted cards edited and reviewed by the community. 
-		
-		br
 
-		div.row
+		div.py-4.row
 			div.col-sm-6.mb-4
 				h2.h4.font-weight-normal Upload images
 				p Register an artist from Pixiv, DeviantArt, Weibo, or anywhere and upload his or her images to use their works in your cards. You may need their approvals to share their arts here, though.
@@ -25,50 +21,38 @@ block main
 				img.img-fluid.rounded(src='/img/index/card.png')
 				button.btn.btn-outline-info.mt-3 Create card
 
-		br
-		div.row
-			div.col-2
-				hr
+		p #[strong Just want to play?] We are on Android, iOS, Windows, and Linux!
+		button.btn.btn-outline-warning Download game
 
-		div.row
-			div.col
-				p #[strong Just want to play?] We are on Android, iOS, Windows, and Linux!
-				button.btn.btn-outline-warning Download game
-
-		br
-		hr
-		br
+		hr.my-4
 
 		h2.h1.text-center.font-weight-normal We love Touhou Project.
 		p.lead.text-center Welcome to the club! Take your time.
 
-		br
-
-		div.row
+		div.py-4.row
 			div.col-sm-4.mb-4
-				div.text-center
+				div.text-center.mb-4
 					img.img-fluid(src='/img/index/char-1.png')
-				br
 				h3.h4.font-weight-normal All Touhou characters registered
 				p We compiled the data for all the Touhou characters ever existed for you.
 			div.col-sm-4.mb-4
-				div.text-center
+				div.text-center.mb-4
 					img.img-fluid(src='/img/index/char-2.png')
-				br
 				h3.h4.font-weight-normal Grils. Live. Gensokyo.
 				p We are dedicated to bring you the most canon Touhou-style light stores.
 			div.col-sm-4.mb-4
-				div.text-center
+				div.text-center.mb-4
 					img.img-fluid(src='/img/index/char-3.png')
-				br
 				h3.h4.font-weight-normal We play Touhou
-				p We update the library constantly, following the newest game without any delay.
+				p I don't even know what I am talking about now.
 
-		div.row
-			div.col-2
-				hr
+		p #[strong Want to add anything?] Come and edit the information, as everyone is welcomed!
+		button.btn.btn-outline-danger View characters
 
-		div.row
-			div.col
-				p #[strong Want to add anything?] Come and edit the information, as everyone is welcomed!
-				button.btn.btn-outline-danger View characters
+	br
+
+	div.jumbotron.jumbotron-fluid.text-muted.mb-0
+		div.container
+			p Designed and built with all the love in the world by #[a(href='users/Kailang') @Kailang].
+				br
+				|	Currently a1.0.0. Code licensed #[strong MIT], docs #[strong CC BY 3.0].

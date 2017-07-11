@@ -7,30 +7,20 @@ mixin navbar(section, mortal)
 				
 				div#navbar.collapse.navbar-collapse
 					div.navbar-nav
-						a.nav-item.nav-link(href='/users', class=section=='users'&&'active') Users
-
 						a.nav-item.nav-link(href='/artists', class=section=='artists'&&'active') Artists
 						a.nav-item.nav-link(href='/images', class=section=='images'&&'active') Images
 						
 						a.nav-item.nav-link(href='/albums', class=section=='albums'&&'active') Album
 						a.nav-item.nav-link(href='/songs', class=section=='songs'&&'active') Song
-						a.nav-item.nav-link.hidden-md-down(href='/clips', class=section=='clips'&&'active') Clip
+						a.nav-item.nav-link(href='/clips', class=section=='clips'&&'active') Clip
 						
 						a.nav-item.nav-link(href='/characters', class=section=='characters'&&'active') Characters
 						a.nav-item.nav-link(href='/cards', class=section=='cards'&&'active') Cards
-						a.nav-item.nav-link.hidden-md-down(href='/groups', class=section=='groups'&&'active') Group
-						a.nav-item.nav-link.hidden-md-down(href='/agencies', class=section=='agencies'&&'active') Agency
 
 			button.navbar-toggler.navbar-toggler-right(data-toggle='collapse', data-target='#navbar')
 				span.navbar-toggler-icon
 					
 			if mortal
-				a.navbar-text.hidden-sm-down(href='') #{mortal.name}
+				a.navbar-text.hidden-sm-down(href='/users/logout') #{mortal.name}
 			else
 				a.btn.btn-sm.btn-outline-success.hidden-sm-down(href='/users/login') Login
-
-mixin nav_user_detail(user, tab)
-	nav.nav.nav-tabs.small
-		a.nav-item.nav-link(href=user.url, class=tab=='profile'&&'active') Profile
-		a.nav-item.nav-link(href=user.url+'/activity', class=tab=='activity'&&'active') Activity
-		a.nav-item.nav-link(href=user.url+'/settings', class=tab=='settings'&&'active') Settings

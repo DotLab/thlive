@@ -1,5 +1,4 @@
 include ./mixin/nav
-include ./mixin/alert
 
 doctype html
 
@@ -10,27 +9,19 @@ html(lang='en')
 		meta(charset='utf-8')
 		meta(name='viewport', content='width=device-width, initial-scale=1, shrink-to-fit=no')
 
-		link(rel='stylesheet', href='/css/lib/bootstrap.min.css')
-		link(rel='stylesheet', href='/css/lib/font-awesome.min.css')
+		link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css')
 		link(rel='stylesheet', href='/css/base.css')
 
-		block include
+		block head
 
 	body
 		+navbar(section, mortal)
 
 		block main
 
-		br
+		script(src='https://use.fontawesome.com/feea410c25.js')
+		script(src='https://code.jquery.com/jquery-3.2.1.min.js')
+		script(src='https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js')
+		script(src='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js')
 
-		div.jumbotron.jumbotron-fluid.text-muted.mb-0
-			div.container
-				p Designed and built with all the love in the world by #[a(href='users/Kailang') @Kailang].
-					br
-					|	Currently a1.0.0. Code licensed #[strong MIT], docs #[strong CC BY 3.0].
-
-		script(src='/js/lib/jquery.min.js')
-		script(src='/js/lib/tether.min.js')
-		script(src='/js/lib/bootstrap.min.js')
-
-		block script
+		block foot

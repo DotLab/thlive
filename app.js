@@ -13,10 +13,6 @@ marked.setOptions({
 var moment = require('moment');
 moment.locale();
 
-// recaptcha ----------------------------------------------------------------------------------------------------
-var recaptcha = require('express-recaptcha');
-recaptcha.init('6LebOCYUAAAAAJ6YXpayO_wRj2o8GuFqtugiZbF7', '6LebOCYUAAAAAPCyJX0gdpWFqzJZ2fBIECMpAmyB');
-
 // mongoose ----------------------------------------------------------------------------------------------------
 var mongoose = require('mongoose');//.set('debug', true);
 mongoose.Promise = global.Promise;

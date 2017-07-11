@@ -29,30 +29,6 @@ var UserSchema = new Schema({
 
 	date_joined: { type: Date, default: Date.now },
 	date_active: { type: Date, default: Date.now }
-}, {
-	toObject: { virtuals: true },
-	toJSON: { virtuals: true }
-});
-
-UserSchema.virtual('url').get(function () {
-	return '/users/' + this._id;
-});
-
-UserSchema.virtual('html').get(function () {
-	if (this.markdown)
-		return marked(this.markdown);
-});
-
-UserSchema.virtual('date_joined_formated').get(function () {
-	return moment(this.date_joined).format('ll');
-});
-
-UserSchema.virtual('date_active_formated').get(function () {
-	return moment(this.date_joined).format('ll');
-});
-
-UserSchema.virtual('country_and_region').get(function () {
-	return this.region + ', ' + this.country;
 });
 
 module.exports = mongoose.model('User', UserSchema);
