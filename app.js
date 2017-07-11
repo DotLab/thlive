@@ -14,7 +14,7 @@ var moment = require('moment');
 moment.locale();
 
 // mongoose ----------------------------------------------------------------------------------------------------
-var mongoose = require('mongoose');//.set('debug', true);
+var mongoose = require('mongoose').set('debug', true);
 mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://localhost:27017/thlive');
 var db = mongoose.connection;
@@ -75,6 +75,8 @@ app.use(function (req, res, next) {
 
 	res.locals.body = req.body;
 	res.locals.query = req.query;
+
+	res.locals.marked = marked;
 
 	next();
 });

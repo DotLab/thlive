@@ -8,7 +8,7 @@ exports.signup_form = function (req, res, next) {
 	if (req.session.user)
 		return res.redirect('/');
 
-	res.render('user/signup', { 
+	res.render('users/signup', { 
 		title: 'Join THLIVE',
 		section: 'users'
 	});
@@ -36,7 +36,7 @@ exports.signup = function (req, res, next) {
 		errs.push({ name: 'password', message: 'Password should have a length bigger than 6' });
 
 	if (errs.length > 0) {
-		return res.render('user/signup', {
+		return res.render('users/signup', {
 			title: 'Join THLIVE',
 			errors: errs
 		});
@@ -59,7 +59,7 @@ exports.signup = function (req, res, next) {
 	}).then(user => {
 		res.redirect('/');
 	}).catch(err => {
-		res.render('user/signup', {
+		res.render('users/signup', {
 			title: 'Join THLIVE',
 			error: err
 		});
@@ -70,7 +70,7 @@ exports.login_form = function (req, res, next) {
 	if (req.session.user)
 		return res.redirect('/');
 
-	res.render('user/login', { 
+	res.render('users/login', { 
 		title: 'Login THLIVE',
 		section: 'users'
 	});
@@ -103,7 +103,7 @@ exports.login = function (req, res, next) {
 			res.redirect('/');
 		});
 	}).catch(err => {
-		res.render('user/login', {
+		res.render('users/login', {
 			title: 'Login THLIVE',
 			error: err
 		});

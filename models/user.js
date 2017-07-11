@@ -20,8 +20,8 @@ var UserSchema = new Schema({
 	reputation: { type: Number, default: 0 },
 	modulator: { type: Boolean, default: false },
 
-	vote: { type: Number, default: 0 },
-	edit: { type: Number, default: 0 },
+	count_votes: { type: Number, default: 0 },
+	count_edits: { type: Number, default: 0 },
 
 	badge_gold: { type: Number, default: 0 },
 	badge_silver: { type: Number, default: 0 },

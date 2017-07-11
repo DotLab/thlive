@@ -9,6 +9,8 @@ html(lang='en')
 		meta(charset='utf-8')
 		meta(name='viewport', content='width=device-width, initial-scale=1, shrink-to-fit=no')
 
+		script(src='https://use.fontawesome.com/feea410c25.js')
+
 		link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css')
 		link(rel='stylesheet', href='/css/base.css')
 
@@ -19,9 +21,14 @@ html(lang='en')
 
 		block main
 
-		script(src='https://use.fontawesome.com/feea410c25.js')
 		script(src='https://code.jquery.com/jquery-3.2.1.min.js')
 		script(src='https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js')
 		script(src='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js')
+
+		script(src='https://cdnjs.cloudflare.com/ajax/libs/jsrender/1.0.0-rc.70/jsrender.min.js')
+		script(src='https://cdnjs.cloudflare.com/ajax/libs/jquery.lazyload/1.9.1/jquery.lazyload.min.js')
+
+		script.
+			$('img.lazy').lazyload();
 
 		block foot
