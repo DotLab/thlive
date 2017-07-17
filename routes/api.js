@@ -27,7 +27,6 @@ var genericApi = function (model) {
 };
 
 router.get('/artists', genericApi(Artist));
-router.get('/images', genericApi(Image));
 
 router.get('/artists/list', function (req, res, next) {
 	var q = Artist.find().populate('avatar');
@@ -81,5 +80,47 @@ router.get('/artists/list', function (req, res, next) {
 		res.send(r);
 	}).catch(err => next(err));
 });
+
+router.get('/images', genericApi(Image));
+
+router.get('/images/keywords', function (req, res, next) {
+	var q = Image.find(req.query.query, 'keywords');
+
+	if (req.query.skip)
+		q.skip(parseInt(req.query.skip));
+
+	if (req.query.limit)
+		q.limit(parseInt(req.query.limit));
+
+	if (req.query.sort)
+		q.sort(req.query.sort);
+
+	q.then(docs => {
+		var dic = {};
+		for (var i = 0; i < docs.length; i++) {
+			for (var j = 0; j < docs[i].keywords.length; j++) {
+				var word = docs[i].keywords[j].trim();
+				if (dic[word] == undefined) {
+					dic[word] = 1;
+				} else {
+					dic[word]++;
+				}
+			}
+		}
+
+		var sortable = [];
+		for (var word in dic) {
+			sortable.push({ name: word, count: dic[word] });
+		}
+
+		sortable.sort(function (a, b) {
+			return b.count - a.count;
+		});
+
+		res.send(sortable);
+	}).catch(err => next(err));
+});
+
+
 
 module.exports = router;

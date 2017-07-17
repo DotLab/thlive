@@ -2,6 +2,6 @@ extends ./base
 
 block main
 	div.container
-		h1.my-4 #{error.name} #[small.text-muted #{error.message}]
+		h1.my-4 #{error.name} #[small.text-muted.text-ellip #{error.message}]
 		
-		pre.rounded.p-3= error.stack
+		pre.rounded.px-3.py-2= error.stack
