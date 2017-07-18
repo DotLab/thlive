@@ -40,7 +40,9 @@ var compression = require('compression');
 app.use(compression()); // GZIP all assets
 
 // static ----------------------------------------------------------------------------------------------------
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'public'), {
+	// maxAge: '1d'
+}));
 
 // fileupload ----------------------------------------------------------------------------------------------------
 var fileupload = require('express-fileupload');

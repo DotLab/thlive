@@ -40,7 +40,8 @@ block main
 					if artist.avatar
 						img.card-img-top.w-100(src='/upload/images/' + artist.avatar.name_local)
 					div.card-block.p-2
-						h4.card-title.text-center= artist.name
+						h4.card-title.text-center
+							a(href='/artists/' + artist._id)= artist.name
 						p.card-text= artist.intro
 						a.btn.btn-primary.small(href='/artists/editor?target=' + artist._id) Edit Profile
 				div.card.mt-4
@@ -63,7 +64,7 @@ block main
 							//- span #[a(href='#') dlkfa #[span.count (123)]]
 							//- span #[a(href='#') dlkfa #[span.count (123)]]
 			div.col-md-9.mt-4
-				h2.h4 #{artist.name} #[small.text-muted.hidden-xs-down - #{artist.id}]'s Works
+				h2.h4 #{artist.name} #[small.text-muted.hidden-xs-down - #{artist._id}]'s Works
 					if (query.keywords)
 						span.badge.badge-primary.tiny.ml-2= query.keywords 
 					span#result_count.badge.badge-info.tiny.ml-2 #{artist.images} &infin; results
@@ -113,6 +114,10 @@ block foot
 		$tmpl_keywords = $.templates('#tmpl_keywords');
 		$cont_keywords = $('#cont_keywords');
 
+		$tmpl_images = $.templates('#tmpl_images');
+		$cont_images = $('#cont_images');
+		$result_count = $('#result_count');
+		
 		$(function () {
 			$.getJSON('/api/images/keywords', {
 				query: {
@@ -122,14 +127,7 @@ block foot
 				console.log(docs);
 				$($tmpl_keywords.render(docs)).appendTo($cont_keywords);
 			});
-		});
 
-
-		$tmpl_images = $.templates('#tmpl_images');
-		$cont_images = $('#cont_images');
-		$result_count = $('#result_count');
-
-		$(function () {
 			$.getJSON('/api/images', {
 				query: {
 					artist: '#{artist._id}',
