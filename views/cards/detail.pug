@@ -1,0 +1,13 @@
+extends ../base
+
+block main
+	div.container.mt-4
+		svg(style='max-width: 512px', version='1.1', baseProfile='full', viewBox='0 0 512 720', xmlns='http://www.w3.org/2000/svg', xmlns:xlink='http://www.w3.org/1999/xlink')
+			image(width='100%', height='100%', xlink:href='/img/card/card-canvas.png')
+
+			image.svg_background(width=card.background.width * (720.0 / card.background.height) * card.background_scale, height=720 * card.background_scale, transform=`translate(${card.background_x} ${card.background_y}) rotate(${card.background_rotation}) scale(${card.background_scale})`, xlink:href='/upload/images/' + card.background.name_local)
+			image.svg_portrait(width=card.portrait.width * (720.0 / card.portrait.height) * card.portrait_scale, height=720 * card.portrait_scale, transform=`translate(${card.portrait_x} ${card.portrait_y}) rotate(${card.portrait_rotation}) scale(${card.portrait_scale})`, xlink:href='/upload/images/' + card.portrait.name_local)
+		
+			image.svg_overlay(width='100%', height='100%', xlink:href=`/img/card/card-overlay-${card.rarity.toLowerCase()}-${card.attribute.toLowerCase()}.png`)
+
+			text.svg_title(x='-100', y='67', font-size='35', fill='white', text-anchor='end', transform='rotate(-90)')= card.character.name_en.toUpperCase()

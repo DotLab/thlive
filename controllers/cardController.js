@@ -173,3 +173,14 @@ exports.editor_post = function (req, res, next) {
 		});
 	});
 };
+
+exports.detail = function (req, res, next) {
+	Card.findById(req.params.id).populate('character portrait background portrait_idolized background_idolized').then(doc => {
+		res.render('cards/detail', { 
+			title: '', 
+			section: 'cards', 
+
+			card: doc
+		});
+	}).catch(err => next(err));
+};

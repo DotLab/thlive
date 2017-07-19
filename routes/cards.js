@@ -8,6 +8,6 @@ var cardController = require('../controllers/cardController');
 router.get('/editor', cardController.editor);
 router.post('/editor', cardController.editor_post);
 
-// router.get('/:id', cardController.detail);
+router.get('/:id', cardController.detail);
 
 module.exports = router;
