@@ -67,8 +67,11 @@ var onCharacterChange = function () {
 
 	deleteHelp($character_group);
 
-	if (!validator.isMongoId(id))
+	if (!validator.isMongoId(id)) {
+		$svg_title.text('');
+
 		return appendHelp('has-danger', $character_group, 'Invalide Character ID');
+	}
 
 	$.getJSON('/api/characters/' + id, function (doc) {
 		if (!doc._id)
@@ -118,18 +121,18 @@ var generateParameters = function () {
 	var rarity = $rarity.val();
 	var attribute = $attribute.val();
 
+	var gaussianRandom = function (start, end) {
+		var gaussianRand = function () {
+			var rand = 0;
+			for (var i = 0; i < 2; i++) rand += Math.random();
+			return rand / 2;
+		};
+
+		return Math.round(start + gaussianRand() * (end - start));
+	};
+
 	var generateParam = function ($init, $max, limits, match) {
 		var limit = match ? limits.matched : limits.normal;
-
-		var gaussianRandom = function (start, end) {
-			var gaussianRand = function () {
-				var rand = 0;
-				for (var i = 0; i < 2; i++) rand += Math.random();
-				return rand / 2;
-			};
-
-			return Math.round(start + gaussianRand() * (end - start));
-		};
 
 		$init.val(gaussianRandom(limit.init[0], limit.init[1]));
 		$max.val(gaussianRandom(limit.max[0], limit.max[1]));
@@ -184,14 +187,15 @@ var changeImage = function ($image, $image_group, $svg_image, isOptional) {
 
 	deleteHelp($image_group);
 
-	if (isOptional && id == '') {
-		appendHelp('has-warning', $image_group, 'No image assigned');
-
-		return $svg_image.attr({ 
+	if (id == '') {
+		$svg_image.attr({ 
 			'xlink:href': '',
 			width: 0,
 			height: 0
 		});
+
+		if (isOptional)
+			return appendHelp('has-warning', $image_group, 'No image assigned');
 	}
 
 	if (!validator.isMongoId(id))
@@ -242,7 +246,7 @@ $background = $('#background');
 $svg_background = $('.svg_background');
 
 var onBackgroundChange = function () {
-	changeImage($background, $background_group, $svg_background);
+	changeImage($background, $background_group, $svg_background, true);
 
 	onBackgroundTransformChange();
 };
@@ -254,7 +258,7 @@ $background_idolized = $('#background_idolized');
 $svg_background_idolized = $('.svg_background_idolized');
 
 var onIdolizedBackgroundChange = function () {
-	changeImage($background_idolized, $background_idolized_group, $svg_background_idolized);
+	changeImage($background_idolized, $background_idolized_group, $svg_background_idolized, true);
 
 	onIdolizedBackgroundTransformChange();
 };

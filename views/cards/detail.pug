@@ -2,7 +2,7 @@ extends ../base
 
 block main
 	div.container.mt-4
-		svg(style='max-width: 512px', version='1.1', baseProfile='full', viewBox='0 0 512 720', xmlns='http://www.w3.org/2000/svg', xmlns:xlink='http://www.w3.org/1999/xlink')
+		svg.shadow-card(style='max-width: 512px', version='1.1', baseProfile='full', viewBox='0 0 512 720', xmlns='http://www.w3.org/2000/svg', xmlns:xlink='http://www.w3.org/1999/xlink')
 			image(width='100%', height='100%', xlink:href='/img/card/card-canvas.png')
 
 			image.svg_background(width=card.background.width * (720.0 / card.background.height) * card.background_scale, height=720 * card.background_scale, transform=`translate(${card.background_x} ${card.background_y}) rotate(${card.background_rotation}) scale(${card.background_scale})`, xlink:href='/upload/images/' + card.background.name_local)
