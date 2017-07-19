@@ -3,8 +3,8 @@ extends ../base
 block main
 	div.pt-4.container
 		h2.h4 Artist Profile
-			if query.target
-				small.text-muted.ml-2 #[em for] #{query.target}
+			if query.for
+				small.text-muted.ml-2 #[em for] #{query.for}
 
 		hr
 
@@ -12,20 +12,20 @@ block main
 			div.row
 				div.col-md-3.mt-4
 					div.form-group
-						label.control-label Avatar
+						label Avatar
 						if artist.avatar
 							img.mb-3.img-thumbnail.d-block.mx-auto(src='/upload/images/' + artist.avatar.name_local)
 						input.form-control(type='text', name='avatar', value=artist.avatar?artist.avatar._id:'')
 
 				div.col-md-9.mt-4
 					div.form-group
-						label.control-label Name
+						label Name
 						input.form-control(type='text', name='name', value=artist.name)
 					div.form-group
-						label.control-label Homepage
+						label Homepage
 						input.form-control(type='text', name='homepage', value=artist.homepage)
 					div.form-group
-						label.control-label Introduction
+						label Introduction
 						textarea.form-control(name='intro')= artist.intro
 					button.btn.btn-success(type='submit') Post Profile
 

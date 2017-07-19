@@ -24,8 +24,8 @@ exports.detail = function (req, res, next) {
 };
 
 exports.editor = function (req, res, next) {
-	if (req.query.target) {
-		Artist.findById(req.query.target).populate('avatar').then(doc => {
+	if (req.query.for) {
+		Artist.findById(req.query.for).populate('avatar').then(doc => {
 			res.render('artists/editor', {
 				title: 'Edit Artist ' + doc.name,
 				section: 'artists',
@@ -44,8 +44,10 @@ exports.editor = function (req, res, next) {
 };
 
 exports.editor_post = function (req, res, next) {
-	if (req.query.target) {
-		Artist.findByIdAndUpdate(req.query.target, req.body).then(doc => {
+	if (!req.body.avatar) delete req.body.avatar;
+
+	if (req.query.for) {
+		Artist.findByIdAndUpdate(req.query.for, req.body).then(doc => {
 			res.redirect('/artists/' + doc._id);
 		}).catch(err => next(err));
 	} else {

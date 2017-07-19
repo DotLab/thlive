@@ -1,0 +1,306 @@
+extends ../base
+
+include ../mixin/alert
+
+block main
+	div.container.mt-4
+		form(method='post')
+			div.row
+				//- character --------------------------------------------------------------------------------------------------------------------
+				div.col-sm-6
+					div#character_group.form-group(oninput='onCharacterChange()')
+						label.form-control-label Character ID:
+						input#character.form-control(type='text', placeholder='59315799f1e2161c50218655', name='character', value=card.character)
+					div.form-group(oninput='onPropertyChange()')
+						label Rarity:
+						select#rarity.form-control(name='rarity')
+							option(value='N', selected=(card.rarity=='N')) N
+							option(value='R', selected=(card.rarity=='R')) R
+							option(value='SR', selected=(card.rarity=='SR')) SR
+							option(value='UR', selected=(card.rarity=='UR')) UR
+					div.form-group(oninput='onPropertyChange()')
+						label Attribute:
+						select#attribute.form-control(name='attribute')
+							option(value='Haru', selected=(card.attribute=='Haru')) 春
+							option(value='Rei', selected=(card.attribute=='Rei')) 灵
+							option(value='Ma', selected=(card.attribute=='Ma')) 魔
+					div.form-group
+						a.btn.btn-primary(href='javascript:generateParameters();') Generate Parameters
+						span.form-text.text-muted Generate normally-distributed random values based on Rarity and Attribute
+				//- parameters --------------------------------------------------------------------------------------------------------------------
+				div.col-sm-6(oninput='onParameterChange()')
+					div.row
+						div.col-sm-6
+							div#sp_init_group.form-group
+								label.form-control-label Initial SP:
+								input#sp_init.form-control(type='number', placeholder='1', name='sp_init', value=card.sp_init||'1', min='1', max='4')
+						div.col-sm-6
+							div#sp_max_group.form-group
+								label.form-control-label Max SP:
+								input#sp_max.form-control(type='number', placeholder='1', name='sp_max', value=card.sp_max||'1', min='1', max='4')
+					div.row
+						div.col-sm-6
+							div#haru_init_group.form-group
+								label.form-control-label Initial Haru:
+								input#haru_init.form-control(type='number', placeholder='200', name='haru_init', value=card.haru_init, min='200', max='3900')
+						div.col-sm-6
+							div#haru_max_group.form-group
+								label.form-control-label Max Haru:
+								input#haru_max.form-control(type='number', placeholder='400', name='haru_max', value=card.haru_max, min='400', max='5400')
+					div.row
+						div.col-sm-6
+							div#rei_init_group.form-group
+								label.form-control-label Initial Rei:
+								input#rei_init.form-control(type='number', placeholder='200', name='rei_init', value=card.rei_init, min='200', max='3900')
+						div.col-sm-6
+							div#rei_max_group.form-group
+								label.form-control-label Max Rei:
+								input#rei_max.form-control(type='number', placeholder='400', name='rei_max', value=card.rei_max, min='400', max='5400')
+					div.row
+						div.col-sm-6
+							div#ma_init_group.form-group
+								label.form-control-label Initial Ma:
+								input#ma_init.form-control(type='number', placeholder='200', name='ma_init', value=card.ma_init, min='200', max='3900')
+						div.col-sm-6
+							div#ma_max_group.form-group
+								label.form-control-label Max Ma:
+								input#ma_max.form-control(type='number', placeholder='400', name='ma_max', value=card.ma_max, min='400', max='5400')
+
+			hr
+
+			div.row
+				//- portrait --------------------------------------------------------------------------------------------------------------------
+				div.col-sm-6
+					label Portrait
+					div#portrait_group.form-group(oninput='onPortraitChange()')
+						label.form-control-label Image ID:
+						input#portrait.form-control(type='text', placeholder='59313f9bed9d871458b7a4ea', name='portrait', value=card.portrait)
+					div.row(oninput='onPortraitTransformChange()')
+						div.col-sm-6
+							div.form-group
+								label Position x:
+								input#portrait_x.form-control(type='number', placeholder='0', name='portrait_x', value=card.portrait_x||'0')
+						div.col-sm-6
+							div.form-group
+								label Position y:
+								input#portrait_y.form-control(type='number', placeholder='0', name='portrait_y', value=card.portrait_y||'0')
+					div.row(oninput='onPortraitTransformChange()')
+						div.col-sm-6
+							div.form-group
+								label Rotation:
+								input#portrait_rotation.form-control(type='number', placeholder='0', name='portrait_rotation', value=card.portrait_rotation||'0')
+						div.col-sm-6
+							div.form-group
+								label Scale:
+								input#portrait_scale.form-control(type='number', step='0.01', placeholder='1', name='portrait_scale', value=card.portrait_scale||'1')
+				//- background --------------------------------------------------------------------------------------------------------------------
+				div.col-sm-6
+					label Background
+					div#background_group.form-group(oninput='onBackgroundChange()')
+						label.form-control-label Image ID:
+						input#background.form-control(type='text', placeholder='59313f9bed9d871458b7a4ea', name='background', value=card.background)
+					div.row(oninput='onBackgroundTransformChange()')
+						div.col-sm-6
+							div.form-group
+								label Position x:
+								input#background_x.form-control(type='number', placeholder='0', name='background_x', value=card.background_x||'0')
+						div.col-sm-6
+							div.form-group
+								label Position y:
+								input#background_y.form-control(type='number', placeholder='0', name='background_y', value=card.background_y||'0')
+					div.row(oninput='onBackgroundTransformChange()')
+						div.col-sm-6
+							div.form-group
+								label Rotation:
+								input#background_rotation.form-control(type='number', placeholder='0', name='background_rotation', value=card.background_rotation||'0')
+						div.col-sm-6
+							div.form-group
+								label Scale:
+								input#background_scale.form-control(type='number', step='0.01', placeholder='1', name='background_scale', value=card.background_scale||'1')
+
+			hr
+
+			//- card --------------------------------------------------------------------------------------------------------------------
+			div.embed-responsive.shadow-card.size-card
+				svg.embed-responsive-item(version='1.1', baseProfile='full', width='512', height='720', viewBox='0 0 512 720', xmlns='http://www.w3.org/2000/svg', xmlns:xlink='http://www.w3.org/1999/xlink')
+					image(width='100%', height='100%', xlink:href='/img/card/card-canvas.png')
+
+					image.svg_background(width='512', height='512', transform='translate(0 0) rotate(0) scale(1)', xlink:href='/upload/images/1dc2f716c53ba43a043b529fa5dd8b881282d5d6.png')
+					image.svg_portrait(width='512', height='512', transform='translate(0 0) rotate(0) scale(1)', xlink:href='/upload/images/b89a592ddb787b57f146ece3d96fe1f1d3830d7a.png')
+				
+					image.svg_overlay(width='100%', height='100%', xlink:href='/img/card/card-overlay-n-haru.png')
+
+					text.svg_title(x='-100', y='67', font-size='35', fill='white', text-anchor='end', transform='rotate(-90)') XXX
+
+			hr
+
+			div.row
+				//- idolized portrait --------------------------------------------------------------------------------------------------------------------
+				div.col-sm-6
+					label Idolized Portrait
+					div#portrait_idolized_group.form-group(oninput='onIdolizedPortraitChange()')
+						label.form-control-label Image ID:
+						input#portrait_idolized.form-control(type='text', placeholder='59313f9bed9d871458b7a4ea', name='portrait_idolized', value=card.portrait_idolized)
+					div.row(oninput='onIdolizedPortraitTransformChange()')
+						div.col-sm-6
+							div.form-group
+								label Position x:
+								input#portrait_idolized_x.form-control(type='number', placeholder='0', name='portrait_idolized_x', value=card.portrait_idolized_x||'0')
+						div.col-sm-6
+							div.form-group
+								label Position y:
+								input#portrait_idolized_y.form-control(type='number', placeholder='0', name='portrait_idolized_y', value=card.portrait_idolized_y||'0')
+					div.row(oninput='onIdolizedPortraitTransformChange()')
+						div.col-sm-6
+							div.form-group
+								label Rotation:
+								input#portrait_idolized_rotation.form-control(type='number', placeholder='0', name='portrait_idolized_rotation', value=card.portrait_idolized_rotation||'0')
+						div.col-sm-6
+							div.form-group
+								label Scale:
+								input#portrait_idolized_scale.form-control(type='number', step='0.01', placeholder='1', name='portrait_idolized_scale', value=card.portrait_idolized_scale||'1')
+				//- idolized background --------------------------------------------------------------------------------------------------------------------
+				div.col-sm-6
+					label Idolized Background
+					div#background_idolized_group.form-group(oninput='onIdolizedBackgroundChange()')
+						label.form-control-label Image ID:
+						input#background_idolized.form-control(type='text', placeholder='59313f9bed9d871458b7a4ea', name='background_idolized', value=card.background_idolized)
+					div.row(oninput='onIdolizedBackgroundTransformChange()')
+						div.col-sm-6
+							div.form-group
+								label Position x:
+								input#background_idolized_x.form-control(type='number', placeholder='0', name='background_idolized_x', value=card.background_idolized_x||'0')
+						div.col-sm-6
+							div.form-group
+								label Position y:
+								input#background_idolized_y.form-control(type='number', placeholder='0', name='background_idolized_y', value=card.background_idolized_y||'0')
+					div.row(oninput='onIdolizedBackgroundTransformChange()')
+						div.col-sm-6
+							div.form-group
+								label Rotation:
+								input#background_idolized_rotation.form-control(type='number', placeholder='0', name='background_idolized_rotation', value=card.background_idolized_rotation||'0')
+						div.col-sm-6
+							div.form-group
+								label Scale:
+								input#background_idolized_scale.form-control(type='number', step='0.01', placeholder='1', name='background_idolized_scale', value=card.background_idolized_scale||'1')
+
+			hr
+
+			//- idolized card --------------------------------------------------------------------------------------------------------------------
+			div.embed-responsive.shadow-card.size-card
+				svg.embed-responsive-item(version='1.1', baseProfile='full', width='512', height='720', viewBox='0 0 512 720', xmlns='http://www.w3.org/2000/svg', xmlns:xlink='http://www.w3.org/1999/xlink')
+					image(width='100%', height='100%', xlink:href='/img/card/card-canvas.png')
+
+					image.svg_background_idolized(width='512', height='512', transform='translate(0 0) rotate(0) scale(1)', xlink:href='/upload/images/1dc2f716c53ba43a043b529fa5dd8b881282d5d6.png')
+					image.svg_portrait_idolized(width='512', height='512', transform='translate(0 0) rotate(0) scale(1)', xlink:href='/upload/images/b89a592ddb787b57f146ece3d96fe1f1d3830d7a.png')
+				
+					image.svg_overlay(width='100%', height='100%', xlink:href='/img/card/card-overlay-n-haru.png')
+
+					text.svg_title(x='-100', y='67', font-size='35', fill='white', text-anchor='end', transform='rotate(-90)') XXX
+
+			hr
+
+			div.row
+				//- icon --------------------------------------------------------------------------------------------------------------------
+				div.col-sm-6(oninput='onIconTransformChange()')
+					label Icon
+					div.row
+						div.col-sm-6
+							div.form-group
+								label Position x:
+								input#icon_x.form-control(type='number', placeholder='0', name='icon_x', value=card.icon_x||'0')
+						div.col-sm-6
+							div.form-group
+								label Position y:
+								input#icon_y.form-control(type='number', placeholder='0', name='icon_y', value=card.icon_y||'0')
+					div.row
+						div.col-sm-12
+							div.form-group
+								label Rotation:
+								input#icon_rotation.form-control(type='number', placeholder='0', name='icon_rotation', value=card.icon_rotation||'0')
+						div.col-sm-12
+							div.form-group
+								label Scale:
+								input#icon_scale.form-control(type='number', step='0.01', placeholder='1', name='icon_scale', value=card.icon_scale||'1')
+				//- idolized icon --------------------------------------------------------------------------------------------------------------------
+				div.col-sm-6(oninput='onIdolizedIconTransformChange()')
+					label Idolized Icon
+					div.row
+						div.col-sm-6
+							div.form-group
+								label Position x:
+								input#icon_idolized_x.form-control(type='number', placeholder='0', name='icon_idolized_x', value=card.icon_idolized_x||'0')
+						div.col-sm-6
+							div.form-group
+								label Position y:
+								input#icon_idolized_y.form-control(type='number', placeholder='0', name='icon_idolized_y', value=card.icon_idolized_y||'0')
+					div.row
+						div.col-sm-12
+							div.form-group
+								label Rotation:
+								input#icon_idolized_rotation.form-control(type='number', placeholder='0', name='icon_idolized_rotation', value=card.icon_idolized_rotation||'0')
+						div.col-sm-12
+							div.form-group
+								label Scale:
+								input#icon_idolized_scale.form-control(type='number', step='0.01', placeholder='1', name='icon_idolized_scale', value=card.icon_idolized_scale||'1')
+
+			hr
+
+			div.row
+				div.col-md-6
+					//- icon --------------------------------------------------------------------------------------------------------------------
+					div.embed-responsive.size-icon
+						svg.embed-responsive-item(version='1.1', baseProfile='full', width='256', height='256', viewBox='0 0 256 256', xmlns='http://www.w3.org/2000/svg', xmlns:xlink='http://www.w3.org/1999/xlink')
+							defs
+								clipPath#icon-clip
+									circle(cx='50%', cy='50%', r='120')
+
+							g(clip-path='url(#icon-clip)')
+								g.svg_icon(transform='translate(0 0) rotate(0) scale(0.5)')
+									svg(width='512', height='720', viewBox='0 0 512 720')
+										image(width='100%', height='100%', xlink:href='/img/card/card-canvas.png')
+
+										image.svg_background(width='512', height='512', transform='translate(0 0) rotate(0) scale(1)', xlink:href='/upload/images/1dc2f716c53ba43a043b529fa5dd8b881282d5d6.png')
+										image.svg_portrait(width='512', height='512', transform='translate(0 0) rotate(0) scale(1)', xlink:href='/upload/images/b89a592ddb787b57f146ece3d96fe1f1d3830d7a.png')
+								
+							image.svg_icon_overlay(width='100%', height='100%', xlink:href='/img/card/icon-overlay-n-haru.png')
+				div.col-md-6
+					//- idolized icon --------------------------------------------------------------------------------------------------------------------
+					div.embed-responsive.size-icon
+						svg.embed-responsive-item(version='1.1', baseProfile='full', width='256', height='256', viewBox='0 0 256 256', xmlns='http://www.w3.org/2000/svg', xmlns:xlink='http://www.w3.org/1999/xlink')
+							defs
+								clipPath#icon-clip
+									circle(cx='50%', cy='50%', r='120')
+
+							g(clip-path='url(#icon-clip)')
+								g.svg_icon_idolized(transform='translate(0 0) rotate(0) scale(0.5)')
+									svg(width='512', height='720', viewBox='0 0 512 720')
+										image(width='100%', height='100%', xlink:href='/img/card/card-canvas.png')
+
+										image.svg_background_idolized(width='512', height='512', transform='translate(0 0) rotate(0) scale(1)', xlink:href='/upload/images/1dc2f716c53ba43a043b529fa5dd8b881282d5d6.png')
+										image.svg_portrait_idolized(width='512', height='512', transform='translate(0 0) rotate(0) scale(1)', xlink:href='/upload/images/b89a592ddb787b57f146ece3d96fe1f1d3830d7a.png')
+								
+							image.svg_icon_overlay(width='100%', height='100%', xlink:href='/img/card/icon-overlay-n-haru.png')
+
+			hr
+
+			+error_alerts(false, true)
+
+			div.btn-toolbar
+				button.btn.btn-success(type='submit') Save
+				
+				if (query.for)
+					button.btn.btn-warning(type='submit', formaction='') Duplicate
+
+			ul.mt-2
+				li #[mark Boring] cards #[strong will not be accepted]
+				li Cards with #[mark wrong icon placement] #[strong will not be accepted]
+				li Cards with #[mark transparent background] #[strong will not be accepted]
+				li Cards with #[mark wrong character assignment] #[strong will not be accepted]
+				li #[mark Duplicated] cards, unless #[mark intentionally done], #[strong will not be accepted]
+				li Cards with #[mark same image for both non-idolized and idolized character] #[strong will not be accepted]
+
+block foot
+	script(src='https://cdnjs.cloudflare.com/ajax/libs/validator/8.0.0/validator.min.js')
+	
+	script(src='/js/card-editor.js')

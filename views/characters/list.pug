@@ -1,0 +1,17 @@
+extends ../base
+
+block head
+	script(src='https://use.fontawesome.com/feea410c25.js')
+
+block main
+	div.pt-4.container
+		a.btn.btn-primary.float-right.hidden-xs-down.small(href='/characters/editor') Add Character
+		
+		h2.h4 角色列表
+		p.text-muted 本列表收录全部在东方Project作品中出场过的角色（包含没有形象的、仅出现过一面的、路人等），如果发现缺漏请按照既有分类方式补充。
+
+		hr
+
+		ul.list-unstyled
+			for character in characters
+				li #[i.fa.fa-fw.fa-star-o] #[a(href='/characters/' + character._id)= character.name_zh] / #{character.name_jp} / #{character.name_en} #[span.text-muted - #{character._id}]

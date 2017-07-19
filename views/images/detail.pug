@@ -74,12 +74,12 @@ block main
 			div.col-md-3.mt-4
 				div.card
 					if artist.avatar
-						img.card-img-top.w-100(src='/upload/images/' + artist.avatar.name_local)
+						img.card-img-top.w-100.hidden-sm-down(src='/upload/images/' + artist.avatar.name_local)
 					div.card-block.p-2
 						h4.card-title.text-center
 							a(href='/artists/' + artist._id)= artist.name
 						p.card-text= artist.intro
-						a.btn.btn-primary.small(href='/artists/editor?target=' + artist._id) Edit Profile
+						a.btn.btn-primary.small(href='/artists/editor?for=' + artist._id) Edit Profile
 				div.card.mt-4
 					div.card-header.py-1.px-2.small Keywords
 					div.card-block.p-2

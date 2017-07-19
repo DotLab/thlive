@@ -27,11 +27,11 @@ mixin alert_danger(title, message)
 			|	#{message}
 
 //- errors ---------------------------------------------------------------------------
-mixin error_container(hr_top, hr_bottom)
+mixin error_alerts(hr_top, hr_bottom)
 	if error || errors
 		if hr_top
 			hr
-		div.error_container
+		div.error_alerts
 			if error
 				+alert_danger(error.name, error.message)
 			if errors
