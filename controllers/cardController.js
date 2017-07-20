@@ -37,7 +37,7 @@ var checkBodyParam = function (req, limits, match, attribute) {
 
 var checkCardEditorBody = function (req) {
 	req.checkBody('character', 'Invalid Character ID').isMongoId();
-	req.checkBody('rarity', 'Invalid Rarity').isIn([ 'N', 'R', 'SR', 'SSR' ]);
+	req.checkBody('rarity', 'Invalid Rarity').isIn([ 'N', 'R', 'SR', 'UR' ]);
 	req.checkBody('attribute', 'Invalid Attribute').isIn([ 'Haru', 'Rei', 'Ma' ]);
 
 	checkBodyParam(req, s.limits[req.body.rarity], req.body.attribute == 'Haru', 'haru');

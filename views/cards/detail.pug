@@ -199,36 +199,36 @@ block foot
 				image(width='100%', height='100%', xlink:href='/img/card/card-canvas.png')
 
 				image(
-					width='{{: background.width * (720.0 / background.height) * background_scale}}', 
-					height='{{: 720 * background_scale}}', 
+					width='{{: background.width * (720.0 / background.height)}}', 
+					height='720', 
 					transform='translate({{: background_x}} {{: background_y}}) rotate({{: background_rotation}}) scale({{: background_scale}})', 
 					xlink:href='/upload/images/{{: background.name_local}}')
 				image(
-					width='{{: portrait.width * (720.0 / portrait.height) * portrait_scale}}', 
-					height='{{: 720 * portrait_scale}}', 
+					width='{{: portrait.width * (720.0 / portrait.height)}}', 
+					height='720', 
 					transform='translate({{: portrait_x}} {{: portrait_y}}) rotate({{: portrait_rotation}}) scale({{: portrait_scale}})', 
 					xlink:href='/upload/images/{{: portrait.name_local}}')
 			
 				image(width='100%', height='100%', xlink:href='/img/card/card-overlay-{{: rarity.toLowerCase()}}-{{: attribute.toLowerCase()}}.png')
 
-				text(x='-100', y='67', font-size='35', fill='white', text-anchor='end', transform='rotate(-90)')= '{{: character.name_en.toUpperCase()}}'
+				text(x='-120', y='67', font-size='35', fill='white', text-anchor='end', transform='rotate(-90)')= '{{: character.name_en.toUpperCase()}}'
 			svg.w-50.p-0.m-0(version='1.1', baseProfile='full', viewBox='0 0 512 720', xmlns='http://www.w3.org/2000/svg', xmlns:xlink='http://www.w3.org/1999/xlink')
 				image(width='100%', height='100%', xlink:href='/img/card/card-canvas.png')
 
 				image(
-					width='{{: background_idolized.width * (720.0 / background_idolized.height) * background_idolized_scale}}', 
-					height='{{: 720 * background_idolized_scale}}', 
+					width='{{: background_idolized.width * (720.0 / background_idolized.height)}}', 
+					height='720', 
 					transform='translate({{: background_idolized_x}} {{: background_idolized_y}}) rotate({{: background_idolized_rotation}}) scale({{: background_idolized_scale}})', 
 					xlink:href='/upload/images/{{: background_idolized.name_local}}')
 				image(
-					width='{{: portrait_idolized.width * (720.0 / portrait_idolized.height) * portrait_idolized_scale}}', 
-					height='{{: 720 * portrait_idolized_scale}}', 
+					width='{{: portrait_idolized.width * (720.0 / portrait_idolized.height)}}', 
+					height='720', 
 					transform='translate({{: portrait_idolized_x}} {{: portrait_idolized_y}}) rotate({{: portrait_idolized_rotation}}) scale({{: portrait_idolized_scale}})', 
 					xlink:href='/upload/images/{{: portrait_idolized.name_local}}')
 			
-				image(width='100%', height='100%', xlink:href='/img/card/card-overlay-{{: rarity.toLowerCase()}}-{{: attribute.toLowerCase()}}.png')
+				image(width='100%', height='100%', xlink:href='/img/card/card-overlay-{{: rarity.toLowerCase()}}-{{: attribute.toLowerCase()}}-i.png')
 
-				text(x='-100', y='67', font-size='35', fill='white', text-anchor='end', transform='rotate(-90)')= '{{: character.name_en.toUpperCase()}}'
+				text(x='-120', y='67', font-size='35', fill='white', text-anchor='end', transform='rotate(-90)')= '{{: character.name_en.toUpperCase()}}'
 
 	script#tmpl_icon(type='text/x-jsrender')
 		svg.d-block.mx-auto(version='1.1', baseProfile='full', viewBox='0 0 256 256', xmlns='http://www.w3.org/2000/svg', xmlns:xlink='http://www.w3.org/1999/xlink')
@@ -242,13 +242,13 @@ block foot
 						image(width='100%', height='100%', xlink:href='/img/card/card-canvas.png')
 
 						image(
-							width='{{: background.width * (720.0 / background.height) * background_scale}}', 
-							height='{{: 720 * background_scale}}', 
+							width='{{: background.width * (720.0 / background.height)}}', 
+							height='720', 
 							transform='translate({{: background_x}} {{: background_y}}) rotate({{: background_rotation}}) scale({{: background_scale}})', 
 							xlink:href='/upload/images/{{: background.name_local}}')
 						image(
-							width='{{: portrait.width * (720.0 / portrait.height) * portrait_scale}}', 
-							height='{{: 720 * portrait_scale}}', 
+							width='{{: portrait.width * (720.0 / portrait.height)}}', 
+							height='720', 
 							transform='translate({{: portrait_x}} {{: portrait_y}}) rotate({{: portrait_rotation}}) scale({{: portrait_scale}})', 
 							xlink:href='/upload/images/{{: portrait.name_local}}')
 				
@@ -266,17 +266,17 @@ block foot
 						image(width='100%', height='100%', xlink:href='/img/card/card-canvas.png')
 
 						image(
-							width='{{: background_idolized.width * (720.0 / background_idolized.height) * background_idolized_scale}}', 
-							height='{{: 720 * background_idolized_scale}}', 
+							width='{{: background_idolized.width * (720.0 / background_idolized.height)}}', 
+							height='720', 
 							transform='translate({{: background_idolized_x}} {{: background_idolized_y}}) rotate({{: background_idolized_rotation}}) scale({{: background_idolized_scale}})', 
 							xlink:href='/upload/images/{{: background_idolized.name_local}}')
 						image(
-							width='{{: portrait_idolized.width * (720.0 / portrait_idolized.height) * portrait_idolized_scale}}', 
-							height='{{: 720 * portrait_idolized_scale}}', 
+							width='{{: portrait_idolized.width * (720.0 / portrait_idolized.height)}}', 
+							height='720', 
 							transform='translate({{: portrait_idolized_x}} {{: portrait_idolized_y}}) rotate({{: portrait_idolized_rotation}}) scale({{: portrait_idolized_scale}})', 
 							xlink:href='/upload/images/{{: portrait_idolized.name_local}}')
 				
-			image(width='100%', height='100%', xlink:href='/img/card/icon-overlay-{{: rarity.toLowerCase()}}-{{: attribute.toLowerCase()}}.png')
+			image(width='100%', height='100%', xlink:href='/img/card/icon-overlay-{{: rarity.toLowerCase()}}-{{: attribute.toLowerCase()}}-i.png')
 
 	script.
 		$tmpl_card_pair = $('#tmpl_card_pair');

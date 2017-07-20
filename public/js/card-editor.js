@@ -89,11 +89,15 @@ $rarity = $('#rarity');
 $attribute = $('#attribute');
 
 $svg_overlay = $('.svg_overlay');
+$svg_overlay_idolized = $('.svg_overlay_idolized');
 $svg_icon_overlay = $('.svg_icon_overlay');
+$svg_icon_overlay_idolized = $('.svg_icon_overlay_idolized');
 
 var onPropertyChange = function () {
 	$svg_overlay.attr('xlink:href', `/img/card/card-overlay-${$rarity.val().toLowerCase()}-${$attribute.val().toLowerCase()}.png`);
+	$svg_overlay_idolized.attr('xlink:href', `/img/card/card-overlay-${$rarity.val().toLowerCase()}-${$attribute.val().toLowerCase()}-i.png`);
 	$svg_icon_overlay.attr('xlink:href', `/img/card/icon-overlay-${$rarity.val().toLowerCase()}-${$attribute.val().toLowerCase()}.png`);
+	$svg_icon_overlay_idolized.attr('xlink:href', `/img/card/icon-overlay-${$rarity.val().toLowerCase()}-${$attribute.val().toLowerCase()}-i.png`);
 
 	onParameterChange();
 };

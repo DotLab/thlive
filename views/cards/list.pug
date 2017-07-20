@@ -62,7 +62,7 @@ block foot
 						
 							image(width='100%', height='100%', xlink:href='/img/card/card-overlay-{{: rarity.toLowerCase()}}-{{: attribute.toLowerCase()}}.png')
 
-							text(x='-100', y='67', font-size='35', fill='white', text-anchor='end', transform='rotate(-90)')= '{{: character.name_en.toUpperCase()}}'
+							text(x='-120', y='67', font-size='35', fill='white', text-anchor='end', transform='rotate(-90)')= '{{: character.name_en.toUpperCase()}}'
 						svg.w-50.p-0.m-0(version='1.1', baseProfile='full', viewBox='0 0 512 720', xmlns='http://www.w3.org/2000/svg', xmlns:xlink='http://www.w3.org/1999/xlink')
 							image(width='100%', height='100%', xlink:href='/img/card/card-canvas.png')
 
@@ -77,11 +77,13 @@ block foot
 								transform='translate({{: portrait_idolized_x}} {{: portrait_idolized_y}}) rotate({{: portrait_idolized_rotation}}) scale({{: portrait_idolized_scale}})', 
 								xlink:href='/upload/images/{{: portrait_idolized.name_local}}')
 						
-							image(width='100%', height='100%', xlink:href='/img/card/card-overlay-{{: rarity.toLowerCase()}}-{{: attribute.toLowerCase()}}.png')
+							image(width='100%', height='100%', xlink:href='/img/card/card-overlay-{{: rarity.toLowerCase()}}-{{: attribute.toLowerCase()}}-i.png')
 
-							text(x='-100', y='67', font-size='35', fill='white', text-anchor='end', transform='rotate(-90)')= '{{: character.name_en.toUpperCase()}}'
-				div.card-block.p-2
-					i.fa.fa-fw.fa-lg.fa-plus
+							text(x='-120', y='67', font-size='35', fill='white', text-anchor='end', transform='rotate(-90)')= '{{: character.name_en.toUpperCase()}}'
+				div.card-block.py-1.px-2.align-middle
+					small= 'by {{: editor.name}}'
+					span.float-right
+						small #[span.small VOTES] 0
 
 	script.
 		$tmpl_card = $('#tmpl_card');
@@ -89,7 +91,7 @@ block foot
 
 		$(function () {
 			$.getJSON('/api/cards', {
-				populate: 'character portrait background portrait_idolized background_idolized'
+				populate: 'character portrait background portrait_idolized background_idolized editor'
 			}).then(docs => {
 				console.log(docs);
 				$($tmpl_card.render(docs)).appendTo($cont_card);
