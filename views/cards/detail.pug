@@ -1,13 +1,377 @@
 extends ../base
 
+block head
+	style.
+		.text-haru, .panel-haru a {
+			color: #e6006f;
+		}
+
+		.text-rei, .panel-rei a {
+			color: #20ab53;
+		}
+
+		.text-ma, .panel-ma a {
+			color: #0098eb;
+		}
+
+
+		.panel-haru a:hover {
+			color: #80003e
+		}
+
+
+		.panel-rei a:hover {
+			color: #105529
+		}
+
+
+		.panel-ma a:hover {
+			color: #005685
+		}
+
+		.progress-bar {
+			transition: width 0.6s;
+			-webkit-transition: width 0.6s; 
+		}
+
+		.progress-bar-haru {
+			background-color: #e6006f;
+		}
+
+		.progress-bar-rei {
+			background-color: #20ab53;
+		}
+
+		.progress-bar-ma {
+			background-color: #0098eb;
+		}
+
+		.btn-haru {
+			color: #fff;
+			background-color: #ff66b0;
+			border-color: #ff4da3;
+		}
+
+		.btn-haru:hover, .btn-haru:active, .btn-haru.active {
+			color: #fff;
+			background-color: #ff3396;
+			border-color: #ff1083;
+		}
+
+		.btn-rei {
+			color: #fff;
+			background-color: #68e395;
+			border-color: #52df86;
+		}
+
+		.btn-rei:hover, .btn-rei:active, .btn-rei.active {
+			color: #fff;
+			background-color: #3ddb77;
+			border-color: #26cd64;
+		}
+
+		.btn-ma {
+			color: #fff;
+			background-color: #6bcbff;
+			border-color: #52c2ff;
+		}
+
+		.btn-ma:hover, .btn-ma:active, .btn-ma.active {
+			color: #fff;
+			background-color: #38b9ff;
+			border-color: #15acff;
+		}
+
+	script(src='https://use.fontawesome.com/feea410c25.js')
+
 block main
-	div.container.mt-4
-		svg.shadow-card(style='max-width: 512px', version='1.1', baseProfile='full', viewBox='0 0 512 720', xmlns='http://www.w3.org/2000/svg', xmlns:xlink='http://www.w3.org/1999/xlink')
-			image(width='100%', height='100%', xlink:href='/img/card/card-canvas.png')
+	-
+		var attr = card.attribute.toLowerCase();
 
-			image.svg_background(width=card.background.width * (720.0 / card.background.height) * card.background_scale, height=720 * card.background_scale, transform=`translate(${card.background_x} ${card.background_y}) rotate(${card.background_rotation}) scale(${card.background_scale})`, xlink:href='/upload/images/' + card.background.name_local)
-			image.svg_portrait(width=card.portrait.width * (720.0 / card.portrait.height) * card.portrait_scale, height=720 * card.portrait_scale, transform=`translate(${card.portrait_x} ${card.portrait_y}) rotate(${card.portrait_rotation}) scale(${card.portrait_scale})`, xlink:href='/upload/images/' + card.portrait.name_local)
-		
-			image.svg_overlay(width='100%', height='100%', xlink:href=`/img/card/card-overlay-${card.rarity.toLowerCase()}-${card.attribute.toLowerCase()}.png`)
+		var rarity = {
+			N: 'Normal',
+			R: 'Rare',
+			SR: 'Super Rare',
+			UR: 'Ultra Rare'
+		};
 
-			text.svg_title(x='-100', y='67', font-size='35', fill='white', text-anchor='end', transform='rotate(-90)')= card.character.name_en.toUpperCase()
+		var attribute = {
+			Haru: '春 Haru',
+			Rei: '灵 Rei',
+			Ma: '魔 Ma'
+		};
+
+	div.container-fluid.mt-3
+		div.row
+			div.col-lg-6
+				div#cont_card_pair.mb-4
+			div.col-lg-6
+				div.btn-group.btn-block(data-toggle='buttons')
+					label#level_0.btn.w-100.active.small(class='btn-' + attr) #[input(type='radio', name='level')] Level
+					label#level_1.btn.w-100.small(class='btn-' + attr) #[input(type='radio', name='level')] Level
+					label#level_2.btn.w-100.small(class='btn-' + attr) #[input(type='radio', name='level')] Level
+
+				div.row.no-gutters.align-items-center.mt-3
+					div.col-1
+						img.mr-2(src='/img/card/attr-haru.png', style='width: 20px')
+					div.col-11.pl-2
+						div.row
+							div#text_haru.col-sm-2.text-haru 4523
+							div.col-sm-10
+								div.progress
+									div#bar_haru.progress-bar.progress-bar-haru(style='width: 90%; height: 20px')
+
+				div.row.no-gutters.align-items-center.mt-3
+					div.col-1
+						img.mr-2(src='/img/card/attr-rei.png', style='width: 20px')
+					div.col-11.pl-2
+						div.row
+							div#text_rei.col-sm-2.text-rei 4523
+							div.col-sm-10
+								div.progress
+									div#bar_rei.progress-bar.progress-bar-rei(style='width: 90%; height: 20px')
+
+				div.row.no-gutters.align-items-center.mt-3
+					div.col-1
+						img.mr-2(src='/img/card/attr-ma.png', style='width: 20px')
+					div.col-11.pl-2
+						div.row
+							div#text_ma.col-sm-2.text-ma 4523
+							div.col-sm-10
+								div.progress
+									div#bar_ma.progress-bar.progress-bar-ma(style='width: 90%; height: 20px')
+
+				div.row.no-gutters.align-items-center.mt-3
+					div.col-1
+						i.fa.fa-heart-o.fa-fw
+					div.col-11.pl-2
+						div.row
+							div.col-sm-2 SP
+							div#text_sp.col-sm-10 2
+
+				table.table.mt-4(class='panel-' + attr)
+					tbody
+						tr
+							th Creator
+							td
+								a(href='/users/' + card.editor._id)= card.editor.name
+							td.text-center.hidden-xs-down
+								a(href='/cards/editor?for=' + card._id)
+									i.fa.fa-fw.fa-lg.fa-pencil
+						tr
+							th Card
+							td
+								a(style='word-break: break-all', href='/cards/' + card._id) #{card._id}
+								br
+								small= rarity[card.rarity]
+								br
+								small(class='text-' + attr)= attribute[card.attribute]
+							td.text-center.hidden-xs-down
+								span#cont_icon(style='width: 72px; height: 72px')
+						tr
+							th Character
+							td
+								div= card.character.name_jp
+								strong= card.character.name_en
+								br
+								small= 'Age: ' + card.character.age
+								br
+								small= 'Race: ' + card.character.race
+								br
+								small= 'Residence: ' + card.character.residence
+								br
+								small= 'Profession: ' + card.character.profession
+							td.text-center.hidden-xs-down
+								img#character_avatar.height-64(src='/img/64.svg')
+						tr
+							th Submited
+							td
+								small= card.date
+							td.text-center.hidden-xs-down
+								i.fa.fa-fw.fa-lg.fa-calendar
+
+block foot
+	script(src='https://cdnjs.cloudflare.com/ajax/libs/jsrender/1.0.0-rc.70/jsrender.min.js')
+
+	script#tmpl_card_pair(type='text/x-jsrender')
+		div.card-pair(style='line-height: 0')
+			svg.w-50.p-0.m-0(version='1.1', baseProfile='full', viewBox='0 0 512 720', xmlns='http://www.w3.org/2000/svg', xmlns:xlink='http://www.w3.org/1999/xlink')
+				image(width='100%', height='100%', xlink:href='/img/card/card-canvas.png')
+
+				image(
+					width='{{: background.width * (720.0 / background.height) * background_scale}}', 
+					height='{{: 720 * background_scale}}', 
+					transform='translate({{: background_x}} {{: background_y}}) rotate({{: background_rotation}}) scale({{: background_scale}})', 
+					xlink:href='/upload/images/{{: background.name_local}}')
+				image(
+					width='{{: portrait.width * (720.0 / portrait.height) * portrait_scale}}', 
+					height='{{: 720 * portrait_scale}}', 
+					transform='translate({{: portrait_x}} {{: portrait_y}}) rotate({{: portrait_rotation}}) scale({{: portrait_scale}})', 
+					xlink:href='/upload/images/{{: portrait.name_local}}')
+			
+				image(width='100%', height='100%', xlink:href='/img/card/card-overlay-{{: rarity.toLowerCase()}}-{{: attribute.toLowerCase()}}.png')
+
+				text(x='-100', y='67', font-size='35', fill='white', text-anchor='end', transform='rotate(-90)')= '{{: character.name_en.toUpperCase()}}'
+			svg.w-50.p-0.m-0(version='1.1', baseProfile='full', viewBox='0 0 512 720', xmlns='http://www.w3.org/2000/svg', xmlns:xlink='http://www.w3.org/1999/xlink')
+				image(width='100%', height='100%', xlink:href='/img/card/card-canvas.png')
+
+				image(
+					width='{{: background_idolized.width * (720.0 / background_idolized.height) * background_idolized_scale}}', 
+					height='{{: 720 * background_idolized_scale}}', 
+					transform='translate({{: background_idolized_x}} {{: background_idolized_y}}) rotate({{: background_idolized_rotation}}) scale({{: background_idolized_scale}})', 
+					xlink:href='/upload/images/{{: background_idolized.name_local}}')
+				image(
+					width='{{: portrait_idolized.width * (720.0 / portrait_idolized.height) * portrait_idolized_scale}}', 
+					height='{{: 720 * portrait_idolized_scale}}', 
+					transform='translate({{: portrait_idolized_x}} {{: portrait_idolized_y}}) rotate({{: portrait_idolized_rotation}}) scale({{: portrait_idolized_scale}})', 
+					xlink:href='/upload/images/{{: portrait_idolized.name_local}}')
+			
+				image(width='100%', height='100%', xlink:href='/img/card/card-overlay-{{: rarity.toLowerCase()}}-{{: attribute.toLowerCase()}}.png')
+
+				text(x='-100', y='67', font-size='35', fill='white', text-anchor='end', transform='rotate(-90)')= '{{: character.name_en.toUpperCase()}}'
+
+	script#tmpl_icon(type='text/x-jsrender')
+		svg.d-block.mx-auto(version='1.1', baseProfile='full', viewBox='0 0 256 256', xmlns='http://www.w3.org/2000/svg', xmlns:xlink='http://www.w3.org/1999/xlink')
+			defs
+				clipPath#icon-clip
+					circle(cx='50%', cy='50%', r='120')
+
+			g(clip-path='url(#icon-clip)')
+				g(transform='translate({{: icon_x}} {{: icon_y}}) rotate({{: icon_rotation}}) scale({{: icon_scale}})')
+					svg(width='512', height='720', viewBox='0 0 512 720')
+						image(width='100%', height='100%', xlink:href='/img/card/card-canvas.png')
+
+						image(
+							width='{{: background.width * (720.0 / background.height) * background_scale}}', 
+							height='{{: 720 * background_scale}}', 
+							transform='translate({{: background_x}} {{: background_y}}) rotate({{: background_rotation}}) scale({{: background_scale}})', 
+							xlink:href='/upload/images/{{: background.name_local}}')
+						image(
+							width='{{: portrait.width * (720.0 / portrait.height) * portrait_scale}}', 
+							height='{{: 720 * portrait_scale}}', 
+							transform='translate({{: portrait_x}} {{: portrait_y}}) rotate({{: portrait_rotation}}) scale({{: portrait_scale}})', 
+							xlink:href='/upload/images/{{: portrait.name_local}}')
+				
+			image(width='100%', height='100%', xlink:href='/img/card/icon-overlay-{{: rarity.toLowerCase()}}-{{: attribute.toLowerCase()}}.png')
+
+	script#tmpl_icon_idolized(type='text/x-jsrender')
+		svg.d-block.mx-auto(version='1.1', baseProfile='full', viewBox='0 0 256 256', xmlns='http://www.w3.org/2000/svg', xmlns:xlink='http://www.w3.org/1999/xlink')
+			defs
+				clipPath#icon-clip
+					circle(cx='50%', cy='50%', r='120')
+
+			g(clip-path='url(#icon-clip)')
+				g(transform='translate({{: icon_idolized_x}} {{: icon_idolized_y}}) rotate({{: icon_idolized_rotation}}) scale({{: icon_idolized_scale}})')
+					svg(width='512', height='720', viewBox='0 0 512 720')
+						image(width='100%', height='100%', xlink:href='/img/card/card-canvas.png')
+
+						image(
+							width='{{: background_idolized.width * (720.0 / background_idolized.height) * background_idolized_scale}}', 
+							height='{{: 720 * background_idolized_scale}}', 
+							transform='translate({{: background_idolized_x}} {{: background_idolized_y}}) rotate({{: background_idolized_rotation}}) scale({{: background_idolized_scale}})', 
+							xlink:href='/upload/images/{{: background_idolized.name_local}}')
+						image(
+							width='{{: portrait_idolized.width * (720.0 / portrait_idolized.height) * portrait_idolized_scale}}', 
+							height='{{: 720 * portrait_idolized_scale}}', 
+							transform='translate({{: portrait_idolized_x}} {{: portrait_idolized_y}}) rotate({{: portrait_idolized_rotation}}) scale({{: portrait_idolized_scale}})', 
+							xlink:href='/upload/images/{{: portrait_idolized.name_local}}')
+				
+			image(width='100%', height='100%', xlink:href='/img/card/icon-overlay-{{: rarity.toLowerCase()}}-{{: attribute.toLowerCase()}}.png')
+
+	script.
+		$tmpl_card_pair = $('#tmpl_card_pair');
+		$cont_card_pair = $('#cont_card_pair');
+
+		$tmpl_icon = $('#tmpl_icon');
+		$tmpl_icon_idolized = $('#tmpl_icon_idolized');
+		$cont_icon = $('#cont_icon');
+
+		$character_avatar = $('#character_avatar');
+
+		card = !{JSON.stringify(card)};
+
+		levelLimits = {
+			N: [ 1, 20, 40 ],
+			R: [ 1, 40, 60 ],
+			SR: [ 1, 60, 80 ],
+			UR: [ 1, 80, 100 ],
+		};
+
+		var limit = levelLimits[card.rarity];
+
+		$(function () {
+			$.getJSON('/api/images', {
+				id: card.character.avatar
+			}).then(doc => {
+				console.log(doc);
+				$character_avatar.attr('src', '/upload/images/' + doc.name_local)
+			});
+
+			$($tmpl_card_pair.render(card)).appendTo($cont_card_pair);
+
+			for (var i = 0; i < limit.length; i++) {
+				$('#level_' + i).append(' ' + limit[i]);
+			}
+
+			$('#level_0').click();
+		});
+
+
+		$text_haru = $('#text_haru');
+		$text_rei = $('#text_rei');
+		$text_ma = $('#text_ma');
+		$text_sp = $('#text_sp');
+
+		$bar_haru = $('#bar_haru');
+		$bar_rei = $('#bar_rei');
+		$bar_ma = $('#bar_ma');
+
+		idolized = true;
+
+		var applyLevel = function(haru, rei, ma, sp) {
+			$text_haru.text(haru);
+			$text_rei.text(rei);
+			$text_ma.text(ma);
+			$text_sp.text(sp);
+
+			$bar_haru.css('width', (parseInt(haru) / 60) + '%');
+			$bar_rei.css('width', (parseInt(rei) / 60) + '%');
+			$bar_ma.css('width', (parseInt(ma) / 60) + '%');
+
+			if (idolized) {
+				idolized = false;
+				$cont_icon.html($tmpl_icon.render(card));
+			}
+		};
+
+		$('#level_0').click(function(e) {
+			applyLevel(card.haru_init, card.rei_init, card.ma_init, card.sp_init);
+		});
+
+		$('#level_1').click(function(e) {
+			var t = limit[1] / limit[2];
+
+			var lerp = function(init, max) {
+				return Math.floor(init + (max - init) * t);
+			};
+
+			applyLevel(
+				lerp(parseInt(card.haru_init), parseInt(card.haru_max)), 
+				lerp(parseInt(card.rei_init), parseInt(card.rei_max)), 
+				lerp(parseInt(card.ma_init), parseInt(card.ma_max)), 
+				lerp(parseInt(card.sp_init), parseInt(card.sp_max)));
+
+			if (idolized) {
+				idolized = false;
+				$cont_icon.html($tmpl_icon.render(card));
+			}
+		});
+
+		$('#level_2').click(function(e) {
+			applyLevel(card.haru_max, card.rei_max, card.ma_max, card.sp_max);
+
+			if (!idolized) {
+				idolized = true;
+				$cont_icon.html($tmpl_icon_idolized.render(card));
+			}
+		});

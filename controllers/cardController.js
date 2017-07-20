@@ -161,7 +161,7 @@ exports.editor_post = function (req, res, next) {
 			return Card.create(req.body);
 		}
 	}).then(doc => {
-		res.redirect('/cards/editor?for=' + doc._id);
+		res.redirect('/cards/' + doc._id);
 	}).catch(err => {
 		return next(err);
 		res.render('cards/editor', { 
@@ -175,9 +175,9 @@ exports.editor_post = function (req, res, next) {
 };
 
 exports.detail = function (req, res, next) {
-	Card.findById(req.params.id).populate('character portrait background portrait_idolized background_idolized').then(doc => {
+	Card.findById(req.params.id).populate('character portrait background portrait_idolized background_idolized editor').then(doc => {
 		res.render('cards/detail', { 
-			title: '', 
+			title: doc.character.name_en + ' ' + doc.rarity, 
 			section: 'cards', 
 
 			card: doc

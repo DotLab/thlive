@@ -7,7 +7,7 @@ block main
 		form(method='post')
 			div.row
 				//- character --------------------------------------------------------------------------------------------------------------------
-				div.col-sm-6
+				div.col-md-6
 					div#character_group.form-group(oninput='onCharacterChange()')
 						label.form-control-label Character ID:
 						input#character.form-control(type='text', placeholder='59315799f1e2161c50218655', name='character', value=card.character)
@@ -28,43 +28,59 @@ block main
 						a.btn.btn-primary(href='javascript:generateParameters();') Generate Parameters
 						span.form-text.text-muted Generate normally-distributed random values based on Rarity and Attribute
 				//- parameters --------------------------------------------------------------------------------------------------------------------
-				div.col-sm-6(oninput='onParameterChange()')
+				div.col-md-6(oninput='onParameterChange()')
 					div.row
 						div.col-sm-6
 							div#sp_init_group.form-group
 								label.form-control-label Initial SP:
-								input#sp_init.form-control(type='number', placeholder='1', name='sp_init', value=card.sp_init||'1', min='1', max='4')
+								div.input-group
+									input#sp_init.form-control(type='number', placeholder='1', name='sp_init', value=card.sp_init||'1', min='1', max='4')
+									div.input-group-addon SP
 						div.col-sm-6
 							div#sp_max_group.form-group
 								label.form-control-label Max SP:
-								input#sp_max.form-control(type='number', placeholder='1', name='sp_max', value=card.sp_max||'1', min='1', max='4')
+								div.input-group
+									input#sp_max.form-control(type='number', placeholder='1', name='sp_max', value=card.sp_max||'1', min='1', max='4')
+									div.input-group-addon SP
 					div.row
 						div.col-sm-6
 							div#haru_init_group.form-group
 								label.form-control-label Initial Haru:
-								input#haru_init.form-control(type='number', placeholder='200', name='haru_init', value=card.haru_init, min='200', max='3900')
+								div.input-group
+									input#haru_init.form-control(type='number', placeholder='200', name='haru_init', value=card.haru_init, min='200', max='3900')
+									div.input-group-addon Haru
 						div.col-sm-6
 							div#haru_max_group.form-group
 								label.form-control-label Max Haru:
-								input#haru_max.form-control(type='number', placeholder='400', name='haru_max', value=card.haru_max, min='400', max='5400')
+								div.input-group
+									input#haru_max.form-control(type='number', placeholder='400', name='haru_max', value=card.haru_max, min='400', max='5400')
+									div.input-group-addon Haru
 					div.row
 						div.col-sm-6
 							div#rei_init_group.form-group
 								label.form-control-label Initial Rei:
-								input#rei_init.form-control(type='number', placeholder='200', name='rei_init', value=card.rei_init, min='200', max='3900')
+								div.input-group
+									input#rei_init.form-control(type='number', placeholder='200', name='rei_init', value=card.rei_init, min='200', max='3900')
+									div.input-group-addon Rei
 						div.col-sm-6
 							div#rei_max_group.form-group
 								label.form-control-label Max Rei:
-								input#rei_max.form-control(type='number', placeholder='400', name='rei_max', value=card.rei_max, min='400', max='5400')
+								div.input-group
+									input#rei_max.form-control(type='number', placeholder='400', name='rei_max', value=card.rei_max, min='400', max='5400')
+									div.input-group-addon Rei
 					div.row
 						div.col-sm-6
 							div#ma_init_group.form-group
 								label.form-control-label Initial Ma:
-								input#ma_init.form-control(type='number', placeholder='200', name='ma_init', value=card.ma_init, min='200', max='3900')
+								div.input-group
+									input#ma_init.form-control(type='number', placeholder='200', name='ma_init', value=card.ma_init, min='200', max='3900')
+									div.input-group-addon SP
 						div.col-sm-6
 							div#ma_max_group.form-group
 								label.form-control-label Max Ma:
-								input#ma_max.form-control(type='number', placeholder='400', name='ma_max', value=card.ma_max, min='400', max='5400')
+								div.input-group
+									input#ma_max.form-control(type='number', placeholder='400', name='ma_max', value=card.ma_max, min='400', max='5400')
+									div.input-group-addon SP
 
 			hr
 
@@ -76,23 +92,31 @@ block main
 						label.form-control-label Image ID:
 						input#portrait.form-control(type='text', placeholder='59313f9bed9d871458b7a4ea', name='portrait', value=card.portrait)
 					div.row(oninput='onPortraitTransformChange()')
-						div.col-sm-6
+						div.col-md-6
 							div.form-group
-								label Position x:
-								input#portrait_x.form-control(type='number', placeholder='0', name='portrait_x', value=card.portrait_x||'0')
-						div.col-sm-6
+								label Position X:
+								div.input-group
+									input#portrait_x.form-control(type='number', placeholder='0', name='portrait_x', value=card.portrait_x||'0')
+									div.input-group-addon px
+						div.col-md-6
 							div.form-group
-								label Position y:
-								input#portrait_y.form-control(type='number', placeholder='0', name='portrait_y', value=card.portrait_y||'0')
+								label Position Y:
+								div.input-group
+									input#portrait_y.form-control(type='number', placeholder='0', name='portrait_y', value=card.portrait_y||'0')
+									div.input-group-addon px
 					div.row(oninput='onPortraitTransformChange()')
-						div.col-sm-6
+						div.col-md-6
 							div.form-group
 								label Rotation:
-								input#portrait_rotation.form-control(type='number', placeholder='0', name='portrait_rotation', value=card.portrait_rotation||'0')
-						div.col-sm-6
+								div.input-group
+									input#portrait_rotation.form-control(type='number', placeholder='0', name='portrait_rotation', value=card.portrait_rotation||'0')
+									div.input-group-addon &deg;
+						div.col-md-6
 							div.form-group
 								label Scale:
-								input#portrait_scale.form-control(type='number', step='0.01', placeholder='1', name='portrait_scale', value=card.portrait_scale||'1')
+								div.input-group
+									input#portrait_scale.form-control(type='number', step='0.01', placeholder='1', name='portrait_scale', value=card.portrait_scale||'1')
+									div.input-group-addon x
 				//- background --------------------------------------------------------------------------------------------------------------------
 				div.col-sm-6
 					label Background
@@ -100,23 +124,31 @@ block main
 						label.form-control-label Image ID:
 						input#background.form-control(type='text', placeholder='59313f9bed9d871458b7a4ea', name='background', value=card.background)
 					div.row(oninput='onBackgroundTransformChange()')
-						div.col-sm-6
+						div.col-md-6
 							div.form-group
-								label Position x:
-								input#background_x.form-control(type='number', placeholder='0', name='background_x', value=card.background_x||'0')
-						div.col-sm-6
+								label Position X:
+								div.input-group
+									input#background_x.form-control(type='number', placeholder='0', name='background_x', value=card.background_x||'0')
+									div.input-group-addon px
+						div.col-md-6
 							div.form-group
-								label Position y:
-								input#background_y.form-control(type='number', placeholder='0', name='background_y', value=card.background_y||'0')
+								label Position Y:
+								div.input-group
+									input#background_y.form-control(type='number', placeholder='0', name='background_y', value=card.background_y||'0')
+									div.input-group-addon px
 					div.row(oninput='onBackgroundTransformChange()')
-						div.col-sm-6
+						div.col-md-6
 							div.form-group
 								label Rotation:
-								input#background_rotation.form-control(type='number', placeholder='0', name='background_rotation', value=card.background_rotation||'0')
-						div.col-sm-6
+								div.input-group
+									input#background_rotation.form-control(type='number', placeholder='0', name='background_rotation', value=card.background_rotation||'0')
+									div.input-group-addon &deg;
+						div.col-md-6
 							div.form-group
 								label Scale:
-								input#background_scale.form-control(type='number', step='0.01', placeholder='1', name='background_scale', value=card.background_scale||'1')
+								div.input-group
+									input#background_scale.form-control(type='number', step='0.01', placeholder='1', name='background_scale', value=card.background_scale||'1')
+									div.input-group-addon x
 
 			hr
 
@@ -142,23 +174,31 @@ block main
 						label.form-control-label Image ID:
 						input#portrait_idolized.form-control(type='text', placeholder='59313f9bed9d871458b7a4ea', name='portrait_idolized', value=card.portrait_idolized)
 					div.row(oninput='onIdolizedPortraitTransformChange()')
-						div.col-sm-6
+						div.col-md-6
 							div.form-group
-								label Position x:
-								input#portrait_idolized_x.form-control(type='number', placeholder='0', name='portrait_idolized_x', value=card.portrait_idolized_x||'0')
-						div.col-sm-6
+								label Position X:
+								div.input-group
+									input#portrait_idolized_x.form-control(type='number', placeholder='0', name='portrait_idolized_x', value=card.portrait_idolized_x||'0')
+									div.input-group-addon px
+						div.col-md-6
 							div.form-group
-								label Position y:
-								input#portrait_idolized_y.form-control(type='number', placeholder='0', name='portrait_idolized_y', value=card.portrait_idolized_y||'0')
+								label Position Y:
+								div.input-group
+									input#portrait_idolized_y.form-control(type='number', placeholder='0', name='portrait_idolized_y', value=card.portrait_idolized_y||'0')
+									div.input-group-addon px
 					div.row(oninput='onIdolizedPortraitTransformChange()')
-						div.col-sm-6
+						div.col-md-6
 							div.form-group
 								label Rotation:
-								input#portrait_idolized_rotation.form-control(type='number', placeholder='0', name='portrait_idolized_rotation', value=card.portrait_idolized_rotation||'0')
-						div.col-sm-6
+								div.input-group
+									input#portrait_idolized_rotation.form-control(type='number', placeholder='0', name='portrait_idolized_rotation', value=card.portrait_idolized_rotation||'0')
+									div.input-group-addon &deg;
+						div.col-md-6
 							div.form-group
 								label Scale:
-								input#portrait_idolized_scale.form-control(type='number', step='0.01', placeholder='1', name='portrait_idolized_scale', value=card.portrait_idolized_scale||'1')
+								div.input-group
+									input#portrait_idolized_scale.form-control(type='number', step='0.01', placeholder='1', name='portrait_idolized_scale', value=card.portrait_idolized_scale||'1')
+									div.input-group-addon x
 				//- idolized background --------------------------------------------------------------------------------------------------------------------
 				div.col-sm-6
 					label Idolized Background
@@ -166,23 +206,31 @@ block main
 						label.form-control-label Image ID:
 						input#background_idolized.form-control(type='text', placeholder='59313f9bed9d871458b7a4ea', name='background_idolized', value=card.background_idolized)
 					div.row(oninput='onIdolizedBackgroundTransformChange()')
-						div.col-sm-6
+						div.col-md-6
 							div.form-group
-								label Position x:
-								input#background_idolized_x.form-control(type='number', placeholder='0', name='background_idolized_x', value=card.background_idolized_x||'0')
-						div.col-sm-6
+								label Position X:
+								div.input-group
+									input#background_idolized_x.form-control(type='number', placeholder='0', name='background_idolized_x', value=card.background_idolized_x||'0')
+									div.input-group-addon px
+						div.col-md-6
 							div.form-group
-								label Position y:
-								input#background_idolized_y.form-control(type='number', placeholder='0', name='background_idolized_y', value=card.background_idolized_y||'0')
+								label Position Y:
+								div.input-group
+									input#background_idolized_y.form-control(type='number', placeholder='0', name='background_idolized_y', value=card.background_idolized_y||'0')
+									div.input-group-addon px
 					div.row(oninput='onIdolizedBackgroundTransformChange()')
-						div.col-sm-6
+						div.col-md-6
 							div.form-group
 								label Rotation:
-								input#background_idolized_rotation.form-control(type='number', placeholder='0', name='background_idolized_rotation', value=card.background_idolized_rotation||'0')
-						div.col-sm-6
+								div.input-group
+									input#background_idolized_rotation.form-control(type='number', placeholder='0', name='background_idolized_rotation', value=card.background_idolized_rotation||'0')
+									div.input-group-addon &deg;
+						div.col-md-6
 							div.form-group
 								label Scale:
-								input#background_idolized_scale.form-control(type='number', step='0.01', placeholder='1', name='background_idolized_scale', value=card.background_idolized_scale||'1')
+								div.input-group
+									input#background_idolized_scale.form-control(type='number', step='0.01', placeholder='1', name='background_idolized_scale', value=card.background_idolized_scale||'1')
+									div.input-group-addon x
 
 			hr
 
@@ -204,44 +252,60 @@ block main
 				div.col-sm-6(oninput='onIconTransformChange()')
 					label Icon
 					div.row
-						div.col-sm-6
+						div.col-md-6
 							div.form-group
-								label Position x:
-								input#icon_x.form-control(type='number', placeholder='0', name='icon_x', value=card.icon_x||'0')
-						div.col-sm-6
+								label Position X:
+								div.input-group
+									input#icon_x.form-control(type='number', placeholder='0', name='icon_x', value=card.icon_x||'0')
+									div.input-group-addon px
+						div.col-md-6
 							div.form-group
-								label Position y:
-								input#icon_y.form-control(type='number', placeholder='0', name='icon_y', value=card.icon_y||'0')
+								label Position Y:
+								div.input-group
+									input#icon_y.form-control(type='number', placeholder='0', name='icon_y', value=card.icon_y||'0')
+									div.input-group-addon px
 					div.row
-						div.col-sm-12
+						div.col-md-12
 							div.form-group
 								label Rotation:
-								input#icon_rotation.form-control(type='number', placeholder='0', name='icon_rotation', value=card.icon_rotation||'0')
-						div.col-sm-12
+								div.input-group
+									input#icon_rotation.form-control(type='number', placeholder='0', name='icon_rotation', value=card.icon_rotation||'0')
+									div.input-group-addon &deg;
+						div.col-md-12
 							div.form-group
 								label Scale:
-								input#icon_scale.form-control(type='number', step='0.01', placeholder='1', name='icon_scale', value=card.icon_scale||'1')
+								div.input-group
+									input#icon_scale.form-control(type='number', step='0.01', placeholder='1', name='icon_scale', value=card.icon_scale||'1')
+									div.input-group-addon x
 				//- idolized icon --------------------------------------------------------------------------------------------------------------------
 				div.col-sm-6(oninput='onIdolizedIconTransformChange()')
 					label Idolized Icon
 					div.row
-						div.col-sm-6
+						div.col-md-6
 							div.form-group
-								label Position x:
-								input#icon_idolized_x.form-control(type='number', placeholder='0', name='icon_idolized_x', value=card.icon_idolized_x||'0')
-						div.col-sm-6
+								label Position X:
+								div.input-group
+									input#icon_idolized_x.form-control(type='number', placeholder='0', name='icon_idolized_x', value=card.icon_idolized_x||'0')
+									div.input-group-addon px
+						div.col-md-6
 							div.form-group
-								label Position y:
-								input#icon_idolized_y.form-control(type='number', placeholder='0', name='icon_idolized_y', value=card.icon_idolized_y||'0')
+								label Position Y:
+								div.input-group
+									input#icon_idolized_y.form-control(type='number', placeholder='0', name='icon_idolized_y', value=card.icon_idolized_y||'0')
+									div.input-group-addon px
 					div.row
-						div.col-sm-12
+						div.col-md-12
 							div.form-group
 								label Rotation:
-								input#icon_idolized_rotation.form-control(type='number', placeholder='0', name='icon_idolized_rotation', value=card.icon_idolized_rotation||'0')
-						div.col-sm-12
+								div.input-group
+									input#icon_idolized_rotation.form-control(type='number', placeholder='0', name='icon_idolized_rotation', value=card.icon_idolized_rotation||'0')
+									div.input-group-addon &deg;
+						div.col-md-12
 							div.form-group
 								label Scale:
-								input#icon_idolized_scale.form-control(type='number', step='0.01', placeholder='1', name='icon_idolized_scale', value=card.icon_idolized_scale||'1')
+								div.input-group
+									input#icon_idolized_scale.form-control(type='number', step='0.01', placeholder='1', name='icon_idolized_scale', value=card.icon_idolized_scale||'1')
+									div.input-group-addon x
 
 			hr
 
@@ -283,19 +347,18 @@ block main
 
 			+error_alerts(false, true)
 
-			div.btn-toolbar
-				button.btn.btn-success(type='submit') Save
-				
-				if (query.for)
-					button.btn.btn-warning(type='submit', formaction='') Duplicate
+			button.btn.btn-outline-success(type='submit') Save
+			
+			if (query.for)
+				button.btn.btn-outline-warning.ml-2(type='submit', formaction='editor') Save a Copy
 
-			ul.mt-2
-				li #[mark Boring] cards #[strong will not be accepted]
-				li Cards with #[mark wrong icon placement] #[strong will not be accepted]
-				li Cards with #[mark transparent background] #[strong will not be accepted]
-				li Cards with #[mark wrong character assignment] #[strong will not be accepted]
-				li #[mark Duplicated] cards, unless #[mark intentionally done], #[strong will not be accepted]
-				li Cards with #[mark same image for both non-idolized and idolized character] #[strong will not be accepted]
+			ul.mt-3
+				li #[strong Boring] cards #[strong will not be accepted]
+				li Cards with #[strong wrong icon placement] #[strong will not be accepted]
+				li Cards with #[strong transparent background] #[strong will not be accepted]
+				li Cards with #[strong wrong character assignment] #[strong will not be accepted]
+				li #[strong Duplicated] cards, unless #[strong intentionally done], #[strong will not be accepted]
+				li Cards with #[strong same image for both non-idolized and idolized character] #[strong will not be accepted]
 
 block foot
 	script(src='https://cdnjs.cloudflare.com/ajax/libs/validator/8.0.0/validator.min.js')

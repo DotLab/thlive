@@ -1,3 +1,5 @@
+global.isProduction = (process.env.NODE_ENV == 'production');
+
 var path = require('path');
 global.appRoot = path.resolve(__dirname);
 
@@ -25,7 +27,8 @@ var express = require('express');
 var app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
-// app.set('view cache', true);
+if (isProduction)
+	app.set('view cache', true);
 
 // morgan ----------------------------------------------------------------------------------------------------
 var morgan = require('morgan');
@@ -36,13 +39,15 @@ var favicon = require('serve-favicon');
 app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 
 // compression ----------------------------------------------------------------------------------------------------
-var compression = require('compression');
-app.use(compression()); // GZIP all assets
+if (isProduction) {
+	var compression = require('compression');
+	app.use(compression()); // GZIP all assets
+}
 
 // static ----------------------------------------------------------------------------------------------------
-app.use(express.static(path.join(__dirname, 'public'), {
-	// maxAge: '1d'
-}));
+app.use(express.static(path.join(__dirname, 'public'), isProduction ? {
+	maxAge: '1d'
+} : undefined));
 
 // fileupload ----------------------------------------------------------------------------------------------------
 var fileupload = require('express-fileupload');

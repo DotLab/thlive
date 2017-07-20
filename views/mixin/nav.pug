@@ -1,5 +1,5 @@
 mixin navbar(section, mortal)
-		nav.navbar.navbar-toggleable-sm.navbar-inverse.bg-inverse 
+		nav.navbar.navbar-toggleable-sm.navbar-inverse(style='background-color:' + (section=='cards' ? '#e10b80' : '#23241f'))
 			div.container
 				a.navbar-brand(href='/') 
 					|	THLIVE

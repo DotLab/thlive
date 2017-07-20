@@ -73,7 +73,9 @@ var onCharacterChange = function () {
 		return appendHelp('has-danger', $character_group, 'Invalide Character ID');
 	}
 
-	$.getJSON('/api/characters/' + id, function (doc) {
+	$.getJSON('/api/characters', {
+		id: id
+	}, function (doc) {
 		if (!doc._id)
 			return appendHelp('has-danger', $character_group, 'Nonexistent Character ID');
 
@@ -201,7 +203,9 @@ var changeImage = function ($image, $image_group, $svg_image, isOptional) {
 	if (!validator.isMongoId(id))
 		return appendHelp('has-danger', $image_group, 'Invalide Image ID');
 
-	$.getJSON('/api/images/' + id, function (doc) {
+	$.getJSON('/api/images', {
+		id: id
+	}, function (doc) {
 		if (!doc._id)
 			return appendHelp('has-danger', $image_group, 'Nonexistent Image ID');
 
