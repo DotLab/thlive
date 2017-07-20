@@ -167,7 +167,7 @@ block main
 								br
 								small(class='text-' + attr)= attribute[card.attribute]
 							td.text-center.hidden-xs-down
-								span#cont_icon(style='width: 72px; height: 72px')
+								span#cont_icon.d-inline-block(style='width: 72px; height: 72px')
 						tr
 							th Character
 							td
@@ -182,7 +182,7 @@ block main
 								br
 								small= 'Profession: ' + card.character.profession
 							td.text-center.hidden-xs-down
-								img#character_avatar.height-64(src='/img/64.svg')
+								img#character_avatar(style='height: 72px', src='/img/64.svg')
 						tr
 							th Submited
 							td

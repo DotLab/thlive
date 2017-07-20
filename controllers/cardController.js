@@ -184,3 +184,10 @@ exports.detail = function (req, res, next) {
 		});
 	}).catch(err => next(err));
 };
+
+exports.list = function (req, res, next) {
+	res.render('cards/list', { 
+		title: 'Cards', 
+		section: 'cards'
+	});
+};

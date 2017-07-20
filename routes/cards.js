@@ -3,7 +3,7 @@ var router = express.Router();
 
 var cardController = require('../controllers/cardController');
 
-// router.get('/', cardController.list);
+router.get('/', cardController.list);
 
 router.get('/editor', cardController.editor);
 router.post('/editor', cardController.editor_post);
