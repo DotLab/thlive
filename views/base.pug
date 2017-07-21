@@ -1,0 +1,28 @@
+include ./mixin/nav
+
+doctype html
+
+html(lang='en')
+	head
+		title #{title} &bull; THLIVE
+
+		meta(charset='utf-8')
+		meta(name='viewport', content='width=device-width, initial-scale=1, shrink-to-fit=no')
+
+		//- script(src='https://use.fontawesome.com/feea410c25.js')
+
+		link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css')
+		link(rel='stylesheet', href='/css/base.css')
+
+		block head
+
+	body
+		+navbar(section, mortal)
+
+		block main
+
+		script(src='https://code.jquery.com/jquery-3.2.1.min.js')
+		script(src='https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js')
+		script(src='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js')
+
+		block foot

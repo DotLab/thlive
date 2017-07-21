@@ -5,8 +5,8 @@ var cardController = require('../controllers/cardController');
 
 router.get('/', cardController.list);
 
-router.get('/editor', cardController.editor_form);
-router.post('/editor', cardController.editor);
+router.get('/editor', cardController.editor);
+router.post('/editor', cardController.editor_post);
 
 router.get('/:id', cardController.detail);
 

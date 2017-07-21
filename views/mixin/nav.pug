@@ -1,0 +1,25 @@
+mixin navbar(section, mortal)
+		nav.navbar.navbar-toggleable-sm.navbar-inverse(style='background-color:' + (section=='cards' ? '#e10b80' : '#23241f'))
+			div.container
+				a.navbar-brand(href='/') 
+					|	THLIVE
+				
+				div#navbar.collapse.navbar-collapse
+					div.navbar-nav
+						a.nav-item.nav-link(href='/artists', class=section=='artists'&&'active') Artists
+						a.nav-item.nav-link(href='/images', class=section=='images'&&'active') Images
+						
+						a.nav-item.nav-link(href='/albums', class=section=='albums'&&'active') Album
+						a.nav-item.nav-link(href='/songs', class=section=='songs'&&'active') Song
+						a.nav-item.nav-link(href='/clips', class=section=='clips'&&'active') Clip
+						
+						a.nav-item.nav-link(href='/characters', class=section=='characters'&&'active') Characters
+						a.nav-item.nav-link(href='/cards', class=section=='cards'&&'active') Cards
+
+			button.navbar-toggler.navbar-toggler-right(data-toggle='collapse', data-target='#navbar')
+				span.navbar-toggler-icon
+					
+			if mortal
+				a.navbar-text.hidden-sm-down(href='/users/logout') #{mortal.name}
+			else
+				a.btn.btn-sm.btn-outline-success.hidden-sm-down(href='/users/login') Login

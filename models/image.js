@@ -21,25 +21,15 @@ var ImageSchema = new Schema({
 	depth: { type: String, required: true },
 
 	hasAlpha: { type: Boolean, required: true }
-}, {
-	toObject: { virtuals: true },
-	toJSON: { virtuals: true }
 });
 
 ImageSchema.virtual('title').get(function () {
-	return this.keywords.join(' ');
+	if (this.keywords)
+		return this.keywords.join(' ');
 }).set(function (v) {
 	this.keywords = v.split(/[\-\－\—\_\ \　\(\)\（\）\.]+/).filter(function (item, pos, self) { 
 		return item && self.indexOf(item) == pos; 
 	});
-});
-
-ImageSchema.virtual('url_src').get(function () {
-	return '/res/img/' + this.name_local;
-});
-
-ImageSchema.virtual('url_detail').get(function () {
-	return '/images/' + this._id;
 });
 
 module.exports = mongoose.model('Image', ImageSchema);

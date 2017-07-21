@@ -1,0 +1,67 @@
+extends ../base
+
+block main
+	div.pt-4.container
+		a.btn.btn-primary.float-right.hidden-xs-down.small(href='/artists/editor') Add Artist
+		
+		h2.h4 Find your favorite artists!
+		p.text-muted After you follow a user, you can view their new submissions easily through Home! You can also view their activity through the Feed page, such as their bookmarks, making it easy to find pictures you might also like!
+
+		hr
+
+		ul#cont_artist.list-unstyled
+			//- for artist in artists
+			//- 	li.media.mb-2
+			//- 		img.d-flex.mr-3.height-128.rounded(src='/res/img/cf196545bc8a0d42dc9d2e26c91c324fd7e9b694.png')
+			//- 		div.media-body
+			//- 			h5.mt-0.mb-1 #[span #{artist.name}] #[small.text-muted.hidden-xs-down - #{artist._id}]
+			//- 			span ※転載する場合は私の名前を明記してください。転載許可は不要です。
+
+			//- 		a.hidden-xs-down(href='/')
+			//- 			img.d-flex.ml-3.height-128.rounded(src='/res/img/cf196545bc8a0d42dc9d2e26c91c324fd7e9b694.png')
+			//- 		a.hidden-sm-down(href='/')
+			//- 			img.d-flex.height-128.rounded(src='/res/img/cf196545bc8a0d42dc9d2e26c91c324fd7e9b694.png')
+			//- 		a.hidden-md-down(href='/')
+			//- 			img.d-flex.height-128.rounded(src='/res/img/cf196545bc8a0d42dc9d2e26c91c324fd7e9b694.png')
+			//- 		a.hidden-lg-down(href='/')
+			//- 			img.d-flex.height-128.rounded(src='/res/img/cf196545bc8a0d42dc9d2e26c91c324fd7e9b694.png')
+
+block foot
+	script(src='https://cdnjs.cloudflare.com/ajax/libs/jsrender/1.0.0-rc.70/jsrender.min.js')
+	script(src='https://cdnjs.cloudflare.com/ajax/libs/jquery.lazyload/1.9.1/jquery.lazyload.min.js')
+	
+	script#tmpl_artist(type="text/x-jsrender")
+		li.media
+			a(href='{{: href}}')
+				img.d-flex.mr-3.height-100.rounded.lazy(data-original='{{: avatar_src}}')
+			div.media-body.small
+				h5.mt-0.mb-1 #{'{{: name}}'} #[small.text-muted.hidden-xs-down - #{'{{: id}}'}]
+				div Illustrations: #{'{{: count_images}}'}
+				a(style='word-break: break-all', href='{{: homepage}}') #{'{{: homepage}}'}
+				div #{'{{: intro}}'}
+
+			a.hidden-xs-down(href='{{: hero_0_href}}')
+				img.d-flex.ml-3.height-100.lazy(data-original='{{: hero_0_src}}')
+			a.hidden-sm-down(href='{{: hero_1_href}}')
+				img.d-flex.height-100.lazy(data-original='{{: hero_1_src}}')
+			a.hidden-sm-down(href='{{: hero_2_href}}')
+				img.d-flex.height-100.lazy(data-original='{{: hero_2_src}}')
+			a.hidden-md-down(href='{{: hero_3_href}}')
+				img.d-flex.height-100.lazy(data-original='{{: hero_3_src}}')
+		hr
+
+	script.
+		$tmpl_artist = $.templates('#tmpl_artist');
+		$cont_artist = $('#cont_artist');
+
+		$(function () {
+			$.getJSON('/api/artists/list', {
+
+			}).then(docs => {
+				console.log(docs);
+				$($tmpl_artist.render(docs)).appendTo($cont_artist).find('img.lazy').lazyload({
+					effect : "fadeIn",
+					skip_invisible : true
+				});
+			});
+		});

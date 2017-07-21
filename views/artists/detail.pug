@@ -1,0 +1,153 @@
+extends ../base
+
+block head
+	style.
+		a {
+			color: #258fb8;
+		}
+
+		a:hover {
+			color: #258fb8;
+		}
+
+		.tag-cloud {
+			font-size: 1rem;
+			line-height: 1.7;
+			margin: 0;
+			word-break: break-all;
+		}
+
+		.tag-cloud span {
+			display: inline;
+			font-size: 100%;
+			margin: 0;
+			padding: 0 2px;
+		}
+
+		.tag-cloud span a .count {
+			font-size: 10px;
+			color: #999;
+		}
+
+		.tag-cloud span a:visited {
+			color: #969;
+			text-decoration: none;
+		}
+
+		.tag-cloud span a:hover {
+			background-color: #3e5b71;
+			color: white;
+			text-decoration: none;
+		}
+
+block main
+	div.container
+		div.row
+			div.col-md-3.mt-4
+				div.card
+					if artist.avatar
+						img.card-img-top.w-100.hidden-sm-down(src='/upload/images/' + artist.avatar.name_local)
+					div.card-block.p-2
+						h4.card-title.text-center
+							a(href='/artists/' + artist._id)= artist.name
+						p.card-text= artist.intro
+						a.btn.btn-primary.small(href='/artists/editor?for=' + artist._id) Edit Profile
+				div.card.mt-4
+					div.card-header.py-1.px-2.small Keywords
+					div.card-block.p-2
+						div#cont_keywords.card-text.tag-cloud
+							//- span #[a(href='#') dlkfa #[span.count (123)]]
+							//- span #[a(href='#') dlkfa #[span.count (123)]]
+							//- span #[a(href='#') dlkfa #[span.count (123)]]
+							//- span #[a(href='#') dlkfa #[span.count (123)]]
+							//- span #[a(href='#') dlkfa #[span.count (123)]]
+							//- span #[a(href='#') dlkfa #[span.count (123)]]
+							//- span #[a(href='#') dlkfa #[span.count (123)]]
+							//- span #[a(href='#') dlkfa #[span.count (123)]]
+							//- span #[a(href='#') dlkfa #[span.count (123)]]
+							//- span #[a(href='#') dlkfa #[span.count (123)]]
+							//- span #[a(href='#') dlkfa #[span.count (123)]]
+							//- span #[a(href='#') dlkfa #[span.count (123)]]
+							//- span #[a(href='#') dlkfa #[span.count (123)]]
+							//- span #[a(href='#') dlkfa #[span.count (123)]]
+							//- span #[a(href='#') dlkfa #[span.count (123)]]
+			div.col-md-9.mt-4
+				h2.h4 #{artist.name} #[small.text-muted.hidden-xs-down - #{artist._id}]
+					if (query.keywords)
+						span.badge.badge-primary.tiny.ml-2= query.keywords 
+					span#result_count.badge.badge-info.tiny.ml-2 #{artist.images} &infin; results
+				p Mainly pulled from #[a(href=artist.homepage)= artist.homepage]
+				hr
+				div#cont_images.row
+					//- div.col-md-3.text-center.mt-3
+					//- 	img.img-thumbnail.w-100(src='/upload/images/e01894b25f4bda0d4628e2f07e06dc20a5795d0c.png')
+					//- 	h4.text-ellip.mt-2.h6 ナターリアと海
+					//- div.col-md-3.text-center.mt-3
+					//- 	img.img-thumbnail.w-100(src='/upload/images/f1c459d60dfaf6c04651421f798c6c83490efbf6.png')
+					//- 	h4.text-ellip.mt-2.h6 ナターリアと海
+					//- div.col-md-3.text-center.mt-3
+					//- 	img.img-thumbnail.w-100(src='/upload/images/f1c459d60dfaf6c04651421f798c6c83490efbf6.png')
+					//- 	h4.text-ellip.mt-2.h6 ナターリアと海
+					//- div.col-md-3.text-center.mt-3
+					//- 	img.img-thumbnail.w-100(src='/upload/images/f1c459d60dfaf6c04651421f798c6c83490efbf6.png')
+					//- 	h4.text-ellip.mt-2.h6 ナターリアと海
+					//- div.col-md-3.text-center.mt-3
+					//- 	img.img-thumbnail.w-100(src='/upload/images/f1c459d60dfaf6c04651421f798c6c83490efbf6.png')
+					//- 	h4.text-ellip.mt-2.h6 ナターリアと海
+					//- div.col-md-3.text-center.mt-3
+					//- 	img.img-thumbnail.w-100(src='/upload/images/f1c459d60dfaf6c04651421f798c6c83490efbf6.png')
+					//- 	h4.text-ellip.mt-2.h6 ナターリアと海
+					//- div.col-md-3.text-center.mt-3
+					//- 	img.img-thumbnail.w-100(src='/upload/images/f1c459d60dfaf6c04651421f798c6c83490efbf6.png')
+					//- 	h4.text-ellip.mt-2.h6 ナターリアと海
+					//- div.col-md-3.text-center.mt-3
+					//- 	img.img-thumbnail.w-100(src='/upload/images/f1c459d60dfaf6c04651421f798c6c83490efbf6.png')
+					//- 	h4.text-ellip.mt-2.h6 ナターリアと海
+
+block foot
+	script(src='https://cdnjs.cloudflare.com/ajax/libs/jsrender/1.0.0-rc.70/jsrender.min.js')
+	script(src='https://cdnjs.cloudflare.com/ajax/libs/jquery.lazyload/1.9.1/jquery.lazyload.min.js')
+
+	script#tmpl_keywords(type='text/x-jsrender')
+		span #[a(href='?keywords={{: name}}') #{'{{: name}}'}#[span.count (#{'{{: count}}'})]]
+
+	script#tmpl_images(type='text/x-jsrender')
+		div.col-lg-3.col-md-4.col-sm-4.text-center.pb-3
+			a(href='/images/{{: _id}}')
+				img.img-thumbnail.lazy.rounded-0(data-original='/upload/images/{{: name_local}}')
+				h4.text-ellip.text-muted.mt-2.mb-1.h6.small.font-weight-bold= '{{: keywords.join(\' \')}}'
+			div.h6.small.text-muted.mb-0= '{{: _id}}'
+
+	script.
+		$tmpl_keywords = $.templates('#tmpl_keywords');
+		$cont_keywords = $('#cont_keywords');
+
+		$tmpl_images = $.templates('#tmpl_images');
+		$cont_images = $('#cont_images');
+		$result_count = $('#result_count');
+		
+		$(function () {
+			$.getJSON('/api/images/keywords', {
+				query: {
+					artist: '#{artist._id}'
+				}
+			}).then(docs => {
+				console.log(docs);
+				$($tmpl_keywords.render(docs)).appendTo($cont_keywords);
+			});
+
+			$.getJSON('/api/images', {
+				query: {
+					artist: '#{artist._id}',
+					keywords: '#{query.keywords}' ? '#{query.keywords}' : undefined
+				},
+				sort: 'name_original'
+			}).then(docs => {
+				console.log(docs);
+				$result_count.html(docs.length + ' results');
+				$($tmpl_images.render(docs)).appendTo($cont_images).find('img.lazy').lazyload({
+					effect : "fadeIn",
+					skip_invisible : true
+				});
+			});
+		});

@@ -1,27 +1,19 @@
 var express = require('express');
 var router = express.Router();
 
-var Image = require('../models/image');
-var Character = require('../models/character');
+var genericApi = require('../controllers/api/genericApi');
+router.get('/users', genericApi(require('../models/user')));
+router.get('/artists', genericApi(require('../models/artist')));
+router.get('/images', genericApi(require('../models/image')));
+router.get('/characters', genericApi(require('../models/character')));
+router.get('/cards', genericApi(require('../models/card')));
 
-router.get('/images/:id', function (req, res, next) {
-	Image.findById(req.params.id).then(function (doc) {
-		doc.success = true;
-		return res.send(doc);
-	}).catch(function (err) {
-		err.success = false;
-		return res.send(err);
-	});
-});
+var artistApi = require('../controllers/api/artistApi');
+router.get('/artists/list', artistApi.list);
 
-router.get('/characters/:id', function (req, res, next) {
-	Character.findById(req.params.id).then(function (doc) {
-		doc.success = true;
-		return res.send(doc);
-	}).catch(function (err) {
-		err.success = false;
-		return res.send(err);
-	});
-});
+var imageApi = require('../controllers/api/imageApi');
+router.get('/images/keywords', imageApi.keywords);
+router.get('/images/siblings', imageApi.siblings);
+router.post('/images/upload', imageApi.upload);
 
 module.exports = router;

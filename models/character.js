@@ -11,15 +11,10 @@ var CharacterSchema = new Schema({
 	age: { type: String, required: true, trim: true },
 	race: { type: String, required: true, trim: true },
 
-	skills: [{ type: String, trim: true }],
-	titles: [{ type: String, trim: true }]
-}, {
-	toObject: { virtuals: true },
-	toJSON: { virtuals: true }
-});
+	residence: { type: String, required: true, trim: true },
+	profession: { type: String, required: true, trim: true },
 
-CharacterSchema.virtual('url_detail').get(function () {
-	return '/characters/' + this._id;
+	markdown: { type: String, default: '', trim: true }
 });
 
 module.exports = mongoose.model('Character', CharacterSchema);

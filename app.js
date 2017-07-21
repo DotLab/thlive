@@ -1,54 +1,61 @@
+global.isProduction = (process.env.NODE_ENV == 'production');
+
 var path = require('path');
 global.appRoot = path.resolve(__dirname);
 
+// marked ----------------------------------------------------------------------------------------------------
 var marked = require('marked');
 var hljs = require('highlight.js');
-
-var express = require('express');
-
-var compression = require('compression');
-var morgan = require('morgan');
-
-var favicon = require('serve-favicon');
-
-var fileupload = require('express-fileupload');
-
-var session = require('express-session');
-var MongoStore = require('connect-mongo')(session);
-
-var bodyParser = require('body-parser');
-var validator = require('express-validator');
-
-var router = require('./routes/router');
-
 marked.setOptions({
 	highlight: code => hljs.highlightAuto(code).value,
 	langPrefix:'hljs '
 });
 
-var mongoose = require('mongoose');
+// moment ----------------------------------------------------------------------------------------------------
+var moment = require('moment');
+moment.locale();
+
+// mongoose ----------------------------------------------------------------------------------------------------
+var mongoose = require('mongoose').set('debug', true);
 mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://localhost:27017/thlive');
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
+// express ----------------------------------------------------------------------------------------------------
+var express = require('express');
 var app = express();
-
-// view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
-// app.set('view cache', true);
+if (isProduction)
+	app.set('view cache', true);
 
-// middlewares ----------------------------------------------------------------------------------------------------
-app.use(compression()); // GZIP all assets
-
+// morgan ----------------------------------------------------------------------------------------------------
+var morgan = require('morgan');
 app.use(morgan('dev')); // log requests
 
-app.use(express.static(path.join(__dirname, 'public')));
+// favicon ----------------------------------------------------------------------------------------------------
+var favicon = require('serve-favicon');
 app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 
+// compression ----------------------------------------------------------------------------------------------------
+if (isProduction) {
+	var compression = require('compression');
+	app.use(compression()); // GZIP all assets
+}
+
+// static ----------------------------------------------------------------------------------------------------
+app.use(express.static(path.join(__dirname, 'public'), isProduction ? {
+	maxAge: '1d'
+} : undefined));
+
+// fileupload ----------------------------------------------------------------------------------------------------
+var fileupload = require('express-fileupload');
 app.use(fileupload());
 
+// session ----------------------------------------------------------------------------------------------------
+var session = require('express-session');
+var MongoStore = require('connect-mongo')(session);
 app.use(session({
 	resave: false, // don't save session if unmodified
 	saveUninitialized: false, // don't create session until something stored
@@ -56,23 +63,33 @@ app.use(session({
 	store: new MongoStore({ mongooseConnection: db })
 }));
 
+// bodyParser ----------------------------------------------------------------------------------------------------
+var bodyParser = require('body-parser');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+// validator ----------------------------------------------------------------------------------------------------
+var validator = require('express-validator');
 app.use(validator({
 	errorFormatter: (param, msg, value) => {
 		return { name: param, message: `${msg} '${value}'` }
 	}
 }));
 
+// locals ----------------------------------------------------------------------------------------------------
 app.use(function (req, res, next) {
 	res.locals.mortal = req.session.user;
+
 	res.locals.body = req.body;
+	res.locals.query = req.query;
+
+	res.locals.marked = marked;
 
 	next();
 });
 
 // routes ----------------------------------------------------------------------------------------------------
+var router = require('./routes/router');
 app.use('/', router);
 
 // catch 404 and forward to error handler

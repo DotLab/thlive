@@ -1,26 +1,23 @@
 var hasher = require('pbkdf2-password')();
+var request = require('request');
 
 var User = require('../models/user');
-var Comment = require('../models/comment');
 
-exports.list = function (req, res, next) {
-	User.find({}, (err, docs) => {
-		if (err) return next(err);
 
-		res.render('user/list', {
-			title: 'Users',
-			users: docs
-		});
+exports.signup_form = function (req, res, next) {
+	if (req.session.user)
+		return res.redirect('/');
+
+	res.render('users/signup', { 
+		title: 'Join THLIVE',
+		section: 'users'
 	});
 };
 
-exports.register_form = function (req, res, next) {
-	res.render('user/register', { 
-		title: 'Join THLIVE'
-	});
-};
+exports.signup = function (req, res, next) {
+	if (req.session.user)
+		return res.redirect('/');
 
-exports.register = function (req, res, next) {
 	req.checkBody('name', 'Empty user name').notEmpty();
 	req.checkBody('email', 'Invalid email').isEmail();
 	req.checkBody('password', 'Empty password').notEmpty();
@@ -33,26 +30,26 @@ exports.register = function (req, res, next) {
 	if (!errs) errs = [];
 
 	if (!/^[^\s\@]{1,20}$/.test(req.body.name))
-		errs.push({ msg: 'User name should have a length between 1 and 20 and not have any spaces' });
+		errs.push({ name: 'name', message: 'User name should have a length between 1 and 20 and not have any spaces' });
 
 	if (!/^.{6,}$/.test(req.body.password))
-		errs.push({ msg: 'Password should have a length bigger than 6' });
+		errs.push({ name: 'password', message: 'Password should have a length bigger than 6' });
 
 	if (errs.length > 0) {
-		return res.render('user/register', {
+		return res.render('users/signup', {
 			title: 'Join THLIVE',
 			errors: errs
 		});
 	}
 
-	var p = new Promise((resolve, reject) => {
+	new Promise((resolve, reject) => {
 		hasher({ password: req.body.password }, function (err, pass, salt, hash) {
-			if (err) reject(err);
-			else resolve({ pass, salt, hash });
+			if (err) 
+				reject(err);
+			else 
+				resolve({ pass, salt, hash });
 		});
-	});
-
-	p.then(({ pass, salt, hash }) => {
+	}).then(({ pass, salt, hash }) => {
 		return new User({
 			name: req.body.name,
 			email: req.body.email,
@@ -60,9 +57,9 @@ exports.register = function (req, res, next) {
 			hash: hash
 		}).save();
 	}).then(user => {
-		res.redirect(user.url_detail);
+		res.redirect('/');
 	}).catch(err => {
-		res.render('user/register', {
+		res.render('users/signup', {
 			title: 'Join THLIVE',
 			error: err
 		});
@@ -70,12 +67,19 @@ exports.register = function (req, res, next) {
 };
 
 exports.login_form = function (req, res, next) {
-	res.render('user/login', { 
-		title: 'Login THLIVE'
+	if (req.session.user)
+		return res.redirect('/');
+
+	res.render('users/login', { 
+		title: 'Login THLIVE',
+		section: 'users'
 	});
 };
 
 exports.login = function (req, res, next) {
+	if (req.session.user)
+		return res.redirect('/');
+
 	req.checkBody('email', 'Invalid email').isEmail();
 
 	req.sanitizeBody('email').trim();
@@ -96,10 +100,10 @@ exports.login = function (req, res, next) {
 	}).then(user => {
 		req.session.regenerate(function () {
 			req.session.user = user;
-			res.redirect(user.url_detail);
+			res.redirect('/');
 		});
 	}).catch(err => {
-		res.render('user/login', {
+		res.render('users/login', {
 			title: 'Login THLIVE',
 			error: err
 		});
@@ -109,23 +113,9 @@ exports.login = function (req, res, next) {
 // destroy the user's session to log them out
 // will be re-created next request
 exports.logout = function (req, res, next) {
+	// return res.redirect('/');
+
 	req.session.destroy(function () {
-		return res.redirect('back');
+		return res.redirect('/');
 	});
 }
-
-exports.detail = function (req, res, next) {
-	var ps = [
-		User.findById(req.params.id),
-		Comment.find({ topic: req.params.id }).sort('date').populate('user')
-	];
-
-	Promise.all(ps).then(function (results) {
-		res.render('user/detail', {
-			title: 'User: ' + results[0].name,
-			user: results[0],
-			isSelf: (req.session && req.session.user && req.session.user._id == results[0]._id),
-			comments: results[1]
-		});
-	}).catch(err => next(err));
-};

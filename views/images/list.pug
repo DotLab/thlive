@@ -1,0 +1,29 @@
+extends ../base
+
+block main
+	div.pt-4.container
+		a.btn.btn-primary.float-right.hidden-xs-down.small(href='/images/upload') Upload Images
+		
+		h2.h4 New Works
+
+		hr
+
+		div#cont_images.row
+			for image in images
+				div.col-lg-2.col-md-3.col-sm-4.text-center.pb-3
+					a(href='/images/' + image._id)
+						img.img-thumbnail.lazy.rounded-0(data-original='/upload/images/' + image.name_local)
+						h4.text-ellip.text-muted.mt-2.mb-0.h6.small.font-weight-bold= image.keywords.join(' ')
+					a.h6.small.text-muted.m-0.font-weight-bold(href='/artists/' + image.artist._id)= image.artist.name
+					div.h6.small.text-muted.mb-0= image._id
+
+block foot
+	script(src='https://cdnjs.cloudflare.com/ajax/libs/jquery.lazyload/1.9.1/jquery.lazyload.min.js')
+
+	script.
+		$(function () {
+			$('img.lazy').lazyload({
+				effect : "fadeIn",
+				skip_invisible : true
+			});
+		});

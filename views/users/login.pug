@@ -1,0 +1,31 @@
+extends ../base
+
+include ../mixin/alert
+
+block main
+	div.pt-4.container
+		nav.nav.nav-tabs.small
+			a.nav-item.nav-link.active(href='login') Log in
+			a.nav-item.nav-link(href='signup') Sign up
+
+		h3.my-4.h4.font-weight-normal.text-center For the community. By the community.
+
+		div.row.justify-content-md-center
+			div.col-md-6
+				div.card
+					div.card-block.mx-1.my-4
+						form(method='post')
+							div.form-group
+								label Email
+								input.form-control(type='email', placeholder='reimuhakurei@gia.com' name='email' value=body.email)
+							div.form-group
+								label Password
+								input.form-control(type='password', placeholder='*********' name='password' value=body.password)
+							button.btn.btn-primary(type='submit') Log in
+
+						+error_container(true, false)
+
+				div.mt-4.card.text-center
+					div.card-block
+						p.mb-0 Don't have an account? #[a(href='signup') Sign up]
+						p.mb-0 Forget your password? #[strong Contact Kailang!]

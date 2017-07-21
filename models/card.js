@@ -5,15 +5,6 @@ var CardSchema = new Schema({
 	editor: { type: Schema.Types.ObjectId, ref: 'User', required: true },
 	date: { type: Date, default: Date.now() },
 
-	reviewer: { type: Schema.Types.ObjectId, ref: 'User', default: null },
-	review: { type: String, default: '', trim: true },
-	status: { type: String, enum: [ 'Suspended', 'Accepted', 'Rejected', 'Deprecated' ], default: 'Suspended' },
-	date_review: { type: Date, default: null },
-	date_deprecate: { type: Date, default: null },
-
-	votes_up: { type: Number, default: 0 },
-	votes_down: { type: Number, default: 0 },
-
 	// main -------------------------------------------------------------------------
 	character: { type: Schema.Types.ObjectId, ref: 'Character', required: true },
 	
@@ -69,13 +60,6 @@ var CardSchema = new Schema({
 	icon_idolized_y: { type: Number, required: true },
 	icon_idolized_rotation: { type: Number, required: true },
 	icon_idolized_scale: { type: Number, required: true }
-}, {
-	toObject: { virtuals: true },
-	toJSON: { virtuals: true }
-});
-
-CardSchema.virtual('url_detail').get(function () {
-	return '/cards/' + this._id;
 });
 
 module.exports = mongoose.model('Card', CardSchema);

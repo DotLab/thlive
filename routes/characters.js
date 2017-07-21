@@ -5,8 +5,8 @@ var characterController = require('../controllers/characterController');
 
 router.get('/', characterController.list);
 
-router.get('/add', characterController.add_form);
-router.post('/add', characterController.add);
+router.get('/editor', characterController.editor);
+router.post('/editor', characterController.editor_post);
 
 router.get('/:id', characterController.detail);
 

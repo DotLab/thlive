@@ -1,6 +1,7 @@
-extends ./layout
+extends ./base
 
-block content
-  h1 #{error.name} #[small #{error.message}]
-
-  pre= error.stack
+block main
+	div.container
+		h1.my-4 #{error.name} #[small.text-muted.text-ellip #{error.message}]
+		
+		pre.rounded.px-3.py-2= error.stack
