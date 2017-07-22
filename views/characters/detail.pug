@@ -12,29 +12,31 @@ block main
 				div.col-md-4
 					img.img-fluid.rounded.mb-3(src='/upload/images/' + character.avatar.name_local)
 			div.col-md-8
-				h3.h5 Profile
 				table.table-sm
+					thead
+						tr
+							th Profile
 					tbody
 						tr
-							td.font-weight-bold Japanese Name
-							td= character.name_jp
-						tr
-							td.font-weight-bold Chinese Name
+							th Chinese Name
 							td= character.name_zh
 						tr
-							td.font-weight-bold English Name
+							th Japanese Name
+							td= character.name_ja + ' ' + character.name_ja_romaji
+						tr
+							th English Name
 							td= character.name_en
 						tr
-							td.font-weight-bold Age
+							th Age
 							td= character.age
 						tr
-							td.font-weight-bold Race
+							th Race
 							td= character.race
 						tr
-							td.font-weight-bold Residence
+							th Residence
 							td= character.residence
 						tr
-							td.font-weight-bold Profession
+							th Profession
 							td= character.profession
 
 		div#cont_markdown

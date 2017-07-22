@@ -72,6 +72,7 @@ block main
 							//- span #[a(href='#') dlkfa #[span.count (123)]]
 							//- span #[a(href='#') dlkfa #[span.count (123)]]
 			div.col-md-9.mt-4
+				a.btn.btn-primary.float-right.hidden-xs-down.small(href='/images/upload?artist=' + artist._id) Upload Images
 				h2.h4 #{artist.name} #[small.text-muted.hidden-xs-down - #{artist._id}]
 					if (query.keywords)
 						span.badge.badge-primary.tiny.ml-2= query.keywords 

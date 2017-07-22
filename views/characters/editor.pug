@@ -27,14 +27,17 @@ block main
 
 				div.col-md-9.mt-4
 					div.form-group
+						label Chinese Name
+						input.form-control(type='text', name='name_zh', value=character.name_zh)
+					div.form-group
 						label Japanese Name
-						input.form-control(type='text', name='name_jp', value=character.name_jp)
+						input.form-control(type='text', name='name_ja', value=character.name_ja)
+					div.form-group
+						label Japanese Rōmaji
+						input.form-control(type='text', name='name_ja', value=character.name_ja_romaji)
 					div.form-group
 						label English Name
 						input.form-control(type='text', name='name_en', value=character.name_en)
-					div.form-group
-						label Chinese Name
-						input.form-control(type='text', name='name_zh', value=character.name_zh)
 
 					div.form-group
 						label Age
