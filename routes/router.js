@@ -1,20 +1,20 @@
 var express = require('express');
 var router = express.Router();
 
-router.use('/api', require('./api'));
-
 router.get('/', function (req, res, next) {
 	res.render('index', { 
 		title: 'Touhou! Live!' 
 	});
 });
 
-router.use('/users', require('./users'));
+var genericApi = require('../controllers/api/genericApi');
+router.get('/users', genericApi(require('../models/user')));
 
-router.use('/artists', require('./artists'));
-router.use('/images', require('./images'));
-
-router.use('/characters', require('./characters'));
-router.use('/cards', require('./cards'));
+var userController = require('../controllers/userController');
+router.get('/signup', userController.signup_form);
+router.post('/signup', userController.signup);
+router.get('/login', userController.login_form);
+router.post('/login', userController.login);
+router.get('/logout', userController.logout);
 
 module.exports = router;
