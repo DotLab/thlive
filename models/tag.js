@@ -2,13 +2,12 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var TagSchema = new Schema({
-	avatar: { type: Schema.Types.ObjectId, ref: 'Tag', default: null, required: true },
+	namespace: { type: String, required: true, enum: [ 'artist', 'character', 'location' ] },
 
-	name: { type: String, required: true, trim: true, index: true, unique: true },
+	master: { type: String, required: true, trim: true, lowercase: true, match: /^([0-9a-z\.\-\+\#]+\ )*[0-9a-z\.\-\+\#]+$/ },
+	slaves: { type: [ { type: String, trim: true, lowercase: true, match: /^([0-9a-z\.\-\+\#]+\ )*[0-9a-z\.\-\+\#]+$/ } ], unique: true },
 
-	alias: [ { type: String, trim: true } ],
-
-	markdown: { type: String, trim: true }
+	markdown: { type: String, index: 'text', trim: true }
 });
 
 module.exports = mongoose.model('Tag', TagSchema);

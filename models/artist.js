@@ -2,7 +2,7 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var ArtistSchema = new Schema({
-	name: { type: String, required: true, trim: true, index: true, unique: true },
+	name: { type: String, required: true, trim: true, unique: true },
 	avatar: { type: Schema.Types.ObjectId, ref: 'Image', default: null },
 
 	intro: { type: String, default: '' },

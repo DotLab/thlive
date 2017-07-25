@@ -20,6 +20,7 @@
     "moment": "^2.18.1",
     "mongoose": "^4.10.4",
     "morgan": "~1.8.1",
+    "node-cron": "^1.2.0",
     "pbkdf2-password": "^1.2.1",
     "pug": "~2.0.0-beta11",
     "qs": "^6.4.0",

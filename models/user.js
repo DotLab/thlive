@@ -5,8 +5,8 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var UserSchema = new Schema({
-	name: { type: String, required: true, index: 'text', unique: true, trim: true, match: /^[^ ]{1,20}$/ },
-	email: { type: String, required: true, index: true, unique: true, trim: true, match: /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/ },
+	name: { type: String, required: true, unique: true, trim: true, match: /^[^ ]{1,20}$/ },
+	email: { type: String, required: true, unique: true, trim: true, match: /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/ },
 
 	title: { type: String, default: '' },
 	location: { type: String, default: '' },
@@ -20,8 +20,8 @@ var UserSchema = new Schema({
 	reputation: { type: Number, default: 0 },
 	modulator: { type: Boolean, default: false },
 
-	count_votes: { type: Number, default: 0 },
-	count_edits: { type: Number, default: 0 },
+	votes: { type: Number, default: 0 },
+	edits: { type: Number, default: 0 },
 
 	badge_gold: { type: Number, default: 0 },
 	badge_silver: { type: Number, default: 0 },

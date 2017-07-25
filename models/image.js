@@ -12,7 +12,7 @@ var ImageSchema = new Schema({
 
 	keywords: [{ type: String, trim: true, lowercase: true }],
 
-	sha1: { type: String, required: true, index: true, unique: true },
+	sha1: { type: String, required: true, unique: true },
 
 	format: { type: String, required: true },
 	width: { type: Number, required: true },
