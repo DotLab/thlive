@@ -4,8 +4,7 @@ var User = require('../models/user');
 
 exports.signup = function (req, res, next) {
 	res.render('users/signup', { 
-		title: 'Join THLIVE',
-		section: 'users'
+		title: 'Join THLIVE'
 	});
 };
 
@@ -37,7 +36,6 @@ exports.signup_post = function (req, res, next) {
 	}).catch(err => {
 		res.render('users/signup', {
 			title: 'Join THLIVE',
-			section: 'users',
 			error: err
 		});
 	});
@@ -45,8 +43,7 @@ exports.signup_post = function (req, res, next) {
 
 exports.login = function (req, res, next) {
 	res.render('users/login', { 
-		title: 'Login THLIVE',
-		section: 'users'
+		title: 'Login THLIVE'
 	});
 };
 
@@ -78,7 +75,6 @@ exports.login_post = function (req, res, next) {
 	}).catch(err => {
 		res.render('users/login', {
 			title: 'Login THLIVE',
-			section: 'users',
 			error: err
 		});
 	});
@@ -98,7 +94,6 @@ exports.list = function (req, res, next) {
 	User.find().then(docs => {
 		res.render('users/list', {
 			title: 'Users',
-			section: 'users',
 			users: docs
 		});
 	}).catch(err => next(err));
@@ -111,7 +106,6 @@ exports.detail = function (req, res, next) {
 
 		res.render('users/detail', {
 			title: doc.name,
-			section: 'users',
 			user: doc
 		});
 	}).catch(err => next(err));
@@ -122,7 +116,6 @@ exports.editor = function (req, res, next) {
 	User.findById(req.session.user._id).then(doc => {
 		res.render('users/editor', {
 			title: doc.name,
-			section: 'users',
 			body: doc
 		});
 	}).catch(err => next(err));
@@ -153,7 +146,6 @@ exports.editor_post = function (req, res, next) {
 	}).catch(err => {
 		res.render('users/editor', {
 			title: 'Join THLIVE',
-			section: 'users',
 			user: req.body,
 			error: err
 		});

@@ -3,7 +3,7 @@ var Schema = mongoose.Schema;
 
 var TagEditSchema = new Schema({
 	for: { type: Schema.Types.ObjectId, ref: 'Tag' },
-	type: { type: String, required: true, default: 'initial', enum: [ 'initial', 'edit', 'rollback' ] },
+	type: { type: String, required: true, default: 'create', enum: [ 'create', 'edit', 'rollback' ] },
 
 	editor: { type: Schema.Types.ObjectId, ref: 'User', required: true },
 	date: { type: Date, required: true, default: Date.now },

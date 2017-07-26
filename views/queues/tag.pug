@@ -1,0 +1,41 @@
+extends ../base
+
+block main
+	div.container.mt-4
+		h2.h5.font-weight-normal= title
+		hr
+
+		div.row
+			div.col Approve or reject edits suggested by users.
+			div.col
+				form.float-right(method='post')
+					input(name='for', value=edit._id, hidden)
+					button.mb-2.mr-2.btn.btn-sm.btn-primary(formaction='?action=approve') Approve
+					button.mb-2.mr-2.btn.btn-sm.btn-primary(formaction='?action=reject') Reject
+					button.mb-2.mr-2.btn.btn-sm.btn-primary(formaction='?action=skip') Skip
+
+		hr.mt-2
+
+		h3.h6 Introduction Diff
+		div.row
+			div.col-sm-6
+			div.col-sm-6
+				em= edit.edit.intro
+
+		h3.h6.mt-3 Slave Diff
+		div.row
+			div.col-md-6
+				if tag
+					ul
+						li xxx
+
+			div.col-md-6 
+				h4 #[small.text-muted.mr-1 #{edit.edit.namespace}:]#{edit.edit.slaves[0]} #[strong.hidden-md-down - current master]
+				ul
+					for slave in edit.edit.slaves
+						li #[small.text-muted.mr-1 #{edit.edit.namespace}:]#{slave}
+		
+		h3.h6 Wiki Diff
+		div.row
+			div.col-md-6
+			div.col-md-6= marked(edit.edit.markdown)

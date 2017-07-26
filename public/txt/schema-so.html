@@ -1,0 +1,605 @@
+<style>
+	div {
+		font-family: monospace;
+		font-size: 16px;
+	}
+
+	li {
+		color: red;
+	}
+
+	dl {
+		width: 100%;
+		overflow: hidden;
+		/*background-color: #fff;*/
+		padding: 0;
+		margin: 10px 0;
+	}
+
+	dt, dd {
+		background-color: #fff;
+		border-bottom: 1px solid #aaa;
+		padding: 0;
+		margin: 1px 0;
+		float: left;
+		width: 50%;
+	}
+
+	dt {
+		color: #000;
+	}
+
+	dd {
+		color: purple;
+	}
+</style>
+
+<div id="schema" class="right-group">
+		<span class="heading">Database Schema
+			<span class="buttons">
+				<span class="button-group">
+					<i class="icon-sort-by-alphabet button sort" title="sort alphabetically"></i>
+				</span>
+				<span class="button-group">
+					<i class="icon-plus button expand" title="expand all tables"></i>
+					<i class="icon-minus button collapse" title="collapse all tables"></i>
+				</span>
+			</span>
+		</span>
+		<ul>
+			<li data-order="0">
+				<span class="schema-table">Posts</span>
+				<dl>
+					<dt data-order="0">Id</dt>
+					<dd class="cm-variable-2">int</dd>
+					<dt data-order="1">PostTypeId</dt>
+					<dd class="cm-variable-2">tinyint</dd>
+					<dt data-order="2">AcceptedAnswerId</dt>
+					<dd class="cm-variable-2">int</dd>
+					<dt data-order="3">ParentId</dt>
+					<dd class="cm-variable-2">int</dd>
+					<dt data-order="4">CreationDate</dt>
+					<dd class="cm-variable-2">datetime</dd>
+					<dt data-order="5">DeletionDate</dt>
+					<dd class="cm-variable-2">datetime</dd>
+					<dt data-order="6">Score</dt>
+					<dd class="cm-variable-2">int</dd>
+					<dt data-order="7">ViewCount</dt>
+					<dd class="cm-variable-2">int</dd>
+					<dt data-order="8">Body</dt>
+					<dd class="cm-variable-2">nvarchar (max)</dd>
+					<dt data-order="9">OwnerUserId</dt>
+					<dd class="cm-variable-2">int</dd>
+					<dt data-order="10">OwnerDisplayName</dt>
+					<dd class="cm-variable-2">nvarchar (40)</dd>
+					<dt data-order="11">LastEditorUserId</dt>
+					<dd class="cm-variable-2">int</dd>
+					<dt data-order="12">LastEditorDisplayName</dt>
+					<dd class="cm-variable-2">nvarchar (40)</dd>
+					<dt data-order="13">LastEditDate</dt>
+					<dd class="cm-variable-2">datetime</dd>
+					<dt data-order="14">LastActivityDate</dt>
+					<dd class="cm-variable-2">datetime</dd>
+					<dt data-order="15">Title</dt>
+					<dd class="cm-variable-2">nvarchar (250)</dd>
+					<dt data-order="16">Tags</dt>
+					<dd class="cm-variable-2">nvarchar (250)</dd>
+					<dt data-order="17">AnswerCount</dt>
+					<dd class="cm-variable-2">int</dd>
+					<dt data-order="18">CommentCount</dt>
+					<dd class="cm-variable-2">int</dd>
+					<dt data-order="19">FavoriteCount</dt>
+					<dd class="cm-variable-2">int</dd>
+					<dt data-order="20">ClosedDate</dt>
+					<dd class="cm-variable-2">datetime</dd>
+					<dt data-order="21">CommunityOwnedDate</dt>
+					<dd class="cm-variable-2">datetime</dd>
+				</dl>
+			</li>
+			<li data-order="1">
+				<span class="schema-table">Users</span>
+				<dl>
+					<dt data-order="0">Id</dt>
+					<dd class="cm-variable-2">int</dd>
+					<dt data-order="1">Reputation</dt>
+					<dd class="cm-variable-2">int</dd>
+					<dt data-order="2">CreationDate</dt>
+					<dd class="cm-variable-2">datetime</dd>
+					<dt data-order="3">DisplayName</dt>
+					<dd class="cm-variable-2">nvarchar (40)</dd>
+					<dt data-order="4">LastAccessDate</dt>
+					<dd class="cm-variable-2">datetime</dd>
+					<dt data-order="5">WebsiteUrl</dt>
+					<dd class="cm-variable-2">nvarchar (200)</dd>
+					<dt data-order="6">Location</dt>
+					<dd class="cm-variable-2">nvarchar (100)</dd>
+					<dt data-order="7">AboutMe</dt>
+					<dd class="cm-variable-2">nvarchar (max)</dd>
+					<dt data-order="8">Views</dt>
+					<dd class="cm-variable-2">int</dd>
+					<dt data-order="9">UpVotes</dt>
+					<dd class="cm-variable-2">int</dd>
+					<dt data-order="10">DownVotes</dt>
+					<dd class="cm-variable-2">int</dd>
+					<dt data-order="11">ProfileImageUrl</dt>
+					<dd class="cm-variable-2">nvarchar (200)</dd>
+					<dt data-order="12">EmailHash</dt>
+					<dd class="cm-variable-2">varchar (32)</dd>
+					<dt data-order="13">Age</dt>
+					<dd class="cm-variable-2">int</dd>
+					<dt data-order="14">AccountId</dt>
+					<dd class="cm-variable-2">int</dd>
+				</dl>
+			</li>
+			<li data-order="2">
+				<span class="schema-table">Comments</span>
+				<dl>
+					<dt data-order="0">Id</dt>
+					<dd class="cm-variable-2">int</dd>
+					<dt data-order="1">PostId</dt>
+					<dd class="cm-variable-2">int</dd>
+					<dt data-order="2">Score</dt>
+					<dd class="cm-variable-2">int</dd>
+					<dt data-order="3">Text</dt>
+					<dd class="cm-variable-2">nvarchar (600)</dd>
+					<dt data-order="4">CreationDate</dt>
+					<dd class="cm-variable-2">datetime</dd>
+					<dt data-order="5">UserDisplayName</dt>
+					<dd class="cm-variable-2">nvarchar (30)</dd>
+					<dt data-order="6">UserId</dt>
+					<dd class="cm-variable-2">int</dd>
+				</dl>
+			</li>
+			<li data-order="3">
+				<span class="schema-table">Badges</span>
+				<dl>
+					<dt data-order="0">Id</dt>
+					<dd class="cm-variable-2">int</dd>
+					<dt data-order="1">UserId</dt>
+					<dd class="cm-variable-2">int</dd>
+					<dt data-order="2">Name</dt>
+					<dd class="cm-variable-2">nvarchar (50)</dd>
+					<dt data-order="3">Date</dt>
+					<dd class="cm-variable-2">datetime</dd>
+					<dt data-order="4">Class</dt>
+					<dd class="cm-variable-2">tinyint</dd>
+					<dt data-order="5">TagBased</dt>
+					<dd class="cm-variable-2">bit</dd>
+				</dl>
+			</li>
+			<li data-order="4">
+				<span class="schema-table">CloseAsOffTopicReasonTypes</span>
+				<dl>
+					<dt data-order="0">Id</dt>
+					<dd class="cm-variable-2">smallint</dd>
+					<dt data-order="1">IsUniversal</dt>
+					<dd class="cm-variable-2">bit</dd>
+					<dt data-order="2">MarkdownMini</dt>
+					<dd class="cm-variable-2">nvarchar (500)</dd>
+					<dt data-order="3">CreationDate</dt>
+					<dd class="cm-variable-2">datetime</dd>
+					<dt data-order="4">CreationModeratorId</dt>
+					<dd class="cm-variable-2">int</dd>
+					<dt data-order="5">ApprovalDate</dt>
+					<dd class="cm-variable-2">datetime</dd>
+					<dt data-order="6">ApprovalModeratorId</dt>
+					<dd class="cm-variable-2">int</dd>
+					<dt data-order="7">DeactivationDate</dt>
+					<dd class="cm-variable-2">datetime</dd>
+					<dt data-order="8">DeactivationModeratorId</dt>
+					<dd class="cm-variable-2">int</dd>
+				</dl>
+			</li>
+			<li data-order="5">
+				<span class="schema-table">CloseReasonTypes</span>
+				<dl>
+					<dt data-order="0">Id</dt>
+					<dd class="cm-variable-2">tinyint</dd>
+					<dt data-order="1">Name</dt>
+					<dd class="cm-variable-2">nvarchar (200)</dd>
+					<dt data-order="2">Description</dt>
+					<dd class="cm-variable-2">nvarchar (500)</dd>
+				</dl>
+			</li>
+			<li data-order="6">
+				<span class="schema-table">FlagTypes</span>
+				<dl>
+					<dt data-order="0">Id</dt>
+					<dd class="cm-variable-2">tinyint</dd>
+					<dt data-order="1">Name</dt>
+					<dd class="cm-variable-2">nvarchar (50)</dd>
+					<dt data-order="2">Description</dt>
+					<dd class="cm-variable-2">nvarchar (500)</dd>
+				</dl>
+			</li>
+			<li data-order="7">
+				<span class="schema-table">PendingFlags</span>
+				<dl>
+					<dt data-order="0">Id</dt>
+					<dd class="cm-variable-2">int</dd>
+					<dt data-order="1">FlagTypeId</dt>
+					<dd class="cm-variable-2">tinyint</dd>
+					<dt data-order="2">PostId</dt>
+					<dd class="cm-variable-2">int</dd>
+					<dt data-order="3">CreationDate</dt>
+					<dd class="cm-variable-2">date</dd>
+					<dt data-order="4">CloseReasonTypeId</dt>
+					<dd class="cm-variable-2">tinyint</dd>
+					<dt data-order="5">CloseAsOffTopicReasonTypeId</dt>
+					<dd class="cm-variable-2">smallint</dd>
+					<dt data-order="6">DuplicateOfQuestionId</dt>
+					<dd class="cm-variable-2">int</dd>
+					<dt data-order="7">BelongsOnBaseHostAddress</dt>
+					<dd class="cm-variable-2">nvarchar (100)</dd>
+				</dl>
+			</li>
+			<li data-order="8">
+				<span class="schema-table">PostFeedback</span>
+				<dl>
+					<dt data-order="0">Id</dt>
+					<dd class="cm-variable-2">int</dd>
+					<dt data-order="1">PostId</dt>
+					<dd class="cm-variable-2">int</dd>
+					<dt data-order="2">IsAnonymous</dt>
+					<dd class="cm-variable-2">bit</dd>
+					<dt data-order="3">VoteTypeId</dt>
+					<dd class="cm-variable-2">tinyint</dd>
+					<dt data-order="4">CreationDate</dt>
+					<dd class="cm-variable-2">datetime</dd>
+				</dl>
+			</li>
+			<li data-order="9">
+				<span class="schema-table">PostHistory</span>
+				<dl>
+					<dt data-order="0">Id</dt>
+					<dd class="cm-variable-2">int</dd>
+					<dt data-order="1">PostHistoryTypeId</dt>
+					<dd class="cm-variable-2">tinyint</dd>
+					<dt data-order="2">PostId</dt>
+					<dd class="cm-variable-2">int</dd>
+					<dt data-order="3">RevisionGUID</dt>
+					<dd class="cm-variable-2">uniqueidentifier</dd>
+					<dt data-order="4">CreationDate</dt>
+					<dd class="cm-variable-2">datetime</dd>
+					<dt data-order="5">UserId</dt>
+					<dd class="cm-variable-2">int</dd>
+					<dt data-order="6">UserDisplayName</dt>
+					<dd class="cm-variable-2">nvarchar (40)</dd>
+					<dt data-order="7">Comment</dt>
+					<dd class="cm-variable-2">nvarchar (400)</dd>
+					<dt data-order="8">Text</dt>
+					<dd class="cm-variable-2">nvarchar (max)</dd>
+				</dl>
+			</li>
+			<li data-order="10">
+				<span class="schema-table">PostHistoryTypes</span>
+				<dl>
+					<dt data-order="0">Id</dt>
+					<dd class="cm-variable-2">tinyint</dd>
+					<dt data-order="1">Name</dt>
+					<dd class="cm-variable-2">nvarchar (50)</dd>
+				</dl>
+			</li>
+			<li data-order="11">
+				<span class="schema-table">PostLinks</span>
+				<dl>
+					<dt data-order="0">Id</dt>
+					<dd class="cm-variable-2">int</dd>
+					<dt data-order="1">CreationDate</dt>
+					<dd class="cm-variable-2">datetime</dd>
+					<dt data-order="2">PostId</dt>
+					<dd class="cm-variable-2">int</dd>
+					<dt data-order="3">RelatedPostId</dt>
+					<dd class="cm-variable-2">int</dd>
+					<dt data-order="4">LinkTypeId</dt>
+					<dd class="cm-variable-2">tinyint</dd>
+				</dl>
+			</li>
+			<li data-order="12">
+				<span class="schema-table">PostNotices</span>
+				<dl>
+					<dt data-order="0">Id</dt>
+					<dd class="cm-variable-2">int</dd>
+					<dt data-order="1">PostId</dt>
+					<dd class="cm-variable-2">int</dd>
+					<dt data-order="2">PostNoticeTypeId</dt>
+					<dd class="cm-variable-2">int</dd>
+					<dt data-order="3">CreationDate</dt>
+					<dd class="cm-variable-2">datetime</dd>
+					<dt data-order="4">DeletionDate</dt>
+					<dd class="cm-variable-2">datetime</dd>
+					<dt data-order="5">ExpiryDate</dt>
+					<dd class="cm-variable-2">datetime</dd>
+					<dt data-order="6">Body</dt>
+					<dd class="cm-variable-2">nvarchar (max)</dd>
+					<dt data-order="7">OwnerUserId</dt>
+					<dd class="cm-variable-2">int</dd>
+					<dt data-order="8">DeletionUserId</dt>
+					<dd class="cm-variable-2">int</dd>
+				</dl>
+			</li>
+			<li data-order="13">
+				<span class="schema-table">PostNoticeTypes</span>
+				<dl>
+					<dt data-order="0">Id</dt>
+					<dd class="cm-variable-2">int</dd>
+					<dt data-order="1">ClassId</dt>
+					<dd class="cm-variable-2">tinyint</dd>
+					<dt data-order="2">Name</dt>
+					<dd class="cm-variable-2">nvarchar (80)</dd>
+					<dt data-order="3">Body</dt>
+					<dd class="cm-variable-2">nvarchar (max)</dd>
+					<dt data-order="4">IsHidden</dt>
+					<dd class="cm-variable-2">bit</dd>
+					<dt data-order="5">Predefined</dt>
+					<dd class="cm-variable-2">bit</dd>
+					<dt data-order="6">PostNoticeDurationId</dt>
+					<dd class="cm-variable-2">int</dd>
+				</dl>
+			</li>
+			<li data-order="14">
+				<span class="schema-table">PostsWithDeleted</span>
+				<dl>
+					<dt data-order="0">Id</dt>
+					<dd class="cm-variable-2">int</dd>
+					<dt data-order="1">PostTypeId</dt>
+					<dd class="cm-variable-2">tinyint</dd>
+					<dt data-order="2">AcceptedAnswerId</dt>
+					<dd class="cm-variable-2">int</dd>
+					<dt data-order="3">ParentId</dt>
+					<dd class="cm-variable-2">int</dd>
+					<dt data-order="4">CreationDate</dt>
+					<dd class="cm-variable-2">datetime</dd>
+					<dt data-order="5">DeletionDate</dt>
+					<dd class="cm-variable-2">datetime</dd>
+					<dt data-order="6">Score</dt>
+					<dd class="cm-variable-2">int</dd>
+					<dt data-order="7">ViewCount</dt>
+					<dd class="cm-variable-2">int</dd>
+					<dt data-order="8">Body</dt>
+					<dd class="cm-variable-2">nvarchar (max)</dd>
+					<dt data-order="9">OwnerUserId</dt>
+					<dd class="cm-variable-2">int</dd>
+					<dt data-order="10">OwnerDisplayName</dt>
+					<dd class="cm-variable-2">nvarchar (40)</dd>
+					<dt data-order="11">LastEditorUserId</dt>
+					<dd class="cm-variable-2">int</dd>
+					<dt data-order="12">LastEditorDisplayName</dt>
+					<dd class="cm-variable-2">nvarchar (40)</dd>
+					<dt data-order="13">LastEditDate</dt>
+					<dd class="cm-variable-2">datetime</dd>
+					<dt data-order="14">LastActivityDate</dt>
+					<dd class="cm-variable-2">datetime</dd>
+					<dt data-order="15">Title</dt>
+					<dd class="cm-variable-2">nvarchar (250)</dd>
+					<dt data-order="16">Tags</dt>
+					<dd class="cm-variable-2">nvarchar (250)</dd>
+					<dt data-order="17">AnswerCount</dt>
+					<dd class="cm-variable-2">int</dd>
+					<dt data-order="18">CommentCount</dt>
+					<dd class="cm-variable-2">int</dd>
+					<dt data-order="19">FavoriteCount</dt>
+					<dd class="cm-variable-2">int</dd>
+					<dt data-order="20">ClosedDate</dt>
+					<dd class="cm-variable-2">datetime</dd>
+					<dt data-order="21">CommunityOwnedDate</dt>
+					<dd class="cm-variable-2">datetime</dd>
+				</dl>
+			</li>
+			<li data-order="15">
+				<span class="schema-table">PostTags</span>
+				<dl>
+					<dt data-order="0">PostId</dt>
+					<dd class="cm-variable-2">int</dd>
+					<dt data-order="1">TagId</dt>
+					<dd class="cm-variable-2">int</dd>
+				</dl>
+			</li>
+			<li data-order="16">
+				<span class="schema-table">PostTypes</span>
+				<dl>
+					<dt data-order="0">Id</dt>
+					<dd class="cm-variable-2">tinyint</dd>
+					<dt data-order="1">Name</dt>
+					<dd class="cm-variable-2">nvarchar (50)</dd>
+				</dl>
+			</li>
+			<li data-order="17">
+				<span class="schema-table">ReviewRejectionReasons</span>
+				<dl>
+					<dt data-order="0">Id</dt>
+					<dd class="cm-variable-2">tinyint</dd>
+					<dt data-order="1">Name</dt>
+					<dd class="cm-variable-2">nvarchar (100)</dd>
+					<dt data-order="2">Description</dt>
+					<dd class="cm-variable-2">nvarchar (300)</dd>
+					<dt data-order="3">PostTypeId</dt>
+					<dd class="cm-variable-2">tinyint</dd>
+				</dl>
+			</li>
+			<li data-order="18">
+				<span class="schema-table">ReviewTaskResults</span>
+				<dl>
+					<dt data-order="0">Id</dt>
+					<dd class="cm-variable-2">int</dd>
+					<dt data-order="1">ReviewTaskId</dt>
+					<dd class="cm-variable-2">int</dd>
+					<dt data-order="2">ReviewTaskResultTypeId</dt>
+					<dd class="cm-variable-2">tinyint</dd>
+					<dt data-order="3">CreationDate</dt>
+					<dd class="cm-variable-2">date</dd>
+					<dt data-order="4">RejectionReasonId</dt>
+					<dd class="cm-variable-2">tinyint</dd>
+					<dt data-order="5">Comment</dt>
+					<dd class="cm-variable-2">nvarchar (150)</dd>
+				</dl>
+			</li>
+			<li data-order="19">
+				<span class="schema-table">ReviewTaskResultTypes</span>
+				<dl>
+					<dt data-order="0">Id</dt>
+					<dd class="cm-variable-2">tinyint</dd>
+					<dt data-order="1">Name</dt>
+					<dd class="cm-variable-2">nvarchar (100)</dd>
+					<dt data-order="2">Description</dt>
+					<dd class="cm-variable-2">nvarchar (300)</dd>
+				</dl>
+			</li>
+			<li data-order="20">
+				<span class="schema-table">ReviewTasks</span>
+				<dl>
+					<dt data-order="0">Id</dt>
+					<dd class="cm-variable-2">int</dd>
+					<dt data-order="1">ReviewTaskTypeId</dt>
+					<dd class="cm-variable-2">tinyint</dd>
+					<dt data-order="2">CreationDate</dt>
+					<dd class="cm-variable-2">date</dd>
+					<dt data-order="3">DeletionDate</dt>
+					<dd class="cm-variable-2">date</dd>
+					<dt data-order="4">ReviewTaskStateId</dt>
+					<dd class="cm-variable-2">tinyint</dd>
+					<dt data-order="5">PostId</dt>
+					<dd class="cm-variable-2">int</dd>
+					<dt data-order="6">SuggestedEditId</dt>
+					<dd class="cm-variable-2">int</dd>
+					<dt data-order="7">CompletedByReviewTaskId</dt>
+					<dd class="cm-variable-2">int</dd>
+				</dl>
+			</li>
+			<li data-order="21">
+				<span class="schema-table">ReviewTaskStates</span>
+				<dl>
+					<dt data-order="0">Id</dt>
+					<dd class="cm-variable-2">tinyint</dd>
+					<dt data-order="1">Name</dt>
+					<dd class="cm-variable-2">nvarchar (50)</dd>
+					<dt data-order="2">Description</dt>
+					<dd class="cm-variable-2">nvarchar (300)</dd>
+				</dl>
+			</li>
+			<li data-order="22">
+				<span class="schema-table">ReviewTaskTypes</span>
+				<dl>
+					<dt data-order="0">Id</dt>
+					<dd class="cm-variable-2">tinyint</dd>
+					<dt data-order="1">Name</dt>
+					<dd class="cm-variable-2">nvarchar (50)</dd>
+					<dt data-order="2">Description</dt>
+					<dd class="cm-variable-2">nvarchar (300)</dd>
+				</dl>
+			</li>
+			<li data-order="23">
+				<span class="schema-table">SuggestedEdits</span>
+				<dl>
+					<dt data-order="0">Id</dt>
+					<dd class="cm-variable-2">int</dd>
+					<dt data-order="1">PostId</dt>
+					<dd class="cm-variable-2">int</dd>
+					<dt data-order="2">CreationDate</dt>
+					<dd class="cm-variable-2">datetime</dd>
+					<dt data-order="3">ApprovalDate</dt>
+					<dd class="cm-variable-2">datetime</dd>
+					<dt data-order="4">RejectionDate</dt>
+					<dd class="cm-variable-2">datetime</dd>
+					<dt data-order="5">OwnerUserId</dt>
+					<dd class="cm-variable-2">int</dd>
+					<dt data-order="6">Comment</dt>
+					<dd class="cm-variable-2">nvarchar (800)</dd>
+					<dt data-order="7">Text</dt>
+					<dd class="cm-variable-2">nvarchar (max)</dd>
+					<dt data-order="8">Title</dt>
+					<dd class="cm-variable-2">nvarchar (250)</dd>
+					<dt data-order="9">Tags</dt>
+					<dd class="cm-variable-2">nvarchar (250)</dd>
+					<dt data-order="10">RevisionGUID</dt>
+					<dd class="cm-variable-2">uniqueidentifier</dd>
+				</dl>
+			</li>
+			<li data-order="24">
+				<span class="schema-table">SuggestedEditVotes</span>
+				<dl>
+					<dt data-order="0">Id</dt>
+					<dd class="cm-variable-2">int</dd>
+					<dt data-order="1">SuggestedEditId</dt>
+					<dd class="cm-variable-2">int</dd>
+					<dt data-order="2">UserId</dt>
+					<dd class="cm-variable-2">int</dd>
+					<dt data-order="3">VoteTypeId</dt>
+					<dd class="cm-variable-2">tinyint</dd>
+					<dt data-order="4">CreationDate</dt>
+					<dd class="cm-variable-2">datetime</dd>
+					<dt data-order="5">TargetUserId</dt>
+					<dd class="cm-variable-2">int</dd>
+					<dt data-order="6">TargetRepChange</dt>
+					<dd class="cm-variable-2">int</dd>
+				</dl>
+			</li>
+			<li data-order="25">
+				<span class="schema-table">Tags</span>
+				<dl>
+					<dt data-order="0">Id</dt>
+					<dd class="cm-variable-2">int</dd>
+					<dt data-order="1">TagName</dt>
+					<dd class="cm-variable-2">nvarchar (35)</dd>
+					<dt data-order="2">Count</dt>
+					<dd class="cm-variable-2">int</dd>
+					<dt data-order="3">ExcerptPostId</dt>
+					<dd class="cm-variable-2">int</dd>
+					<dt data-order="4">WikiPostId</dt>
+					<dd class="cm-variable-2">int</dd>
+				</dl>
+			</li>
+			<li data-order="26">
+				<span class="schema-table">TagSynonyms</span>
+				<dl>
+					<dt data-order="0">Id</dt>
+					<dd class="cm-variable-2">int</dd>
+					<dt data-order="1">SourceTagName</dt>
+					<dd class="cm-variable-2">nvarchar (35)</dd>
+					<dt data-order="2">TargetTagName</dt>
+					<dd class="cm-variable-2">nvarchar (35)</dd>
+					<dt data-order="3">CreationDate</dt>
+					<dd class="cm-variable-2">datetime</dd>
+					<dt data-order="4">OwnerUserId</dt>
+					<dd class="cm-variable-2">int</dd>
+					<dt data-order="5">AutoRenameCount</dt>
+					<dd class="cm-variable-2">int</dd>
+					<dt data-order="6">LastAutoRename</dt>
+					<dd class="cm-variable-2">datetime</dd>
+					<dt data-order="7">Score</dt>
+					<dd class="cm-variable-2">int</dd>
+					<dt data-order="8">ApprovedByUserId</dt>
+					<dd class="cm-variable-2">int</dd>
+					<dt data-order="9">ApprovalDate</dt>
+					<dd class="cm-variable-2">datetime</dd>
+				</dl>
+			</li>
+			<li data-order="27">
+				<span class="schema-table">Votes</span>
+				<dl>
+					<dt data-order="0">Id</dt>
+					<dd class="cm-variable-2">int</dd>
+					<dt data-order="1">PostId</dt>
+					<dd class="cm-variable-2">int</dd>
+					<dt data-order="2">VoteTypeId</dt>
+					<dd class="cm-variable-2">tinyint</dd>
+					<dt data-order="3">UserId</dt>
+					<dd class="cm-variable-2">int</dd>
+					<dt data-order="4">CreationDate</dt>
+					<dd class="cm-variable-2">datetime</dd>
+					<dt data-order="5">BountyAmount</dt>
+					<dd class="cm-variable-2">int</dd>
+				</dl>
+			</li>
+			<li data-order="28">
+				<span class="schema-table">VoteTypes</span>
+				<dl>
+					<dt data-order="0">Id</dt>
+					<dd class="cm-variable-2">tinyint</dd>
+					<dt data-order="1">Name</dt>
+					<dd class="cm-variable-2">nvarchar (50)</dd>
+				</dl>
+			</li>
+		</ul>
+	</div>
+</div>

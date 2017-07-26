@@ -24,9 +24,12 @@ moment.locale();
 // mongoose ----------------------------------------------------------------------------------------------------
 var mongoose = require('mongoose').set('debug', true);
 mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://localhost:27017/thlive');
-var db = mongoose.connection;
-db.on('error', console.error.bind(console, 'MongoDB connection error:'));
+
+mongoose.connect('mongodb://localhost:27017/thlive', {
+	useMongoClient: true,
+}).then(db => {
+	db.on('error', console.error.bind(console, 'MongoDB connection error:'));
+});
 
 // express ----------------------------------------------------------------------------------------------------
 var express = require('express');
@@ -58,7 +61,7 @@ app.use(session({
 	resave: false, // don't save session if unmodified
 	saveUninitialized: false, // don't create session until something stored
 	secret: isDevelopment ? '此生无悔入东方，来世愿生幻想乡。' : crypto.randomBytes(128).toString('base64'),
-	store: new MongoStore({ mongooseConnection: db }),
+	store: new MongoStore({ mongooseConnection: mongoose.connection }),
 	cookie: {
 		secure: isProduction
 	}

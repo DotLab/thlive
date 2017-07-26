@@ -13,9 +13,7 @@ exports.detail = function (req, res, next) {
 // /tags/editor?for=<for>
 exports.editor = function (req, res, next) {
 	res.render('tags/editor', {
-		title: 'Tag Editor',
-		section: 'tags',
-		body: {}
+		title: 'Tag Editor'
 	});
 }
 
@@ -33,8 +31,6 @@ exports.editor_post = function (req, res, next) {
 	}).catch(err => {
 		res.render('tags/editor', {
 			title: 'Tag Editor',
-			section: 'tags',
-			body: req.body,
 			error: err
 		});
 	});
