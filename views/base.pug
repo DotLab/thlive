@@ -29,7 +29,7 @@ html(lang='en')
 				span.navbar-toggler-icon
 					
 			if mortal
-				a.navbar-text.hidden-sm-down(href='/users/' + mortal.uuid) #{mortal.name}
+				a.navbar-text.hidden-sm-down(href='/users/' + mortal._id) #{mortal.name}
 			else
 				a.btn.btn-sm.btn-outline-success.hidden-sm-down(href='/login') Login
 

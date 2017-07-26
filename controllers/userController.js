@@ -10,8 +10,7 @@ exports.signup = function (req, res, next) {
 };
 
 exports.signup_post = function (req, res, next) {
-	req.checkBody('name').notEmpty().matches(/^[^ ].{0,30}$/);
-	req.checkBody('uuid').notEmpty().matches(/^[a-z][a-z0-9\-]{0,30}$/);
+	req.checkBody('name', 'name must be choosen from English, Chinese, or Japanese').notEmpty().matches(/^[a-zA-Z0-9 \u3040-\u309f\u30a0-\u30ff\u4E00-\u9FFF\uF900-\uFAFF]{1,20}$/);
 	req.checkBody('email').isEmail();
 	req.checkBody('password', 'password too short').notEmpty().matches(/^.{9,}$/);
 
@@ -29,7 +28,6 @@ exports.signup_post = function (req, res, next) {
 	}).then(({ pass, salt, hash }) => {
 		return new User({
 			name: req.body.name,
-			uuid: req.body.uuid,
 			email: req.body.email,
 			salt: salt,
 			hash: hash
@@ -85,25 +83,20 @@ exports.logout_post = function (req, res, next) {
 	});
 }
 
-// /users/:uuid
+exports.list = function (req, res, next) {
+	User.find().then(docs => {
+		res.render('users/list', {
+			title: 'Users',
+			section: 'users',
+			users: docs
+		});
+	}).catch(err => next(err));
+}
+
+// /users/:id
 exports.detail = function (req, res, next) {
-	User.findOne({ uuid: req.params.uuid }).then(doc => {
-		if (!doc) doc = { 
-			name: 'Veronica', 
-			title: 'CEO, MicroVolt Inc.', 
-			moderator: true, 
-			reputation: 0, 
-			badge_gold: 0, 
-			badge_silver: 0, 
-			badge_brozen: 0,
-			vote_up: 0,
-			vote_down: 0,
-			edit: 0,
-			view: 0,
-			date_joined: new Date(0),
-			date_active: new Date(Date.now()),
-			location: 'Hyper Reality',
-			markdown: 'I am **Alpha** and **Omega**, the beginning and the end, the first and the last.' };
+	User.findById(req.params.id).then(doc => {
+		if (!doc) throw new Error('Nonexistent user: ' + req.params.id);
 
 		res.render('users/detail', {
 			title: doc.name,

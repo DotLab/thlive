@@ -19,9 +19,6 @@ block main
 								label Display Name (anything you want)
 								input.form-control(type='text', placeholder='Reimu Hakurei' name='name' value=body.name)
 							div.form-group
-								label UUID (url friendly name)
-								input.form-control(type='text', placeholder='reimu' name='uuid' value=body.uuid)
-							div.form-group
 								label Email (required, but never shown)
 								input.form-control(type='email', placeholder='reimuhakurei@gia.com' name='email' value=body.email)
 							div.form-group
@@ -38,6 +35,6 @@ block main
 
 block foot
 	script.
-		$('[name="uuid"]').on('input', function () {
-			this.value = this.value.replace(/[^a-z0-9\-]+/, '-');
+		$('[name="name"]').on('change', function () {
+			this.value = this.value.replace(/[^a-zA-Z0-9 \u3040-\u309f\u30a0-\u30ff\u4E00-\u9FFF\uF900-\uFAFF]+/, '').trim();
 		});

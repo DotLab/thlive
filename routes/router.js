@@ -33,10 +33,9 @@ router.post('/login', mortalForbidden, userController.login_post);
 router.get('/signup', mortalForbidden, userController.signup);
 router.post('/signup', mortalForbidden, userController.signup_post);
 
-if (isDevelopment)
-	router.get('/logout', visitorForbidden, userController.logout_post);
+router.get('/logout', visitorForbidden, userController.logout_post);
 
-router.get('/users/:uuid', userController.detail);
-// router.get('/users', userController.list);
+router.get('/users', userController.list);
+router.get('/users/:id([a-f0-9]{24})', userController.detail);
 
 module.exports = router;

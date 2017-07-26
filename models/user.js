@@ -2,8 +2,7 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var UserSchema = new Schema({
-	name: { type: String, required: true, unique: true, trim: true, match: /^[^ ].{0,30}$/ },
-	uuid: { type: String, required: true, unique: true, trim: true, match: /^[a-z][a-z0-9\-]{0,30}$/ },
+	name: { type: String, required: true, unique: true, trim: true, match: /^[a-zA-Z0-9 \u3040-\u309f\u30a0-\u30ff\u4E00-\u9FFF\uF900-\uFAFF]{1,20}$/ },
 	email: { type: String, required: true, unique: true, trim: true, match: /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/ },
 
 	avatar: { type: Schema.Types.ObjectId, ref: 'Image', default: null },

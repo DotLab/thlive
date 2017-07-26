@@ -1,0 +1,155 @@
+extends ../base
+
+block head
+	script(src='https://use.fontawesome.com/feea410c25.js')
+	style.
+		.ubadge {
+			border: 1px solid transparent; 
+			border-radius: 2px; 
+			font-size: 12px;
+			font-weight: bold;
+			color: #535a60;
+			overflow: hidden;
+			white-space: nowrap;
+			text-overflow: ellipsis;
+		}
+
+		.text-ellip {
+			overflow: hidden;
+			white-space: nowrap;
+			text-overflow: ellipsis;
+		}
+
+		.ubadge-gold {
+			background: #fff8e2; 
+			border-color: #ece3c8;
+		}
+
+		.ubadge-silver {
+			background: #edeeef; 
+			border-color: #e0e1e3;
+		}
+
+		.ubadge-brozen {
+			background: #f9ebe1; 
+			border-color: #f1decc;
+		}
+
+		.ubadge-tag {
+			background: #eff0f1;
+			border-color: #d6d9dc;
+			border-radius: 4px; 
+		}
+
+		.ubadge-block {
+			color: #fff;
+			background: #2f3337;
+			border-radius: 4px; 
+		}
+
+		.ubadge-coin {
+			width: 8px; height: 8px; 
+			border-radius: 50%; 
+			display: inline-block;
+		}
+
+		.ubadge-coin-gold {
+			background: #FFCC01;
+		}
+
+		.ubadge-coin-silver {
+			background: #B4B8BC;
+		}
+
+		.ubadge-coin-brozen {
+			background: #D1A684;
+		}
+
+		.ucard {
+			background: #fafafb;
+			border: 1px solid #e0e0e0;
+			padding: 20px;
+		}
+
+block main
+	div.container.mt-4
+		h2.h5.font-weight-normal Users
+		hr
+
+		div.row
+			for user in users
+				div.col-md-3.mb-2
+					div.media
+						if user.avatar && user.avatar.name_local
+							img.d-flex.align-self-start.mr-3.shadow-item(src='/upload/images/' + user.name_local, height='64px')
+						div.media-body
+							a(href='/users/' + user._id)= user.name
+							div.small.text-muted
+								div= user.location
+								div
+									strong.mr-2= user.reputation
+									span.mr-1.ubadge-coin.ubadge-coin-gold
+									span.mr-2.text-muted= user.badge_gold
+									span.mr-1.ubadge-coin.ubadge-coin-silver
+									span.mr-2.text-muted= user.badge_silver
+									span.mr-1.ubadge-coin.ubadge-coin-brozen
+									span.text-muted= user.badge_brozen
+								div= user.date_joined
+
+
+block foot
+	script.
+		var $find = $('#find');
+		var $sort = $('#sort');
+		var $range = $('#range');
+
+		var sort = '-reputation', range = new Date(0);
+
+		$sort.on('click', function (event) {
+			var $target = $(event.target);
+			if ($target.hasClass('active')) return;
+
+			$sort.find('a').removeClass('active');
+
+			$target.addClass('active');
+
+			sort = $target.data('sort');
+			console.log(sort);
+			list();
+		});
+
+		$range.on('click', function (event) {
+			$range.find('a').removeClass('active');
+
+			var $target = $(event.target);
+			$target.addClass('active');
+
+			console.log($target.data('range'));
+			list();
+		});
+
+		$find.on('input', function (event) {
+			var value = $find.val();
+			setTimeout(function () {
+				if ($find.val() == value) list();
+			}, 600);
+		});
+
+		var list = function () {
+			var find = $find.val();
+			console.log(find);
+
+			var query = {
+				date_joined: { $gt: range.getTime() }
+			};
+
+			if (find) {
+				query.$text = {
+					$search: find
+				};
+			}
+
+			$.getJSON('/api/query', { query: query, sort: sort, populate: 'avatar' }, function (docs) {
+				console.log(docs);
+			});
+		};
