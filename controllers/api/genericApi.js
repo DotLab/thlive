@@ -25,16 +25,3 @@ module.exports = function (model) {
 		}).catch(err => next(err));
 	};
 };
-
-exports.findById = function (model) {
-	return function (req, res, next) {
-		var q = model.findById(req.params.id);
-
-		if (req.query.populate)
-			q.populate(req.query.populate);
-
-		q.then(doc => {
-			res.send(doc)
-		}).catch(err => next(err));
-	};
-};

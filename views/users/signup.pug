@@ -16,19 +16,28 @@ block main
 					div.card-block.mx-1.my-4
 						form(method='post')
 							div.form-group
-								label Display Name
-								input.form-control(type='text', placeholder='Reimu_Hakurei' name='name' value=body.name)
+								label Display Name (anything you want)
+								input.form-control(type='text', placeholder='Reimu Hakurei' name='name' value=body.name)
+							div.form-group
+								label UUID (url friendly name)
+								input.form-control(type='text', placeholder='reimu' name='uuid' value=body.uuid)
 							div.form-group
 								label Email (required, but never shown)
 								input.form-control(type='email', placeholder='reimuhakurei@gia.com' name='email' value=body.email)
 							div.form-group
-								label Password
+								label Password (longer than 9)
 								input.form-control(type='password', placeholder='*********' name='password' value=body.password)
 							button.btn.btn-primary(type='submit') Sign up
 
-						+error_container(true, false)
+						+error_alerts(true, false)
 
 				div.mt-4.card.text-center
 					div.card-block
 						p.mb-0 Already have an account? #[a(href='login') Log in]
 						p.mb-0 Forget your password? #[strong Contact Kailang!]
+
+block foot
+	script.
+		$('[name="uuid"]').on('input', function () {
+			this.value = this.value.replace(/[^a-z0-9\-]+/, '-');
+		});
