@@ -96,12 +96,14 @@ block main
 				div.row
 					div.col-md-8.mb-3
 						h3.h2= user.name
+							if user.moderator
+								span.ml-1 &diams;
 						p.h5.font-weight-normal.text-muted= user.title
 
 						div#cont_markdown.mt-3 !{marked(user.markdown)}
 
 						if (mortal && user._id == mortal._id)
-							a(href='/users/' + user._id + '/edit') Click here to edit
+							a(href='/users/editor') Click here to edit
 					div.col-md-4.mb-3
 						div.d-flex.justify-content-between.line-1
 							span.d-inline-block

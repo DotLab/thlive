@@ -23,6 +23,7 @@
     "pbkdf2-password": "^1.2.1",
     "pug": "~2.0.0-beta11",
     "rusha": "^0.8.6",
-    "sharp": "^0.18.1"
+    "sharp": "^0.18.1",
+    "validator": "^8.0.0"
   }
 }

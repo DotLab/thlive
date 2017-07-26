@@ -12,8 +12,7 @@ block head
 
 block main
 	div.mt-4.container
-		h2.h4= user.name
-			small.text-muted.ml-2= user._id
+		h2.h4= body.name
 
 		hr
 
@@ -22,20 +21,19 @@ block main
 				div.col-md-3.mt-4
 					div.form-group
 						label Avatar
-						if user.avatar
-							img.mb-3.img-thumbnail.d-block.mx-auto(src='/upload/images/' + user.avatar.name_local)
-						input.form-control(type='text', name='avatar', value=user.avatar?user.avatar._id:'')
+						img#avatar.mb-3.img-thumbnail.d-block.mx-auto(src='')
+						input.form-control(type='text', name='avatar', value=body.avatar)
 
 				div.col-md-9.mt-4
 					div.form-group
 						label Display Name
-						input.form-control(type='text', name='name', value=user.name)
+						input.form-control(type='text', name='name', value=body.name)
 					div.form-group
 						label Job Title
-						input.form-control(type='text', name='title', value=user.title)
+						input.form-control(type='text', name='title', value=body.title)
 					div.form-group
 						label Location (region, country)
-						input.form-control(type='text', name='location', value=user.location)
+						input.form-control(type='text', name='location', value=body.location)
 
 			+error_alerts(true, false)
 
@@ -46,7 +44,7 @@ block main
 					div.form-group
 						label Introduction
 							a.ml-2(href='https://guides.github.com/features/mastering-markdown/', rel="noopener noreferrer" target="_blank") Markdown Guild
-						textarea#markdown.form-control(name='markdown')= user.markdown
+						textarea#markdown.form-control(name='markdown')= body.markdown
 
 					button.btn.btn-primary(type='submit') Submit Edit
 				div.col-lg-6
@@ -57,17 +55,18 @@ block foot
 	script(src='https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js')
 
 	script.
-		$markdown = $('#markdown');
-		$cont_markdown = $('#cont_markdown');
-
-		$(function() {
+		// init markdown rendering
+		$(function () {
 			marked.setOptions({
 				highlight: code => hljs.highlightAuto(code).value,
 				langPrefix:'hljs '
 			});
+
+			$('textarea').keyup();
 		});
 
-		$('#markdown').keydown(function(e) {
+		// tab to 2 spaces
+		$('textarea').keydown(function(e) {
 			var keyCode = e.keyCode || e.which;
 
 			if (keyCode == 9) {
@@ -80,10 +79,14 @@ block foot
 			}
 		});
 
-		$('#markdown').keyup(function(e) {
-			$cont_markdown.html(marked($markdown.val()));
-
+		// auto expend textarea
+		$('textarea').keyup(function (e) {
 			while($(this).outerHeight() < this.scrollHeight + parseFloat($(this).css('borderTopWidth')) + parseFloat($(this).css('borderBottomWidth'))) {
 				$(this).height($(this).height() + 1);
 			};
+		});
+		
+		// render markdown
+		$('#markdown').keyup(function (e) {
+			$('#cont_markdown').html(marked(this.value));
 		});

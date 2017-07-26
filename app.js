@@ -34,6 +34,7 @@ var app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 if (isProduction) {
+	app.set('trust proxy', 1);
 	app.set('view cache', true);
 }
 
@@ -56,16 +57,11 @@ var MongoStore = require('connect-mongo')(session);
 app.use(session({
 	resave: false, // don't save session if unmodified
 	saveUninitialized: false, // don't create session until something stored
-	secret: isDevelopment ? '此生无悔入东方，来世愿生幻想乡。' : (function (len) {
-		debug('generating secret of length', len);
-
-		return crypto.randomBytes(Math.ceil(len * 3 / 4))
-		.toString('base64')   // convert to base64 format
-		.slice(0, len)        // return required number of characters
-		.replace(/\+/g, '0')  // replace '+' with '0'
-		.replace(/\//g, '0'); // replace '/' with '0'
-	})(128),
-	store: new MongoStore({ mongooseConnection: db })
+	secret: isDevelopment ? '此生无悔入东方，来世愿生幻想乡。' : crypto.randomBytes(128).toString('base64'),
+	store: new MongoStore({ mongooseConnection: db }),
+	cookie: {
+		secure: isProduction
+	}
 }));
 
 // bodyParser ----------------------------------------------------------------------------------------------------

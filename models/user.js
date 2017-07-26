@@ -5,7 +5,7 @@ var UserSchema = new Schema({
 	name: { type: String, required: true, unique: true, trim: true, match: /^[a-zA-Z0-9 \u3040-\u309f\u30a0-\u30ff\u4E00-\u9FFF\uF900-\uFAFF]{1,20}$/ },
 	email: { type: String, required: true, unique: true, trim: true, match: /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/ },
 
-	avatar: { type: Schema.Types.ObjectId, ref: 'Image', default: null },
+	avatar: { type: Schema.Types.ObjectId, ref: 'Image' },
 	
 	title: { type: String, required: true, default: 'Unknown' },
 	location: { type: String, required: true, default: 'Earth' },
@@ -30,6 +30,10 @@ var UserSchema = new Schema({
 
 	date_joined: { type: Date, required: true, default: Date.now },
 	date_active: { type: Date, required: true, default: Date.now }
+});
+
+UserSchema.virtual('url').get(function () {
+	return '/users/' + this._id;
 });
 
 module.exports = mongoose.model('User', UserSchema);

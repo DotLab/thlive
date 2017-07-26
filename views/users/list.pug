@@ -83,7 +83,9 @@ block main
 						if user.avatar && user.avatar.name_local
 							img.d-flex.align-self-start.mr-3.shadow-item(src='/upload/images/' + user.name_local, height='64px')
 						div.media-body
-							a(href='/users/' + user._id)= user.name
+							a(href=user.url)= user.name
+							if user.moderator
+								span.ml-1 &diams;
 							div.small.text-muted
 								div= user.location
 								div

@@ -1,0 +1,129 @@
+extends ../base
+
+include ../mixin/alert
+
+block head
+	link(rel='stylesheet', href='/vendor/highlight.js/monokai-kailang.css')
+
+	style.
+		textarea {
+			font-family: Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+		}
+
+block main
+	div.mt-4.container
+		h2#title.h4= (body.namespace||'artist') + ':' + (body.master||'')
+
+		hr
+
+		form(method='post')
+			div.row
+				div.col-md-3.mt-4
+					div.form-group
+						label Namespace
+						select.form-control(type='text', name='namespace', value=body.namespace)
+							option artist
+							option character
+							option location
+
+				div.col-md-9.mt-4
+					div.form-group
+						label Introduction
+						input.form-control(type='text', name='intro', value=body.intro)
+			div.row
+				div.col-sm-6
+					label Slaves (the first slave is the master)
+					textarea#text_slaves.form-control= body.slaves
+				div.col-sm-6
+					ul#cont_slaves
+
+			+error_alerts(true, false)
+
+			hr
+
+			div.row
+				div.col-lg-6
+					div.form-group
+						label Wiki
+							a.ml-2(href='https://guides.github.com/features/mastering-markdown/', rel="noopener noreferrer" target="_blank") Markdown Guild
+						textarea#markdown.form-control(name='markdown')= body.markdown
+
+					button.btn.btn-primary(type='submit') Submit Edit
+				div.col-lg-6
+					div#cont_markdown
+
+block foot
+	script(src='https://cdnjs.cloudflare.com/ajax/libs/marked/0.3.6/marked.min.js')
+	script(src='https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js')
+
+	script(src='https://cdnjs.cloudflare.com/ajax/libs/jsrender/1.0.0-rc.70/jsrender.min.js')
+
+	script#tmpl_slaves(type='text/x-jsrender')
+		li #[small.text-muted.mr-1 #{'{{: namespace}}'}:]#{'{{: slave}} {{if index==0}} - current master{{/if}}'}
+			input(type='text', name='slaves[{{: index}}]', value='{{: slave}}', hidden)
+
+	script.
+		// init markdown rendering
+		$(function () {
+			marked.setOptions({
+				highlight: code => hljs.highlightAuto(code).value,
+				langPrefix:'hljs '
+			});
+
+			$('textarea').keyup();
+		});
+
+		// tab to 2 spaces
+		$('textarea').keydown(function(e) {
+			var keyCode = e.keyCode || e.which;
+
+			if (keyCode == 9) {
+				e.preventDefault();
+				var start = this.selectionStart;
+				var end = this.selectionEnd;
+
+				$(this).val($(this).val().substring(0, start) + '  ' + $(this).val().substring(end));
+				this.selectionStart = this.selectionEnd = start + 2;
+			}
+		});
+
+		// auto expend textarea
+		$('textarea').keyup(function (e) {
+			while($(this).outerHeight() < this.scrollHeight + parseFloat($(this).css('borderTopWidth')) + parseFloat($(this).css('borderBottomWidth'))) {
+				$(this).height($(this).height() + 1);
+			};
+		});
+		
+		// render markdown
+		$('#markdown').keyup(function (e) {
+			$('#cont_markdown').html(marked(this.value));
+		});
+
+		// render slaves
+		$tmpl_slaves = $.templates('#tmpl_slaves');
+		slaves = [];
+		$('#text_slaves').keyup(function (e) {
+			this.value = this.value.replace(/[\t ]+/g, ' ');
+			this.value = this.value.replace(/[^0-9a-z\.\-\+\# \n\'\u3040-\u309f\u30a0-\u30ff\u4E00-\u9FFF\uF900-\uFAFF]+/g, '9');
+
+			slaves = this.value.split(/[\n\r\t]+/);
+			slaves = slaves.map(n => n.trim().replace(/\'/g, '')).filter(n => n);
+			var c = {};
+			slaves.forEach(e => c[e] = true);
+			slaves = Object.keys(c);
+			console.log(slaves);
+
+			$('#cont_slaves').html($tmpl_slaves.render(slaves.map((n, i) => {
+				return {
+					namespace: $('[name="namespace"]').val(),
+					index: i,
+					slave: n
+				};
+			})));
+
+			$('#title').text($('[name="namespace"]').val() + ':' + slaves[0]);
+		});
+
+		$('[name="namespace"]').change(e => {
+			$('#text_slaves').keyup()
+		});
