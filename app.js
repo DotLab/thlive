@@ -9,6 +9,18 @@ var path = require('path');
 global.appRoot = path.resolve(__dirname);
 debug('appRoot', appRoot);
 
+// marked ----------------------------------------------------------------------------------------------------
+var marked = require('marked');
+var hljs = require('highlight.js');
+marked.setOptions({
+	highlight: code => hljs.highlightAuto(code).value,
+	langPrefix:'hljs '
+});
+
+// moment ----------------------------------------------------------------------------------------------------
+var moment = require('moment');
+moment.locale();
+
 // mongoose ----------------------------------------------------------------------------------------------------
 var mongoose = require('mongoose').set('debug', true);
 mongoose.Promise = global.Promise;
@@ -76,6 +88,9 @@ app.use(function (req, res, next) {
 	res.locals.body = req.body;
 	res.locals.query = req.query;
 
+	res.locals.marked = marked;
+	res.locals.moment = moment;
+
 	next();
 });
 
@@ -94,7 +109,11 @@ app.use(function (req, res, next) {
 // error handler
 app.use(function (err, req, res, next) {
 	res.status(err.status || 500);
-	res.render('error', { title: err.name, error: err });
+
+	res.render('error', { 
+		title: err.name, 
+		error: isDevelopment ? err : { name: err.name, message: err.message }
+	});
 });
 
 module.exports = app;

@@ -62,9 +62,12 @@ exports.login_post = function (req, res, next) {
 			});
 		});
 	}).then(doc => {
+		doc.date_active = Date.now();
+		doc.save();
+
 		req.session.regenerate(function () {
 			req.session.user = doc;
-			res.redirect('/users/' + doc.uuid);
+			res.redirect('/users/' + doc._id);
 		});
 	}).catch(err => {
 		res.render('users/login', {
@@ -105,3 +108,48 @@ exports.detail = function (req, res, next) {
 		});
 	}).catch(err => next(err));
 }
+
+// /users/:id/edit
+exports.edit = function (req, res, next) {
+	User.findById(req.params.id).then(doc => {
+		if (!doc) throw new Error('Nonexistent user: ' + req.params.id);
+
+		res.render('users/edit', {
+			title: doc.name,
+			section: 'users',
+			user: doc
+		});
+	}).catch(err => next(err));
+}
+
+exports.edit_post = function (req, res, next) {
+	req.checkBody('avatar', 'not an id').optional({ checkFalsy: true }).isMongoId();
+	req.checkBody('name', 'name must be choosen from English, Chinese, or Japanese').notEmpty().matches(/^[a-zA-Z0-9 \u3040-\u309f\u30a0-\u30ff\u4E00-\u9FFF\uF900-\uFAFF]{1,20}$/);
+	req.checkBody('title', 'too long').notEmpty().isLength({ max: 100 });
+	req.checkBody('location', 'too long').notEmpty().isLength({ max: 100 });
+	req.checkBody('markdown', 'too long').notEmpty().isLength({ max: 1000 });
+
+	new Promise((resolve, reject) => {
+		var errs = req.validationErrors();
+		if (errs && errs[0]) reject(errs[0]);
+		else resolve();
+	}).then(() => {
+		return User.findByIdAndUpdate(req.session.user._id, {
+			avatar: req.body.avatar || undefined,
+			name: req.body.name,
+			title: req.body.title,
+			location: req.body.location,
+			markdown: req.body.markdown,
+			date_active: Date.now()
+		});
+	}).then(doc => {
+		res.redirect('/users/' + doc._id);
+	}).catch(err => {
+		res.render('users/edit', {
+			title: 'Join THLIVE',
+			section: 'users',
+			user: req.body,
+			error: err
+		});
+	});
+};

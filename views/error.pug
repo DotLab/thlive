@@ -4,4 +4,5 @@ block main
 	div.container
 		h1.my-4 #{error.name} #[small.text-muted.text-ellip #{error.message}]
 		
-		pre.rounded.px-3.py-2= error.stack
+		if (error.stack)
+			pre.rounded.px-3.py-2= error.stack

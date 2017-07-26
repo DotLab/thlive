@@ -1,0 +1,89 @@
+extends ../base
+
+include ../mixin/alert
+
+block head
+	link(rel='stylesheet', href='/vendor/highlight.js/monokai-kailang.css')
+
+	style.
+		#markdown {
+			font-family: Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+		}
+
+block main
+	div.mt-4.container
+		h2.h4= user.name
+			small.text-muted.ml-2= user._id
+
+		hr
+
+		form(method='post')
+			div.row
+				div.col-md-3.mt-4
+					div.form-group
+						label Avatar
+						if user.avatar
+							img.mb-3.img-thumbnail.d-block.mx-auto(src='/upload/images/' + user.avatar.name_local)
+						input.form-control(type='text', name='avatar', value=user.avatar?user.avatar._id:'')
+
+				div.col-md-9.mt-4
+					div.form-group
+						label Display Name
+						input.form-control(type='text', name='name', value=user.name)
+					div.form-group
+						label Job Title
+						input.form-control(type='text', name='title', value=user.title)
+					div.form-group
+						label Location (region, country)
+						input.form-control(type='text', name='location', value=user.location)
+
+			+error_alerts(true, false)
+
+			hr
+
+			div.row
+				div.col-lg-6
+					div.form-group
+						label Introduction
+							a.ml-2(href='https://guides.github.com/features/mastering-markdown/', rel="noopener noreferrer" target="_blank") Markdown Guild
+						textarea#markdown.form-control(name='markdown')= user.markdown
+
+					button.btn.btn-primary(type='submit') Submit Edit
+				div.col-lg-6
+					div#cont_markdown
+
+block foot
+	script(src='https://cdnjs.cloudflare.com/ajax/libs/marked/0.3.6/marked.min.js')
+	script(src='https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js')
+
+	script.
+		$markdown = $('#markdown');
+		$cont_markdown = $('#cont_markdown');
+
+		$(function() {
+			marked.setOptions({
+				highlight: code => hljs.highlightAuto(code).value,
+				langPrefix:'hljs '
+			});
+		});
+
+		$('#markdown').keydown(function(e) {
+			var keyCode = e.keyCode || e.which;
+
+			if (keyCode == 9) {
+				e.preventDefault();
+				var start = this.selectionStart;
+				var end = this.selectionEnd;
+
+				$(this).val($(this).val().substring(0, start) + '  ' + $(this).val().substring(end));
+				this.selectionStart = this.selectionEnd = start + 2;
+			}
+		});
+
+		$('#markdown').keyup(function(e) {
+			$cont_markdown.html(marked($markdown.val()));
+
+			while($(this).outerHeight() < this.scrollHeight + parseFloat($(this).css('borderTopWidth')) + parseFloat($(this).css('borderBottomWidth'))) {
+				$(this).height($(this).height() + 1);
+			};
+		});
