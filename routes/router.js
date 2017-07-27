@@ -1,19 +1,28 @@
 var express = require('express');
 var router = express.Router();
 
-forbid = function (res) {
+forbid = function (res, err) {
 	res.status(418);
 
 	res.render('error', { 
 		title: 'Error', 
-		error: { name: 'Error', message: 'I\'m a teapot', stack: 'You attempt to brew coffee with a teapot.' }
+		error: err || { name: 'Error', message: 'I\'m a teapot', stack: 'You attempt to brew coffee with a teapot.' }
 	});
 }
 
+var User = require('../models/user');
 forbidVisitor = function () {
 	return function (req, res, next) {
 		if (req.session.user) {
-			next();
+			User.findById(req.session.user).then(doc => {
+				req.bindf.user = doc;
+
+				return doc.update({
+					date_active: Date.now()
+				});
+			}).then(doc => {
+				next();
+			}).catch(err => forbid(res, err));
 		} else {
 			forbid(res);
 		}
@@ -46,6 +55,7 @@ router.get('/', function (req, res, next) {
 router.post('/echo/body', (req, res) => res.send(req.body));
 router.post('/echo/params', (req, res) => res.send(req.params));
 router.post('/echo/session', (req, res) => res.send(req.session));
+router.post('/echo/bindf', (req, res) => res.send(req.bindf));
 
 var genericApi = require('../controllers/api/genericApi');
 router.post('/api/users', genericApi(require('../models/user')));
@@ -65,15 +75,16 @@ router.post('/users/editor', forbidVisitor(), setSection('users'), userControlle
 router.get('/users/:id([a-f0-9]{24})', setSection('users'), userController.detail);
 
 var tagController = require('../controllers/tagController');
-router.get('/tags', tagController.list);
-router.get('/tags/editor', forbidVisitor(), tagController.editor);
-router.post('/tags/editor', forbidVisitor(), tagController.editor_post);
-router.get('/tags/:id([a-f0-9]{24})', tagController.detail);
+router.get('/tags', setSection('tags'), tagController.list);
+router.get('/tags/editor', forbidVisitor(), setSection('tags'), tagController.editor);
+router.post('/tags/editor', forbidVisitor(), setSection('tags'), tagController.editor_post);
+router.get('/tags/:id([a-f0-9]{24})', setSection('tags'), tagController.detail);
 
 var queueController = require('../controllers/queueController');
-// router.get('/queues', queueController.list);
-router.get('/queues/tag', queueController.tag);
-// router.get('/queues/image', queueController.image);
-// router.get('/queues/card', queueController.card);
+// router.get('/queues', setSection('queues'), queueController.list);
+router.get('/queues/tag', forbidVisitor(), setSection('queues'), queueController.tag);
+router.post('/queues/tag', forbidVisitor(), setSection('queues'), queueController.tag_post);
+// router.get('/queues/image', forbidVisitor(), setSection('queues'), queueController.image);
+// router.get('/queues/card', forbidVisitor(), setSection('queues'), queueController.card);
 
 module.exports = router;

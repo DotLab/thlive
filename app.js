@@ -76,12 +76,16 @@ app.use(bodyParser.urlencoded({ extended: true }));
 var validator = require('express-validator');
 app.use(validator({
 	errorFormatter: (param, msg, value) => {
-		return { name: param, message: `${msg} '${value}'` }
+		return { 
+			name: 'ExpressValidationError', 
+			message: `Path \`${param}\` validation failed: \`${value}\` is ${msg}` }
 	}
 }));
 
 // locals ----------------------------------------------------------------------------------------------------
 app.use(function (req, res, next) {
+	req.bindf = {};
+
 	res.locals.mortal = req.session.user;
 
 	res.locals.body = req.body;

@@ -6,13 +6,13 @@ block main
 		hr
 
 		div.row
-			div.col Approve or reject edits suggested by users.
-			div.col
+			div.col-sm-6.mb-2 Approve or reject edits suggested by #[strong friends]
+			div.col-sm-6
 				form.float-right(method='post')
 					input(name='for', value=edit._id, hidden)
-					button.mb-2.mr-2.btn.btn-sm.btn-primary(formaction='?action=approve') Approve
-					button.mb-2.mr-2.btn.btn-sm.btn-primary(formaction='?action=reject') Reject
-					button.mb-2.mr-2.btn.btn-sm.btn-primary(formaction='?action=skip') Skip
+					button.mb-2.mr-2.btn.btn-primary(formaction='?action=approve') Approve
+					button.mb-2.mr-2.btn.btn-primary(formaction='?action=reject') Reject
+					button.mb-2.mr-2.btn.btn-primary(formaction='?action=skip') Skip
 
 		hr.mt-2
 
@@ -20,7 +20,7 @@ block main
 		div.row
 			div.col-sm-6
 			div.col-sm-6
-				em= edit.edit.intro
+				em= edit.body.intro
 
 		h3.h6.mt-3 Slave Diff
 		div.row
@@ -30,12 +30,12 @@ block main
 						li xxx
 
 			div.col-md-6 
-				h4 #[small.text-muted.mr-1 #{edit.edit.namespace}:]#{edit.edit.slaves[0]} #[strong.hidden-md-down - current master]
+				h4 #[small.text-muted.mr-1 #{edit.body.namespace}:]#{edit.body.slaves[0]}
 				ul
-					for slave in edit.edit.slaves
-						li #[small.text-muted.mr-1 #{edit.edit.namespace}:]#{slave}
+					for slave in edit.body.slaves
+						li #[small.text-muted.mr-1 #{edit.body.namespace}:]#{slave}
 		
 		h3.h6 Wiki Diff
 		div.row
 			div.col-md-6
-			div.col-md-6= marked(edit.edit.markdown)
+			div.col-md-6!= marked(edit.body.markdown)

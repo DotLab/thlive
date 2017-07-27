@@ -1,7 +1,7 @@
 var validator = require('validator');
 
 var Tag = require('../models/tag');
-var TagEdit = require('../models/tagEdit');
+var TagEdit = require('../models/tagedit');
 
 exports.list = function (req, res, next) {
 }
@@ -18,15 +18,22 @@ exports.editor = function (req, res, next) {
 }
 
 exports.editor_post = function (req, res, next) {
+	req.checkQuery('for').optional({ checkFalsy: true }).isMongoId();
 	req.checkBody('namespace').notEmpty().isIn([ 'artist', 'character', 'location' ]);
-	req.checkBody('intro', 'too long').notEmpty().isLength({ max: 100 });
-	req.checkBody('markdown', 'too long').optional({ checkFalsy: true }).isLength({ max: 1000 });
+	req.checkBody('intro', 'empty or too long').notEmpty().isLength({ max: 100 });
+	req.checkBody('markdown', 'empty or too long').optional({ checkFalsy: true }).isLength({ max: 1000 });
 
-	new TagEdit({
-		editor: req.session.user._id,
+	req.getValidationResult().then(result => {
+		var err = result.array()[0];
+		if (err) throw err;
+	}).then(() => {
+		return new TagEdit({
+			for: req.query.for || undefined,
+			editor: req.session.user._id,
 
-		edit: req.body
-	}).save().then(doc => {
+			body: req.body
+		}).save();
+	}).then(doc => {
 		res.redirect(doc.url);
 	}).catch(err => {
 		res.render('tags/editor', {

@@ -22,9 +22,9 @@ block main
 					div.form-group
 						label Namespace
 						select.form-control(type='text', name='namespace', value=body.namespace)
-							option artist
-							option character
-							option location
+							option(value='artist') artist
+							option(value='character') character
+							option(value='location') location
 
 				div.col-md-9.mt-4
 					div.form-group
@@ -33,7 +33,7 @@ block main
 			div.row
 				div.col-sm-6
 					label Slaves (the first slave is the master)
-					textarea#text_slaves.form-control= body.slaves
+					textarea#text_slaves.form-control= body.slaves&&body.slaves.join('\n')
 				div.col-sm-6
 					ul#cont_slaves
 
@@ -104,7 +104,7 @@ block foot
 		slaves = [];
 		$('#text_slaves').keyup(function (e) {
 			this.value = this.value.replace(/[\t ]+/g, ' ');
-			this.value = this.value.replace(/[^0-9a-z\.\-\+\# \n\'\u3040-\u309f\u30a0-\u30ff\u4E00-\u9FFF\uF900-\uFAFF]+/g, '9');
+			this.value = this.value.replace(/[^0-9a-z\.\-\+\# \n\r\'\u3040-\u309f\u30a0-\u30ff\u4E00-\u9FFF\uF900-\uFAFF]+/g, '9');
 
 			slaves = this.value.split(/[\n\r\t]+/);
 			slaves = slaves.map(n => n.trim().replace(/\'/g, '')).filter(n => n);
