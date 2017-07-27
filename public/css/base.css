@@ -51,6 +51,17 @@ pre {
 .green { background: green; }
 .yellow { background: yellow; }
 
+.diff-remove {
+	text-decoration: line-through;
+	color: #A82400;
+	background-color: #E5BDB2;
+}
+
+.diff-add {
+	background: #D1E1AD;
+	color: #405A04;
+}
+
 .origin { transform-origin: 0 0 }
 
 .small { font-size: 80% }

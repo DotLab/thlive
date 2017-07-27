@@ -21,14 +21,14 @@ block main
 				div.col-md-3.mt-4
 					div.form-group
 						label Namespace
-						select.form-control(type='text', name='namespace', value=body.namespace)
-							option(value='artist') artist
-							option(value='character') character
-							option(value='location') location
+						select.form-control(type='text', name='namespace')
+							option(value='artist', selected=(body.namespace=='artist')) Artist
+							option(value='character', selected=(body.namespace=='character')) Character
+							option(value='location', selected=(body.namespace=='location')) Location
 
 				div.col-md-9.mt-4
 					div.form-group
-						label Introduction
+						label Intro
 						input.form-control(type='text', name='intro', value=body.intro)
 			div.row
 				div.col-sm-6

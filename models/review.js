@@ -7,7 +7,7 @@ var ReviewSchema = new Schema({
 	reviewer: { type: Schema.Types.ObjectId, ref: 'User', required: true },
 	date: { type: Date, required: true, default: Date.now },
 	
-	result: { type: String, required: true, enum: [ 'approve', 'reject', 'skip' ] },
+	action: { type: String, required: true, enum: [ 'approve', 'reject', 'skip' ] },
 	binding: { type: Boolean, required: true, default: false },
 
 	comment: { type: String, trim: true }

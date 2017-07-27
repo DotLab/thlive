@@ -96,4 +96,4 @@ block main
 									span.mr-2.text-muted= user.badge_silver
 									span.mr-1.ubadge-coin.ubadge-coin-brozen
 									span.text-muted= user.badge_brozen
-								div= moment(user.date_joined).format('ll')
+								div= format.date(user.date_joined)

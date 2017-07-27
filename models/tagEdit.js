@@ -15,6 +15,7 @@ var TagEditSchema = new Schema({
 	vote_approve: { type: Number, required: true, default: 0 },
 	vote_reject: { type: Number, required: true, default: 0 },
 
+	base: { type: Schema.Types.ObjectId, ref: 'TagEdit' },
 	body: {
 		namespace: { type: String, required: true, enum: [ 'artist', 'character', 'location' ] },
 

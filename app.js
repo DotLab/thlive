@@ -86,6 +86,26 @@ app.use(validator({
 app.use(function (req, res, next) {
 	req.bindf = {};
 
+	res.locals.format = {
+		toPascalCase: function (str) {
+			return str.replace(/(\w)(\w*)/g, function (g0, g1, g2) {
+				return g1.toUpperCase() + g2.toLowerCase();
+			});
+		},
+
+		dateFromNow: function (date) {
+			return moment(date).fromNow();
+		},
+
+		date: function (date) {
+			return moment(date).format('MMM D \'YY');
+		},
+
+		datetime: function (date) {
+			return moment(date).format('MMM D [\']YY [at] k:m');
+		},
+	};
+
 	res.locals.mortal = req.session.user;
 
 	res.locals.body = req.body;
@@ -93,6 +113,7 @@ app.use(function (req, res, next) {
 
 	res.locals.marked = marked;
 	res.locals.moment = moment;
+	res.locals.jsdiff = require('diff');
 
 	next();
 });

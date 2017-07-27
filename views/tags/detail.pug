@@ -1,0 +1,19 @@
+extends ../base
+
+block main
+	div.container.mt-4
+		h4 #[small.text-muted.mr-1 #{tag.namespace}:]#{tag.slaves[0]}
+		hr
+		
+		ul.mb-0
+			li #[strong Namespace]: #{format.toPascalCase(tag.namespace)}
+			li #[strong Description]: #{tag.intro}
+			li #[strong Slaves]:
+				ul
+					for slave in tag.slaves
+						li #[small.text-muted.mr-1 #{tag.namespace}:]#{slave}
+
+		a.small.text-muted(href='/tags/editor?for=' + tag._id) edit
+
+		div.mt-2!= marked(tag.markdown)
+		

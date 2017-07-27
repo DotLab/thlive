@@ -84,6 +84,7 @@ var queueController = require('../controllers/queueController');
 // router.get('/queues', setSection('queues'), queueController.list);
 router.get('/queues/tag', forbidVisitor(), setSection('queues'), queueController.tag);
 router.post('/queues/tag', forbidVisitor(), setSection('queues'), queueController.tag_post);
+router.get('/queues/tag/:id([a-f0-9]{24})', forbidVisitor(), setSection('queues'), queueController.tag_readonly);
 // router.get('/queues/image', forbidVisitor(), setSection('queues'), queueController.image);
 // router.get('/queues/card', forbidVisitor(), setSection('queues'), queueController.card);
 

@@ -7,6 +7,21 @@ var Review = require('../models/review');
 
 var debug = require('debug')('thlive:queueController');
 
+exports.tag_readonly = function (req, res, next) {
+	Promise.all([
+		TagEdit.findById(req.params.id).populate('base editor'),
+		Review.find({ for: req.params.id, action: { $ne: 'skip' } }).populate('reviewer')
+	]).then(docs => {
+		res.render('queues/tag', {
+			title: 'Tag Edit Report',
+			readonly: true,
+			tag: docs[0].base && docs[0].base.body,
+			edit: docs[0],
+			reviews: docs[1]
+		});
+	}).catch(err => next(err));
+}
+
 exports.tag = function (req, res, next) {
 	var bind = {};
 
@@ -32,8 +47,8 @@ exports.tag = function (req, res, next) {
 	}).then(doc => {
 		res.render('queues/tag', {
 			title: 'Tag Queue',
-			edit: bind.edit,
-			tag: doc
+			tag: doc,
+			edit: bind.edit
 		});
 	}).catch(err => next(err));
 };
@@ -53,7 +68,7 @@ exports.tag_post = function (req, res, next) {
 		return new Review({
 			for: req.body.for,
 			reviewer: req.session.user,
-			result: req.query.action,
+			action: req.query.action,
 			binding: req.bindf.user.moderator,
 			comment: req.body.comment
 		}).save();
@@ -89,12 +104,15 @@ exports.tag_post = function (req, res, next) {
 	}).then(status => {
 		if (!bind.complete || bind.action == 'reject') return;
 
+		var tag = bind.edit.body.toObject();
+		tag.edit = bind.edit._id;
+
 		if (bind.edit.type == 'create') {  // create a tag
-			debug('tag_post', 'create tag', bind.edit.body);
-			return new Tag(bind.edit.body.toObject()).save();
+			debug('tag_post', 'create tag', tag);
+			return new Tag(tag).save();
 		} else {  // update a tag
-			debug('tag_post', 'update tag', bind.edit.for);
-			return Tag.findByIdAndUpdate(bind.edit.for, bind.edit.body);
+			debug('tag_post', 'update tag', tag);
+			return Tag.findByIdAndUpdate(bind.edit.for, tag);
 		}
 	}).then(doc => {
 		debug('tag_post', 'finished');
