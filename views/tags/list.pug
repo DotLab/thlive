@@ -1,0 +1,36 @@
+extends ../base
+
+block head
+	style.
+		.tag {
+			color: #39739d;
+			background-color: #E1ECF4;
+			border-color: transparent;
+
+			position: relative;
+			display: inline-block;
+			padding: .4em .5em;
+			margin: 2px 2px 2px 0;
+			font-size: 11px;
+			line-height: 1;
+			white-space: nowrap;
+			text-decoration: none;
+			text-align: center;
+			border-width: 1px;
+			border-style: solid;
+			border-radius: 0;
+			transition: all .15s ease-in-out;
+		}
+
+block main
+	div.container.mt-4
+		h4= title
+		hr
+		
+		div.row
+			for tag in tags
+				div.col-lg-3.col-md-4.col-sm-6.small(style='border-bottom: 1px dotted #E4E6E7;')
+					div #[a.p-1.tag(href=tag.url)= tag.master] × #{tag.score}
+					div.text-muted(style='heigth: 39px')= tag.intro
+					div.my-2 dfasdf
+		

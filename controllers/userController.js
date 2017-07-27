@@ -124,9 +124,8 @@ exports.editor = function (req, res, next) {
 exports.editor_post = function (req, res, next) {
 	req.checkBody('avatar', 'not an id').optional({ checkFalsy: true }).isMongoId();
 	req.checkBody('name', 'name must be choosen from English, Chinese, or Japanese').notEmpty().matches(/^[a-zA-Z0-9 \u3040-\u309f\u30a0-\u30ff\u4E00-\u9FFF\uF900-\uFAFF]{1,20}$/);
-	req.checkBody('title', 'too long').notEmpty().isLength({ max: 100 });
-	req.checkBody('location', 'too long').notEmpty().isLength({ max: 100 });
-	req.checkBody('markdown', 'too long').optional({ checkFalsy: true }).isLength({ max: 1000 });
+	req.checkBody('title').notEmpty();
+	req.checkBody('location').notEmpty();
 
 	new Promise((resolve, reject) => {
 		var errs = req.validationErrors();

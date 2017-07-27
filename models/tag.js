@@ -16,4 +16,8 @@ TagSchema.virtual('master').get(function () {
 	return this.slaves[0];
 });
 
+TagSchema.virtual('url').get(function () {
+	return '/tags/' + this._id;
+});
+
 module.exports = mongoose.model('Tag', TagSchema);

@@ -48,15 +48,15 @@ block main
 		div.row
 			div.col-sm-6
 				if tag
-					div!= one
+					p!= one
 				else
 					em Nothing to compare with
 			div.col-sm-6
-				div!= other
+				p!= other
 
 		h3.h6.mt-3 Slave Diff
 		div.row
-			div.col-md-6
+			div.col-sm-6
 				if tag
 					h4 #[small.text-muted.mr-1 #{tag.namespace}:]#{tag.slaves[0]}
 					ul
@@ -69,7 +69,7 @@ block main
 				else
 					em Nothing to compare with
 
-			div.col-md-6 
+			div.col-sm-6 
 				h4 #[small.text-muted.mr-1 #{edit.body.namespace}:]#{edit.body.slaves[0]}
 				ul
 					for slave in edit.body.slaves
@@ -81,7 +81,7 @@ block main
 		-
 			one = '', other = edit.body.markdown;
 			if (tag) one = tag.markdown; 
-			diff = jsdiff.diffLines(one, other);
+			diff = jsdiff.diffChars(one, other);
 			one = ''; other = '';
 			diff.forEach(e => {
 				if (e.added) {
@@ -96,12 +96,12 @@ block main
 
 		h3.h6 Wiki Diff
 		div.row
-			div.col-md-6
+			div.col-sm-6
 				if tag
 					div!= marked(one)
 				else
 					em Nothing to compare with
-			div.col-md-6!= marked(other)
+			div.col-sm-6!= marked(other)
 
 		div.row
 			div.col-sm-6

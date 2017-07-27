@@ -56,7 +56,6 @@ exports.tag = function (req, res, next) {
 exports.tag_post = function (req, res, next) {
 	req.checkBody('for').isMongoId();
 	req.checkQuery('action').isIn([ 'approve', 'reject', 'skip' ]);
-	req.checkBody('comment').optional({ checkFalsy: true }).isLength({ max: 100 });
 
 	var bind = {};
 

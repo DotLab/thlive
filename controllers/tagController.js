@@ -5,7 +5,10 @@ var TagEdit = require('../models/tagedit');
 
 exports.list = function (req, res, next) {
 	Tag.find().then(docs => {
-		res.send(docs);
+		res.render('tags/list', {
+			title: 'Tags',
+			tags: docs
+		});
 	}).catch(err => next(err));
 }
 
@@ -38,8 +41,7 @@ exports.editor = function (req, res, next) {
 exports.editor_post = function (req, res, next) {
 	req.checkQuery('for').optional({ checkFalsy: true }).isMongoId();
 	req.checkBody('namespace').notEmpty().isIn([ 'artist', 'character', 'location' ]);
-	req.checkBody('intro', 'empty or too long').notEmpty().isLength({ max: 100 });
-	req.checkBody('markdown', 'empty or too long').optional({ checkFalsy: true }).isLength({ max: 1000 });
+	req.checkBody('intro').notEmpty();
 
 	req.getValidationResult().then(result => {
 		var err = result.array()[0];
