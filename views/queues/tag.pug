@@ -81,7 +81,7 @@ block main
 		-
 			one = '', other = edit.body.markdown;
 			if (tag) one = tag.markdown; 
-			diff = jsdiff.diffChars(one, other);
+			diff = jsdiff.diffLines(one, other);
 			one = ''; other = '';
 			diff.forEach(e => {
 				if (e.added) {

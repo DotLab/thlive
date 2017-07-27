@@ -81,7 +81,7 @@ router.post('/tags/editor', forbidVisitor(), setSection('tags'), tagController.e
 router.get('/tags/:id([a-f0-9]{24})', setSection('tags'), tagController.detail);
 
 var queueController = require('../controllers/queueController');
-// router.get('/queues', setSection('queues'), queueController.list);
+router.get('/queues', forbidVisitor(), setSection('queues'), queueController.list);
 router.get('/queues/tag', forbidVisitor(), setSection('queues'), queueController.tag);
 router.post('/queues/tag', forbidVisitor(), setSection('queues'), queueController.tag_post);
 router.get('/queues/tag/:id([a-f0-9]{24})', forbidVisitor(), setSection('queues'), queueController.tag_readonly);

@@ -1,0 +1,16 @@
+extends ../base
+
+block main
+	div.container.mt-4
+		h4= title
+		hr
+		
+		div.row(style='border-bottom: 1px dotted #E4E6E7;')
+			div.mb-3.col-md-3.text-center.hidden-sm-down
+				h5= tag
+				div.small edits
+			div.mb-3.col-md-5.col-sm-6
+				h5 #[a(href=tag != 0 ? '/queues/tag' : undefined) Tag Edits]
+				div.small Approve or reject edits suggested by friends
+			div.mb-3.col-md-4.col-sm-6
+				a.small recent reviews »

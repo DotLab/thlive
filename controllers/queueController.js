@@ -7,6 +7,26 @@ var Review = require('../models/review');
 
 var debug = require('debug')('thlive:queueController');
 
+exports.list = function (req, res, next) {
+	Promise.all([
+		TagEdit.aggregate([
+			{ $match: { status: 'pending' } },
+			{ $lookup: { from: 'reviews', localField: '_id', foreignField: 'for', as: 'reviews' } },
+			{ $match: { $or: [ 
+				{ reviews: { $size: 0 } },
+				{ "reviews.reviewer": { $ne: req.bindf.user._id } }	
+			] } },
+			{ $count: 'count' }
+		])
+	]).then(docs => {
+		debug('list', docs);
+		res.render('queues/list', {
+			title: 'Review Queues',
+			tag: (docs[0][0] && docs[0][0].count) || 0
+		});
+	}).catch(err => next(err));
+}
+
 exports.tag_readonly = function (req, res, next) {
 	Promise.all([
 		TagEdit.findById(req.params.id).populate('base editor'),
@@ -25,20 +45,15 @@ exports.tag_readonly = function (req, res, next) {
 exports.tag = function (req, res, next) {
 	var bind = {};
 
-	TagEdit.aggregate()
-		.match({ status: 'pending' })
-		.lookup({
-			from: 'reviews',
-			localField: '_id',
-			foreignField: 'for',
-			as: 'reviews'
-		})
-		.match({ $or: [ 
+	TagEdit.aggregate([
+		{ $match: { status: 'pending' } },
+		{ $lookup: { from: 'reviews', localField: '_id', foreignField: 'for', as: 'reviews' } },
+		{ $match: { $or: [ 
 			{ reviews: { $size: 0 } },
-			{ "reviews.reviewer": { $ne: req.bindf.user._id } }
-		] })
-		.limit(1)
-	.then(docs => {
+			{ "reviews.reviewer": { $ne: req.bindf.user._id } }	
+		] } },
+		{ $limit: 1 }
+	]).then(docs => {
 		if (!docs || !docs.length) throw new Error('Nothing to review');
 
 		bind.edit = docs[0];

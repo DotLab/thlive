@@ -22,15 +22,23 @@ block head
 			transition: all .15s ease-in-out;
 		}
 
+		.tag:hover {
+			color: #33658a;
+			background-color: #cee0ed;
+			border-color: rgba(0,0,0,0);
+			text-decoration: none;
+		}
+
 block main
 	div.container.mt-4
+		a.btn.btn-sm.btn-primary.float-right(href='/tags/editor') Add Tag
 		h4= title
 		hr
 		
 		div.row
 			for tag in tags
-				div.col-lg-3.col-md-4.col-sm-6.small(style='border-bottom: 1px dotted #E4E6E7;')
+				div.col-lg-3.col-md-4.col-sm-6.small.mb-2(style='border-bottom: 1px dotted #E4E6E7;')
 					div #[a.p-1.tag(href=tag.url)= tag.master] × #{tag.score}
-					div.text-muted(style='heigth: 39px')= tag.intro
+					div.text-muted(style='height: 39px; overflow: hidden')= tag.intro
 					div.my-2 dfasdf
 		

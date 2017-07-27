@@ -103,7 +103,7 @@ block foot
 		$tmpl_slaves = $.templates('#tmpl_slaves');
 		slaves = [];
 		$('#text_slaves').keyup(function (e) {
-			this.value = this.value.replace(/[\t ]+/g, ' ');
+			this.value = this.value.replace(/[\t ]+/g, ' ').toLowerCase();
 			this.value = this.value.replace(/[^0-9a-z\.\-\+\# \n\r\'\u3040-\u309f\u30a0-\u30ff\u4E00-\u9FFF\uF900-\uFAFF]+/g, '9');
 
 			slaves = this.value.split(/[\n\r\t]+/);
