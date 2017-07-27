@@ -80,6 +80,12 @@ router.get('/tags/editor', forbidVisitor(), setSection('tags'), tagController.ed
 router.post('/tags/editor', forbidVisitor(), setSection('tags'), tagController.editor_post);
 router.get('/tags/:id([a-f0-9]{24})', setSection('tags'), tagController.detail);
 
+var imageController = require('../controllers/imageController');
+// router.get('/images', setSection('images'), imageController.list);
+router.get('/images/editor', forbidVisitor(), setSection('images'), imageController.editor);
+// router.post('/images/editor', forbidVisitor(), setSection('images'), imageController.editor_post);
+// router.get('/images/:id([a-f0-9]{24})', setSection('images'), imageController.detail);
+
 var queueController = require('../controllers/queueController');
 router.get('/queues', forbidVisitor(), setSection('queues'), queueController.list);
 router.get('/queues/tag', forbidVisitor(), setSection('queues'), queueController.tag);
