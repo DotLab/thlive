@@ -127,7 +127,7 @@ exports.tag_post = function (req, res, next) {
 
 			if (edit.action == 'create') {  // create a tag
 				debug('tag_post', 'create tag', tag);
-				ps.push(new Tag(tag).save());
+				ps.push(new Tag(tag).save().then(tag => edit.update({ target_id: tag._id })));
 			} else {  // edit or rollback
 				debug('tag_post', 'update tag', tag);
 				ps.push(Tag.findByIdAndUpdate(edit.target_id, tag));

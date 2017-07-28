@@ -6,7 +6,7 @@ var EditSchema = new Schema({
 	date: { type: Date, required: true, default: Date.now },
 
 	kind: { type: String, required: true, enum: [ 'Tag', 'Image' ] },
-	// create action do not have a target
+	// non accepted create action do not have a target
 	target_id: { type: Schema.Types.ObjectId, refPath: 'kind' },
 
 	// if an edit is approved, the content will be applied to the target while setting the target's edit to this

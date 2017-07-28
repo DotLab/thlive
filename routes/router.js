@@ -80,6 +80,7 @@ router.post('/tags/create', forbidVisitor(), tagController.create_post);
 router.get('/tags/:id([a-f0-9]{24})', tagController.detail);
 router.get('/tags/:id([a-f0-9]{24})/edit', forbidVisitor(), tagController.edit);
 router.post('/tags/:id([a-f0-9]{24})/edit', forbidVisitor(), tagController.edit_post);
+router.get('/tags/:id([a-f0-9]{24})/history', tagController.history);
 
 // var imageController = require('../controllers/imageController');
 // router.get('/images', imageController.list);

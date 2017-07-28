@@ -1,0 +1,56 @@
+extends ../base
+
+block head
+	style.
+		.revisions td {
+			background-color: #E0EAF1;			
+		}
+
+block main
+	div.container.mt-4
+		h4 #[a(href=back_url)= back]
+		hr
+		
+		table.w-100
+			tbody
+				for edit in edits
+					-
+						var one = JSON.stringify(edit.base_edit_id ? edit.base_edit_id.content : {}, null, 4),
+							other = JSON.stringify(edit.content, null, 4);
+						var diff = jsdiff.diffChars(one, other);
+						one = ''; other = '';
+						diff.forEach(e => {
+							if (e.added) {
+								one += '<span class="diff-add">' + e.value + '</span>';
+							} else if (e.removed) {
+								one += '<span class="diff-remove">' + e.value + '</span>';
+							} else {
+								one += e.value;
+							}
+						});
+
+					tr.revisions
+						td.py-2.text-center.hidden-sm-down(style='width: 20%')
+							h2 #[a(href='#e' + edit._id, data-toggle='collapse')= edit.action]
+						td.py-2.px-3.hidden-xs-down(style='width: 50%')
+							em= edit.comment || 'No comments'
+							div.mt-1.text-muted.small= format.datetime(edit.date)
+						td.py-2.px-3.small.text-muted
+							div(style='overflow: hidden')
+								if edit.status == 'pending'
+									a(href=edit.url)= edit.action + ' proposed'
+								if edit.status == 'approved'
+									a(href=edit.url)= edit.action + ' approved'
+								if edit.status == 'rejected'
+									a(href=edit.url)= edit.action + ' rejected'
+								span.ml-1= format.datetime(edit.date)
+							a.d-block(href=edit.user_id.url)= edit.user_id.name
+							strong.d-block.mr-2= edit.user_id.rep
+					tr.space
+						td.pt-1(colspan='3', style='height=10px')
+							div.collapse(id='e' + edit._id)
+								pre.m-0(style='white-space: pre-wrap; word-break: break-all')!= one
+
+
+					tr.space
+						td.pt-1(colspan='3', style='height=10px')

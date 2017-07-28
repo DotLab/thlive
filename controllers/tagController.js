@@ -107,3 +107,17 @@ exports.edit_post = function (req, res, next) {
 		});
 	});
 };
+
+exports.history = function (req, res, next) {
+	Promise.all([
+		Tag.findById(req.params.id),
+		Edit.find({ target_id: req.params.id }).sort('-date').populate('user_id base_edit_id')
+	]).then(result => {
+		res.render('review/history', {
+			title: 'Revisions to ' + result[0].master,
+			back: 'Return to Tag',
+			back_url: result[0].url,
+			edits: result[1]
+		});
+	}).catch(err => next(err));
+};
