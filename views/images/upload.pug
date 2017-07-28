@@ -1,0 +1,134 @@
+extends ../base
+
+include ../mixin/alert
+
+block head
+	script(src='/vendor/fontawesome/feea410c25.js')
+
+	style.
+		.autocomplete {
+			position: absolute;
+			padding: 5px 10px;
+			margin-top: -1px;
+			background-color: #fff;
+			border: 1px solid #ccc;
+			border-radius: 5px;
+			left: 15px;
+			right: 15px;
+		}
+
+block main
+	form(method='post', encType='multipart/form-data', action='/echo/body')
+		div.jumbotron.jumbotron-fluid.mb-1
+			div.container
+				div
+					img#preview.img-fluid.d-block.mx-auto.shadow-card(style='max-height: 600px')
+
+				input#image(type='file', name='image', accept='image/*', style='display: none')
+				div.text-center
+					a#image_btn.btn.btn-primary.btn-lg.mt-3(href='javascript:void(0)') #[i.fa.fa-file-image-o] Choose Image
+
+		div.pt-4.container
+			div.row
+				div.col-md-6
+					div.form-group
+						label Title
+						input#artist.form-control(type='text', name='title', value=body.title, placeholder='さなえさん')
+				div.col-md-6
+					div.form-group
+						label Tags
+						input#text_tags.form-control(type='text', placeholder='さなえさん')
+						div#cont_tags_complete.autocomplete(style='display: none;')
+							div.p-1
+								a.tag.mr-2(href='javascript:void(0)') asdfdfa
+								span.text-muted.small dflskajdflaksjfdsd lkas jflkasj flkasd flkasj flksa lsd jflksaj fklasj dflksaflksa jfskald fsakd fjlkasd flkd asf
+							div.p-1
+								a.tag.mr-2(href='javascript:void(0)') asdfdfa
+								span.text-muted.small dflskajdflaksjfdsd lkas jflkasj flkasd flkasj flksa lsd jflksaj fklasj dflksaflksa jfskald fsakd fjlkasd flkd asf
+						div#cont_tags.mt-2
+							a.tag.mr-2(href='') sdfsdf
+								input(type='text', name='tags[0]', value='sadfsadf', hidden)
+							a.tag.mr-2(href='') sdfsdf
+							a.tag.mr-2(href='') sdfsdf
+							a.tag.mr-2(href='') sdfsdf
+
+			+error_alerts(true, true)
+
+			button.btn.btn-info.btn-lg #[i.fa.fa-upload] Begin Transfer
+			
+
+block foot
+	script(src='https://cdnjs.cloudflare.com/ajax/libs/jsrender/1.0.0-rc.70/jsrender.min.js')
+
+	script#tmpl_tags(type='text/x-jsrender')
+		span.tag.mr-2(data-id='{{: id}}')= '{{: master}}'
+			input(type='text', name='tags[{{: index}}]', value='{{: id}}', hidden)
+
+	script#tmpl_tags_complete(type='text/x-jsrender')
+		div.p-1.tag_complete(data-id='{{: _id}}', data-master='{{: master}}', style='cursor: pointer')
+			span.tag.mr-2= '{{: master}}'
+			span.text-muted.small= '{{: excerpt}}'
+
+	script.
+		var tags = {};
+
+		$(function () {
+			fileElem = document.getElementById('image');
+			fileSelect = document.getElementById('image_btn'),
+
+			fileSelect.addEventListener('click', function (e) {
+				if (fileElem)
+					fileElem.click();
+
+				e.preventDefault();
+			}, false);
+		});
+
+		$('#image').change(function() {
+				console.log(this.files[0]);
+
+				var reader = new FileReader();
+				reader.onload = function(e) {
+					console.log(e);
+					$('#preview').attr('src', e.target.result);
+				};
+				reader.readAsDataURL(this.files[0]);
+		});
+
+		$('#text_tags').on('input', function () {
+			var value = this.value;
+			if (!value || value.length < 2) return $('#cont_tags_complete').hide();
+
+			setTimeout(function () {
+				if ($('#text_tags').val() != value) return;
+
+				$.getJSON('/api/tags/fuzzy', {
+					slaves: value
+				}).then(docs => {
+					console.log(docs);
+					if (!docs || !docs.length) return $('#cont_tags_complete').html('<em>No matches...</em>');
+					
+					$('#cont_tags_complete').show();
+					var element = $($.templates('#tmpl_tags_complete').render(docs));
+					element.on('click', function (e) {
+						console.log($(e.target).closest('.tag_complete').data('id'));
+						var id = $(e.target).closest('.tag_complete').data('id');
+						var master = $(e.target).closest('.tag_complete').data('master');
+
+						tags[id] = master;
+						console.log(tags);
+						var tes = $($.templates('#tmpl_tags').render(Object.keys(tags).map((key, i) => { console.log(key, i); return { index: i, id: key, master: tags[key] } })));
+						tes.on('click', function (e) {
+							var id = $(e.target).closest('.tag').data('id')
+							delete tags[id];
+							$(e.target).closest('.tag').remove();
+						});
+						$('#cont_tags').html('').append(tes);
+
+						$('#text_tags').val('');
+						$('#cont_tags_complete').hide();
+					});
+					$('#cont_tags_complete').html('').append(element);
+				});
+			}, 600);
+		});

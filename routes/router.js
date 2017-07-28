@@ -45,19 +45,22 @@ if (isDevelopment) {
 	router.post('/echo/bindf', (req, res) => res.send(req.bindf));
 
 	var developmentApi = require('../controllers/api/developmentApi');
-	router.post('/api/users', developmentApi(require('../models/user')));
+	router.get('/api/users', developmentApi(require('../models/user')));
 
-	router.post('/api/tags', developmentApi(require('../models/tag')));
-	router.post('/api/tagdesignations', developmentApi(require('../models/tagdesignation')));
+	router.get('/api/tags', developmentApi(require('../models/tag')));
+	router.get('/api/tagdesignations', developmentApi(require('../models/tagdesignation')));
 	
-	router.post('/api/images', developmentApi(require('../models/image')));
+	router.get('/api/images', developmentApi(require('../models/image')));
 	
-	router.post('/api/cards', developmentApi(require('../models/card')));
-	router.post('/api/cardinstances', developmentApi(require('../models/cardinstance')));
+	router.get('/api/cards', developmentApi(require('../models/card')));
+	router.get('/api/cardinstances', developmentApi(require('../models/cardinstance')));
 	
-	router.post('/api/edits', developmentApi(require('../models/edit')));
-	router.post('/api/votes', developmentApi(require('../models/vote')));
+	router.get('/api/edits', developmentApi(require('../models/edit')));
+	router.get('/api/votes', developmentApi(require('../models/vote')));
 }
+
+var tagApi = require('../controllers/api/tagApi');
+router.get('/api/tags/fuzzy', tagApi.fuzzy);
 
 var userController = require('../controllers/userController');
 router.get('/users', userController.list);
@@ -82,10 +85,10 @@ router.get('/tags/:id([a-f0-9]{24})/edit', forbidVisitor(), tagController.edit);
 router.post('/tags/:id([a-f0-9]{24})/edit', forbidVisitor(), tagController.edit_post);
 router.get('/tags/:id([a-f0-9]{24})/history', tagController.history);
 
-// var imageController = require('../controllers/imageController');
+var imageController = require('../controllers/imageController');
 // router.get('/images', imageController.list);
-// router.get('/images/editor', forbidVisitor(), imageController.editor);
-// router.post('/images/editor', forbidVisitor(), imageController.editor_post);
+router.get('/images/upload', forbidVisitor(), imageController.upload);
+router.post('/images/upload', forbidVisitor(), imageController.upload_post);
 // router.get('/images/:id([a-f0-9]{24})', imageController.detail);
 
 var reviewController = require('../controllers/reviewController');

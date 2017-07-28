@@ -9,21 +9,24 @@ exports.list = function (req, res, next) {
 exports.detail = function (req, res, next) {
 }
 
-// /tags/editor?for=<for>
-exports.editor = function (req, res, next) {
-	if (req.query.for) {
-		Image.findById(req.query.for).then(doc => {
-			res.render('tags/editor', { 
-				title: 'Edit Image',
-				body: doc
-			});
-		});
-	} else {
-		res.render('tags/editor', { 
-			title: 'New Image'
-		});
-	}
+// /images/upload?for=<for>
+exports.upload = function (req, res, next) {
+	res.render('images/upload', { 
+		title: 'Upload Image'
+	});
 }
 
-exports.editor_post = function (req, res, next) {
+exports.upload_post = function (req, res, next) {
+	req.checkBody('title').notEmpty();
+	req.checkBody('tags').isArray();
+
+	req.getValidationResult().then(result => {
+		var err = result.useFirstErrorOnly().array()[0];
+		if (err) throw err;
+	}).catch(err => {
+		res.render('images/upload', {
+			title: 'Upload Image',
+			error: err
+		});
+	});
 };

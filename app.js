@@ -77,7 +77,15 @@ app.use(validator({
 	customValidators: {
 		isArray: function(value) {
 			return Array.isArray(value);
+		},
+		isString: function(value) {
+			return (typeof value === 'string' || value instanceof String);
 		}
+	},
+	customSanitizers: {
+		escapeRegexp: function(value) {
+			return value.replace(/[-\/\\^$*+?.()|\[\]{}]/g, '\\$&');
+		},
 	},
 	errorFormatter: (param, msg, value) => {
 		return { 

@@ -7,7 +7,7 @@ html(lang='en')
 		meta(charset='utf-8')
 		meta(name='viewport', content='width=device-width, initial-scale=1, shrink-to-fit=no')
 
-		//- script(src='https://use.fontawesome.com/feea410c25.js')
+		//- script(src='/vendor/fontawesome/feea410c25.js')
 
 		link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css')
 		link(rel='stylesheet', href='/css/base.css')
@@ -15,16 +15,16 @@ html(lang='en')
 		block head
 
 	body
-		nav.navbar.navbar-toggleable-sm.navbar-inverse.bg-inverse(style=originalUrl.includes('users') && 'background-color: #e10b80')
+		nav.navbar.navbar-toggleable-sm.navbar-inverse(style='background-color:' + (originalUrl.includes('cards') ? '#e10b80' : '#292b2c'))
 			div.container
 				a.navbar-brand(href='/') THLIVE
 				
 				div#navbar.collapse.navbar-collapse
 					div.navbar-nav
 						a.nav-item.nav-link(href='/users', class=originalUrl.includes('users') && 'active') Friends
+						a.nav-item.nav-link(href='/tags', class=originalUrl.includes('tags') && 'active') Tags
 						a.nav-item.nav-link(href='/images', class=originalUrl.includes('images') && 'active') Images
 						a.nav-item.nav-link(href='/cards', class=originalUrl.includes('cards') && 'active') Cards
-						a.nav-item.nav-link(href='/tags', class=originalUrl.includes('tags') && 'active') Tags
 						a.nav-item.nav-link(href='/review', class=originalUrl.includes('review') && 'active') Review
 
 			button.navbar-toggler.navbar-toggler-right(data-toggle='collapse', data-target='#navbar')
