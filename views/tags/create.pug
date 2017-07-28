@@ -3,8 +3,6 @@ extends ../base
 include ../mixin/alert
 
 block head
-	link(rel='stylesheet', href='/vendor/highlight.js/monokai-kailang.css')
-
 	style.
 		textarea {
 			font-family: Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
@@ -12,7 +10,7 @@ block head
 
 block main
 	div.mt-4.container
-		h2#title.h4= (body.namespace||'artist') + ':' + (body.master||'')
+		h2#title.h4= (body.namespace || 'artist') + ':' + body.master
 
 		hr
 
@@ -22,18 +20,18 @@ block main
 					div.form-group
 						label Namespace
 						select.form-control(type='text', name='namespace')
-							option(value='artist', selected=(body.namespace=='artist')) Artist
-							option(value='character', selected=(body.namespace=='character')) Character
-							option(value='location', selected=(body.namespace=='location')) Location
+							option(value='artist', selected=(body.namespace == 'artist')) Artist
+							option(value='character', selected=(body.namespace == 'character')) Character
+							option(value='location', selected=(body.namespace == 'location')) Location
 
 				div.col-md-9.mt-4
 					div.form-group
-						label Intro
-						input.form-control(type='text', name='intro', value=body.intro)
+						label Excerpt
+						input.form-control(type='text', name='excerpt', value=body.excerpt)
 			div.row
 				div.col-sm-6
 					label Slaves (the first slave is the master)
-					textarea#text_slaves.form-control= body.slaves&&body.slaves.join('\n')
+					textarea#text_slaves.form-control= body.slaves && body.slaves.join('\n')
 				div.col-sm-6
 					ul#cont_slaves
 
@@ -46,7 +44,7 @@ block main
 					div.form-group
 						label Wiki
 							a.ml-2(href='https://guides.github.com/features/mastering-markdown/', rel="noopener noreferrer" target="_blank") Markdown Guild
-						textarea#markdown.form-control(name='markdown')= body.markdown
+						textarea#markdown.form-control(name='wiki')= body.wiki
 
 					button.btn.btn-primary(type='submit') Submit Edit
 				div.col-lg-6
@@ -54,7 +52,6 @@ block main
 
 block foot
 	script(src='https://cdnjs.cloudflare.com/ajax/libs/marked/0.3.6/marked.min.js')
-	script(src='https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js')
 
 	script(src='https://cdnjs.cloudflare.com/ajax/libs/jsrender/1.0.0-rc.70/jsrender.min.js')
 
@@ -65,11 +62,6 @@ block foot
 	script.
 		// init markdown rendering
 		$(function () {
-			marked.setOptions({
-				highlight: code => hljs.highlightAuto(code).value,
-				langPrefix:'hljs '
-			});
-
 			$('textarea').keyup();
 		});
 

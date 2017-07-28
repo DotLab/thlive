@@ -1,0 +1,127 @@
+extends ../base
+
+block main
+	div.container.mt-4
+		h2.h5.font-weight-normal= 'Tag ' + format.toPascalCase(edit.action)
+		hr
+
+		if readonly
+			ul.list-unstyled.small
+				if edit.status == 'pending'
+					li.mb-1 #[span.badge.badge-warning Pending] #[strong= format.datetime(edit.date)]:
+				if edit.status == 'approved'
+					li.mb-1 #[span.badge.badge-success Approved] #[strong= format.datetime(edit.date_approved)]:
+				if edit.status == 'rejected'
+					li.mb-1 #[span.badge.badge-danger Rejected] #[strong= format.datetime(edit.date_rejected)]:
+
+				for vote in votes
+					li #[a(href=vote.user_id.url)= vote.user_id.name] reviewed this #{format.datetime(vote.date)}: 
+						strong #{format.toPascalCase(vote.action)} !{vote.is_binding&&'&diams;'}
+						if vote.comment 
+							small.d-block= vote.comment
+		else
+			div.row
+				div.col-sm-6.mb-2 Approve or reject edits suggested by #[strong friends]
+				div.col-sm-6
+					form.float-right(method='post')
+						input(name='target_id', value=edit._id, hidden)
+						button.mb-2.mr-2.btn.btn-primary(formaction='?action=approve') Approve
+						button.mb-2.mr-2.btn.btn-primary(formaction='?action=reject') Reject
+						button.mb-2.mr-2.btn.btn-primary(formaction='?action=skip') Skip
+		hr.mt-2
+
+		-
+			var one = base_edit.content.excerpt || '', 
+				other = edit.content.excerpt || '';
+			var diff = jsdiff.diffChars(one, other);
+			one = ''; other = '';
+			diff.forEach(e => {
+				if (e.added) {
+					other += '<span class="diff-add">' + e.value + '</span>';
+				} else if (e.removed) {
+					one += '<span class="diff-remove">' + e.value + '</span>';
+				} else {
+					one += e.value;
+					other += e.value;
+				}
+			});
+
+		h3.h6 Excerpt
+		div.row
+			div.col-sm-6
+				if base_edit.content.excerpt
+					p!= one
+				else
+					em Nothing to compare with
+			div.col-sm-6
+				if one != other
+					p!= other
+				else
+					em No changes
+		
+		-
+			var noChanges = (JSON.stringify(edit.content.slaves) == JSON.stringify(base_edit.content.slaves));
+
+		h3.h6.mt-3 Slaves
+		div.row
+			div.col-sm-6
+				if base_edit.content.slaves
+					h4 #[small.text-muted.mr-1 #{base_edit.content.namespace}:]#{base_edit.content.slaves[0]}
+					ul
+						for slave in base_edit.content.slaves
+							if edit.content.slaves.includes(slave)
+								li #[small.text-muted.mr-1 #{base_edit.content.namespace}:]#{slave}
+							else
+								li.diff-remove #[small.text-muted.mr-1 #{base_edit.content.namespace}:]#{slave}
+
+				else
+					em Nothing to compare with
+
+			div.col-sm-6 
+				if !noChanges
+					h4 #[small.text-muted.mr-1 #{edit.content.namespace}:]#{edit.content.slaves[0]}
+					ul
+						for slave in edit.content.slaves
+							if base_edit.content.slaves && base_edit.content.slaves.includes(slave)
+								li #[small.text-muted.mr-1 #{edit.content.namespace}:]#{slave}
+							else
+								li.diff-add #[small.text-muted.mr-1 #{edit.content.namespace}:]#{slave}
+				else
+					em No changes
+		-
+			one = base_edit.content.wiki || '';
+			other = edit.content.wiki || ''; 
+			diff = jsdiff.diffLines(one, other);
+			one = ''; other = '';
+			diff.forEach(e => {
+				if (e.added) {
+					other += '<span class="diff-add">' + e.value.replace(/([\n\r\t ]+)/g, '</span>$1<span class="diff-add">') + '</span>';
+				} else if (e.removed) {
+					one += '<span class="diff-remove">' + e.value.replace(/([\n\r\t ]+)/g, '</span>$1<span class="diff-remove">') + '</span>';
+				} else {
+					one += e.value;
+					other += e.value;
+				}
+			});
+
+		h3.h6 Wiki
+		div.row
+			div.col-sm-6
+				if base_edit.content.wiki
+					div!= sanitizeHtml(marked(one), { allowedTags: sanitizeHtml.defaults.allowedTags.concat([ 'span' ]), allowedAttributes: { '*': [ 'href', 'class' ] } })
+				else
+					em Nothing to compare with
+			div.col-sm-6
+				if one != other
+					div!= sanitizeHtml(marked(other), { allowedTags: sanitizeHtml.defaults.allowedTags.concat([ 'span' ]), allowedAttributes: { '*': [ 'href', 'class' ] } })
+					//- pre= other
+				else
+					em No changes
+
+		div.row
+			div.col-sm-6
+			div.col-sm-6.text-center.small.text-muted
+				span.d-inline-block.text-left
+					div proposed #{format.datetime(edit.date)}
+					a.d-block(href=edit.user_id.url)= edit.user_id.name
+					strong.d-block.mr-2= edit.user_id.rep

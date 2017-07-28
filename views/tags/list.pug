@@ -38,7 +38,7 @@ block main
 		div.row
 			for tag in tags
 				div.col-lg-3.col-md-4.col-sm-6.small.mb-2(style='border-bottom: 1px dotted #E4E6E7;')
-					div #[a.p-1.tag(href=tag.url)= tag.master] × #{tag.score}
-					div.text-muted(style='height: 39px; overflow: hidden')= tag.intro
-					div.my-2 dfasdf
+					div #[a.p-1.tag(href=tag.url)= tag.master] × #{tag.slaves.length}
+					div.text-muted(style='height: 39px; overflow: hidden')= tag.excerpt
+					div.my-2= tag.scores
 		

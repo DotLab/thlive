@@ -13,6 +13,6 @@ var VoteSchema = new Schema({
 	is_binding: { type: Boolean, required: true, default: false },
 });
 
-VoteSchema.index({ user_id: 1, edit_id: 1 }, { unique: true });
+VoteSchema.index({ user_id: 1, target_id: 1 }, { unique: true });
 
 module.exports = mongoose.model('Vote', VoteSchema);

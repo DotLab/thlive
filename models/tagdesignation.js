@@ -16,7 +16,7 @@ var TagDesignationSchema = new Schema({
 
 TagDesignationSchema.index({ user: 1, target: 1 }, { unique: true });
 
-UserSchema.virtual('score').get(function () {
+TagDesignationSchema.virtual('scores').get(function () {
 	return this.up_votes + this.down_votes;
 });
 

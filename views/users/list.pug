@@ -1,75 +1,5 @@
 extends ../base
 
-block head
-	style.
-		.ubadge {
-			border: 1px solid transparent; 
-			border-radius: 2px; 
-			font-size: 12px;
-			font-weight: bold;
-			color: #535a60;
-			overflow: hidden;
-			white-space: nowrap;
-			text-overflow: ellipsis;
-		}
-
-		.text-ellip {
-			overflow: hidden;
-			white-space: nowrap;
-			text-overflow: ellipsis;
-		}
-
-		.ubadge-gold {
-			background: #fff8e2; 
-			border-color: #ece3c8;
-		}
-
-		.ubadge-silver {
-			background: #edeeef; 
-			border-color: #e0e1e3;
-		}
-
-		.ubadge-brozen {
-			background: #f9ebe1; 
-			border-color: #f1decc;
-		}
-
-		.ubadge-tag {
-			background: #eff0f1;
-			border-color: #d6d9dc;
-			border-radius: 4px; 
-		}
-
-		.ubadge-block {
-			color: #fff;
-			background: #2f3337;
-			border-radius: 4px; 
-		}
-
-		.ubadge-coin {
-			width: 8px; height: 8px; 
-			border-radius: 50%; 
-			display: inline-block;
-		}
-
-		.ubadge-coin-gold {
-			background: #FFCC01;
-		}
-
-		.ubadge-coin-silver {
-			background: #B4B8BC;
-		}
-
-		.ubadge-coin-brozen {
-			background: #D1A684;
-		}
-
-		.ucard {
-			background: #fafafb;
-			border: 1px solid #e0e0e0;
-			padding: 20px;
-		}
-
 block main
 	div.container.mt-4
 		h2.h5.font-weight-normal Friends
@@ -87,12 +17,5 @@ block main
 								span.ml-1 &diams;
 							div.small.text-muted
 								div= user.location
-								div
-									strong.mr-2= user.reputation
-									span.mr-1.ubadge-coin.ubadge-coin-gold
-									span.mr-2.text-muted= user.badge_gold
-									span.mr-1.ubadge-coin.ubadge-coin-silver
-									span.mr-2.text-muted= user.badge_silver
-									span.mr-1.ubadge-coin.ubadge-coin-brozen
-									span.text-muted= user.badge_brozen
-								div= format.date(user.date_joined)
+								strong.mr-2= format.numeral(user.rep)
+								div joined #{format.date(user.date)}

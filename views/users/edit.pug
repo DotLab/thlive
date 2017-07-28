@@ -3,8 +3,6 @@ extends ../base
 include ../mixin/alert
 
 block head
-	link(rel='stylesheet', href='/vendor/highlight.js/monokai-kailang.css')
-
 	style.
 		#markdown {
 			font-family: Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
@@ -17,23 +15,21 @@ block main
 		hr
 
 		form(method='post')
-			div.row
-				div.col-md-3.mt-4
-					div.form-group
-						label Avatar
-						img#avatar.mb-3.img-thumbnail.d-block.mx-auto(src='')
-						input.form-control(type='text', name='avatar', value=body.avatar)
-
-				div.col-md-9.mt-4
+			div.row.mt-4
+				div.col-md-6
 					div.form-group
 						label Display Name
 						input.form-control(type='text', name='name', value=body.name)
 					div.form-group
 						label Job Title
 						input.form-control(type='text', name='title', value=body.title)
+				div.col-md-6
 					div.form-group
 						label Location (region, country)
 						input.form-control(type='text', name='location', value=body.location)
+					div.form-group
+						label Website
+						input.form-control(type='text', name='website', value=body.website)
 
 			+error_alerts(true, false)
 
@@ -44,7 +40,7 @@ block main
 					div.form-group
 						label About Me
 							a.ml-2(href='https://guides.github.com/features/mastering-markdown/', rel="noopener noreferrer" target="_blank") Markdown Guild
-						textarea#markdown.form-control(name='markdown')= body.markdown
+						textarea#markdown.form-control(name='about_me')= body.about_me
 
 					button.btn.btn-primary(type='submit') Submit Edit
 				div.col-lg-6
@@ -52,16 +48,10 @@ block main
 
 block foot
 	script(src='https://cdnjs.cloudflare.com/ajax/libs/marked/0.3.6/marked.min.js')
-	script(src='https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js')
 
 	script.
 		// init markdown rendering
 		$(function () {
-			marked.setOptions({
-				highlight: code => hljs.highlightAuto(code).value,
-				langPrefix:'hljs '
-			});
-
 			$('textarea').keyup();
 		});
 

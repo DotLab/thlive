@@ -15,17 +15,17 @@ html(lang='en')
 		block head
 
 	body
-		nav.navbar.navbar-toggleable-sm.navbar-inverse.bg-inverse(style=section=='cards'&&'background-color: #e10b80')
+		nav.navbar.navbar-toggleable-sm.navbar-inverse.bg-inverse(style=originalUrl.includes('users') && 'background-color: #e10b80')
 			div.container
 				a.navbar-brand(href='/') THLIVE
 				
 				div#navbar.collapse.navbar-collapse
 					div.navbar-nav
-						a.nav-item.nav-link(href='/users', class=section=='users'&&'active') Friends
-						a.nav-item.nav-link(href='/images', class=section=='images'&&'active') Images
-						a.nav-item.nav-link(href='/cards', class=section=='cards'&&'active') Cards
-						a.nav-item.nav-link(href='/tags', class=section=='tags'&&'active') Tags
-						a.nav-item.nav-link(href='/queues', class=section=='queues'&&'active') Queues
+						a.nav-item.nav-link(href='/users', class=originalUrl.includes('users') && 'active') Friends
+						a.nav-item.nav-link(href='/images', class=originalUrl.includes('images') && 'active') Images
+						a.nav-item.nav-link(href='/cards', class=originalUrl.includes('cards') && 'active') Cards
+						a.nav-item.nav-link(href='/tags', class=originalUrl.includes('tags') && 'active') Tags
+						a.nav-item.nav-link(href='/review', class=originalUrl.includes('review') && 'active') Review
 
 			button.navbar-toggler.navbar-toggler-right(data-toggle='collapse', data-target='#navbar')
 				span.navbar-toggler-icon

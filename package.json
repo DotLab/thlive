@@ -21,9 +21,11 @@
     "mongoose": "^4.11.4",
     "morgan": "~1.8.1",
     "node-cron": "^1.2.0",
+    "numeral": "^2.0.6",
     "pbkdf2-password": "^1.2.1",
     "pug": "~2.0.0-beta11",
     "rusha": "^0.8.6",
+    "sanitize-html": "^1.14.1",
     "sharp": "^0.18.2",
     "validator": "^8.0.0"
   }

@@ -1,67 +1,107 @@
 var validator = require('validator');
 
 var Tag = require('../models/tag');
-var TagEdit = require('../models/tagedit');
+var Edit = require('../models/edit');
 
 exports.list = function (req, res, next) {
-	Tag.find().then(docs => {
+	Tag.find().then(tags => {
 		res.render('tags/list', {
 			title: 'Tags',
-			tags: docs
+			tags: tags
 		});
 	}).catch(err => next(err));
 }
 
 // /users/:id
 exports.detail = function (req, res, next) {
-	Tag.findById(req.params.id).then(doc => {
+	Tag.findById(req.params.id).then(tag => {
 		res.render('tags/detail', {
-			title: doc.slaves[0],
-			tag: doc
+			title: tag.master,
+			tag: tag
 		});
 	}).catch(err => next(err));
 }
 
-// /tags/editor?for=<for>
-exports.editor = function (req, res, next) {
-	if (req.query.for) {
-		Tag.findById(req.query.for).then(doc => {
-			res.render('tags/editor', { 
-				title: 'Edit Tag',
-				body: doc
-			});
-		});
-	} else {
-		res.render('tags/editor', { 
-			title: 'New Tag'
-		});
-	}
-}
+exports.create = function (req, res, next) {
+	res.render('tags/create', {
+		title: 'Create Tag'
+	});
+};
 
-exports.editor_post = function (req, res, next) {
-	req.checkQuery('for').optional({ checkFalsy: true }).isMongoId();
+exports.create_post = function (req, res, next) {
+	req.checkBody('slaves').isArray();
 	req.checkBody('namespace').notEmpty().isIn([ 'artist', 'character', 'location' ]);
-	req.checkBody('intro').notEmpty();
+	req.checkBody('excerpt').notEmpty();
 
 	req.getValidationResult().then(result => {
 		var err = result.array()[0];
 		if (err) throw err;
 	}).then(() => {
-		if (req.query.for)
-			return Tag.findById(req.query.for);
-	}).then(doc => {
-		return new TagEdit({
-			for: doc ? doc._id : undefined,
-			type: doc ? 'edit' : 'create',
-			editor: req.bindf.user._id,
+		return new Edit({
+			user_id: req.bindf.user._id,
 
-			base: doc ? doc.edit : undefined,
-			body: req.body
+			kind: 'Tag',
+
+			content: {
+				namespace: req.body.namespace,
+				slaves: req.body.slaves,
+				excerpt: req.body.excerpt,
+				wiki: req.body.wiki
+			},
+
+			action: 'create'
 		}).save();
-	}).then(doc => {
-		res.redirect(doc.url);
+	}).then(edit => {
+		res.redirect(edit.url);
 	}).catch(err => {
-		res.render('tags/editor', {
+		res.render('tags/create', {
+			title: 'Create Tag',
+			error: err
+		});
+	});
+};
+
+// /tags/
+exports.edit = function (req, res, next) {
+	Tag.findById(req.params.id).then(tag => {
+		res.render('tags/create', { 
+			title: 'Edit Tag',
+			body: tag
+		});
+	});
+}
+
+exports.edit_post = function (req, res, next) {
+	req.checkBody('slaves').isArray();
+	req.checkBody('namespace').notEmpty().isIn([ 'artist', 'character', 'location' ]);
+	req.checkBody('excerpt').notEmpty();
+
+	req.getValidationResult().then(result => {
+		var err = result.array()[0];
+		if (err) throw err;
+	}).then(() => {
+		return Tag.findById(req.params.id);
+	}).then((tag) => {
+		return new Edit({
+			user_id: req.bindf.user._id,
+
+			kind: 'Tag',
+			target_id: tag._id,
+
+			content: {
+				namespace: req.body.namespace,
+				slaves: req.body.slaves,
+				excerpt: req.body.excerpt,
+				wiki: req.body.wiki
+			},
+
+			base_edit_id: tag.edit_id,
+			action: 'edit'
+		}).save();
+	}).then(edit => {
+		res.redirect(edit.url);
+	}).catch(err => {
+		res.render('tags/create', {
 			title: 'Edit Tag',
 			error: err
 		});

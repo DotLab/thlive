@@ -24,7 +24,6 @@ moment.locale();
 // mongoose ----------------------------------------------------------------------------------------------------
 var mongoose = require('mongoose').set('debug', true);
 mongoose.Promise = global.Promise;
-
 mongoose.connect('mongodb://localhost:27017/thlive', {
 	useMongoClient: true,
 }).then(db => {
@@ -75,6 +74,11 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // validator ----------------------------------------------------------------------------------------------------
 var validator = require('express-validator');
 app.use(validator({
+	customValidators: {
+		isArray: function(value) {
+			return Array.isArray(value);
+		}
+	},
 	errorFormatter: (param, msg, value) => {
 		return { 
 			name: 'ExpressValidationError', 
@@ -83,6 +87,8 @@ app.use(validator({
 }));
 
 // locals ----------------------------------------------------------------------------------------------------
+var numeral = require('numeral');
+
 app.use(function (req, res, next) {
 	req.bindf = {};
 
@@ -91,6 +97,12 @@ app.use(function (req, res, next) {
 			return str.replace(/(\w)(\w*)/g, function (g0, g1, g2) {
 				return g1.toUpperCase() + g2.toLowerCase();
 			});
+		},
+
+		numeral: function (n) {
+			if (n <= 10000) return numeral(n).format('0,0');	
+			else if (n <= 100000) return numeral(n).format('0.0a');	
+			else return numeral(n).format('0a');
 		},
 
 		dateFromNow: function (date) {
@@ -104,16 +116,33 @@ app.use(function (req, res, next) {
 		datetime: function (date) {
 			return moment(date).format('MMM D [\']YY [at] k:m');
 		},
+
+		minimark: function (mark) {
+			mark = mark.replace(/\[([^\[]+)\]\(([^\)]+)\)/g, '<a href="$2">$1</a>');
+			mark = mark.replace(/(http|https|ftp|ftps)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(\/\S*)?/g, match => `<a href="${match}">${decodeURI(match)}</a>`);
+			mark = mark.replace(/(\*\*|__)(.*?)\1/g, '<strong>$2</strong>');
+			mark = mark.replace(/(\*|_)(.*?)\1/g, '<em>$2</em>');
+			mark = mark.replace(/\~\~(.*?)\~\~/g, '<del>$1</del>');
+			mark = mark.replace(/`(.*?)`/g, '<code>$1</code>');
+			return mark;
+		}
 	};
 
 	res.locals.mortal = req.session.user;
+
+	res.locals.originalUrl = req.originalUrl;
+	res.locals.baseUrl = req.baseUrl;
+	res.locals.path = req.path;
 
 	res.locals.body = req.body;
 	res.locals.query = req.query;
 
 	res.locals.marked = marked;
 	res.locals.moment = moment;
+	res.locals.numeral = numeral;
+
 	res.locals.jsdiff = require('diff');
+	res.locals.sanitizeHtml = require('sanitize-html');
 
 	next();
 });

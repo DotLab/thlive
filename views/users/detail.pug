@@ -1,73 +1,9 @@
 extends ../base
 
 block head
-	link(rel='stylesheet', href='/vendor/highlight.js/monokai-kailang.css')
-
-	script(src='https://use.fontawesome.com/feea410c25.js')
+	script(src='/vendor/fontawesome/feea410c25.js')
 
 	style.
-		.ubadge {
-			border: 1px solid transparent; 
-			border-radius: 2px; 
-			font-size: 12px;
-			font-weight: bold;
-			color: #535a60;
-			overflow: hidden;
-			white-space: nowrap;
-			text-overflow: ellipsis;
-		}
-
-		.text-ellip {
-			overflow: hidden;
-			white-space: nowrap;
-			text-overflow: ellipsis;
-		}
-
-		.ubadge-gold {
-			background: #fff8e2; 
-			border-color: #ece3c8;
-		}
-
-		.ubadge-silver {
-			background: #edeeef; 
-			border-color: #e0e1e3;
-		}
-
-		.ubadge-brozen {
-			background: #f9ebe1; 
-			border-color: #f1decc;
-		}
-
-		.ubadge-tag {
-			background: #eff0f1;
-			border-color: #d6d9dc;
-			border-radius: 4px; 
-		}
-
-		.ubadge-block {
-			color: #fff;
-			background: #2f3337;
-			border-radius: 4px; 
-		}
-
-		.ubadge-coin {
-			width: 8px; height: 8px; 
-			border-radius: 50%; 
-			display: inline-block;
-		}
-
-		.ubadge-coin-gold {
-			background: #FFCC01;
-		}
-
-		.ubadge-coin-silver {
-			background: #B4B8BC;
-		}
-
-		.ubadge-coin-brozen {
-			background: #D1A684;
-		}
-
 		.ucard {
 			background: #fafafb;
 			border: 1px solid #e0e0e0;
@@ -80,44 +16,37 @@ block main
 			div.col-lg-3.mb-3
 				div.card(style='box-shadow: inset 0 150px 0 #e7e8ea')
 					div.card-block.text-center.pb-4
-						if (user.avatar)
-							img.img-thumbnail.border-0(src='/upload/images/' + user.avatar.name_local)
-
-						span.h3.font-weight-normal.align-middle= user.reputation
+						span.h3.font-weight-normal.align-middle= format.numeral(user.rep)
 						span.small.text-muted.align-middle.ml-1.text-ellip REPUTATION
-						
-						div.row.mb-0.mt-3
-							div.d-block.mx-auto
-								span.ubadge.ubadge-gold.p-2.mr-1 #[span.ubadge-coin.ubadge-coin-gold] #{user.badge_gold}
-								span.ubadge.ubadge-silver.p-2.mr-1 #[span.ubadge-coin.ubadge-coin-silver] #{user.badge_silver}
-								span.ubadge.ubadge-brozen.p-2.mr-1 #[span.ubadge-coin.ubadge-coin-brozen] #{user.badge_brozen}
 
 			div.col-lg-9.mb-3
 				div.row
 					div.col-md-8.mb-3
 						h3.h2= user.name
-							if user.moderator
+							if user.is_mod
 								span.ml-1 &diams;
 						p.h5.font-weight-normal.text-muted= user.title
 
-						div#cont_markdown.mt-3 !{marked(user.markdown)}
+						div#cont_markdown.mt-3!= sanitizeHtml(marked(user.about_me))
 
 						if (mortal && user._id == mortal._id)
-							a(href='/users/editor') Click here to edit
+							a(href=user.url + '/edit') edit
 					div.col-md-4.mb-3
 						div.d-flex.justify-content-between.line-1
 							span.d-inline-block
-								p.m-0.h6= user.vote_up
+								p.m-0.h6= format.numeral(user.up_votes)
 								span.m-0.p-0.small.text-muted up votes
 							span.d-inline-block
-								p.m-0.h6= user.vote_down
+								p.m-0.h6= format.numeral(user.down_votes)
 								span.m-0.p-0.small.text-muted down votes
 							span.d-inline-block
-								p.m-0.h6= user.edit
+								p.m-0.h6= format.numeral(user.edits)
 								span.m-0.p-0.small.text-muted edits
 
 						ul#table.list-unstyled.text-muted.mt-3.small(style='line-height: 2')
 							li #[i.fa.fa-lg.fa-fw.fa-map-marker] #{user.location}
-							li #[i.fa.fa-lg.fa-fw.fa-history] Joined #{moment(user.date_joined).fromNow()}
-							li #[i.fa.fa-lg.fa-fw.fa-eye] #{user.view} profile views
-							li #[i.fa.fa-lg.fa-fw.fa-clock-o] Last seen #{moment(user.date_active).fromNow()}
+							if (user.website)
+								li #[i.fa.fa-lg.fa-fw.fa-link] #[a(href=user.website)= user.website]
+							li #[i.fa.fa-lg.fa-fw.fa-history] Befriended #{format.dateFromNow(user.date)}
+							li #[i.fa.fa-lg.fa-fw.fa-eye] #{format.numeral(user.views)} profile views
+							li #[i.fa.fa-lg.fa-fw.fa-clock-o] Last seen #{format.dateFromNow(user.active_date)}
