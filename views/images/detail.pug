@@ -43,7 +43,7 @@ block main
 		
 		div.mt-3
 				for designation in designations
-					a.tag.mr-2(href='/images?tags=' + designation.tag_id.master) #{designation.tag_id.master}
+					a.tag.mr-2(href='/images?q=[' + designation.tag_id.master + ']') #{designation.tag_id.master}
 				a.small(href=image.url + '/edit') edit
 		
 		img.mt-3.img-fluid.d-block.mx-auto.shadow-card(src=image.preview, style='max-height: 600px')

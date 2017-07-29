@@ -14,13 +14,77 @@ var Tag = require('../models/tag');
 var Designation = require('../models/designation');
 
 exports.list = function (req, res, next) {
-	if (!req.query.tags)
+	if (req.query.q == undefined) {
 		Image.find().then(images => {
 			res.render('images/list', {
 				title: 'Images',
 				images: images
 			});
 		}).catch(err => next(err));
+	} else {
+		var q = req.query.q.trim();
+		debug('list', q);
+
+		if (!q || !q.length)
+			return Image.find().then(images => {
+				res.render('images/list', {
+					title: 'Search Images',
+					images: images
+				});
+			}).catch(err => next(err));
+
+		var tagRegex = /\[(artist|character|location):([0-9a-z\.\-\+\# \u3040-\u309f\u30a0-\u30ff\u4E00-\u9FFF\uF900-\uFAFF]+)\]/gi
+		var tagsQuery = [], match;
+		while (match = tagRegex.exec(q))
+			tagsQuery.push({ namespace: match[1].trim().toLowerCase(), slaves: match[2].trim().toLowerCase() });
+		debug('list', tagsQuery);
+
+		var keywords = q.replace(tagRegex, ' ')
+			.split(/[^0-9a-zA-Z\u3040-\u309f\u30a0-\u30ff\u4E00-\u9FFF\uF900-\uFAFF]+/i)
+			.filter(e => e);
+		var titleQuery = keywords.map(e => { 
+				return { title: new RegExp('^.*' + e + '.*$', 'i') };
+			});
+		debug(keywords);
+
+		if (tagsQuery.length == 0) {
+			Image.find({ $and: titleQuery }, (err, images) => {
+				if (err) return next(err);
+
+				res.render('images/list', {
+					title: 'Search Images',
+					images: images
+				});
+			});
+		} else {
+			Tag.find({ $or: tagsQuery }, (err, tags) => {
+				if (err) return next(err);
+
+				if (tags.length != tagsQuery.length) {
+					var q = (tags.map(e => `[${e}]`).join(' ') + ' ' + keywords.join(' ')).trim();
+					return res.redirect('/images?q=' + q);
+				}
+
+				var designationsQuery = tags.map(e => { return { tag_id: e._id }; });
+				var designationTitleQuery = titleQuery.map(e => { return { 'images.title': e.title }; });
+				debug(designationsQuery);
+
+				Designation.aggregate([
+					{ $match: { $or: designationsQuery } },
+					{ $lookup: { from: 'images', localField: 'target_id', foreignField: '_id', as: 'images' } },
+					{ $unwind: { path: '$images' } },
+					titleQuery.length && { $match: { $and: designationTitleQuery } }
+				].filter(e => e), (err, designations) => {
+					if (err) return next(err);
+
+					res.render('images/list', {
+						title: 'Search Images',
+						images: designations.map(e => new Image(e.images).toObject({ virtuals: true }))
+					});
+				});
+			});
+		}
+	}
 }
 
 // /users/:id

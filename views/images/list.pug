@@ -4,7 +4,17 @@ block main
 	div.container.mt-4
 		a.btn.btn-sm.btn-primary.float-right(href='/images/upload') Upload Image
 		h4 Images
+
 		hr
+
+		if query.q != undefined
+			div.row.mb-3
+				div.col-sm-6.col-lg-4
+					form(method='get')
+						div.input-group.input-group-sm
+							input.form-control(type='text', name='q', value=query.q)
+							span.input-group-btn
+								button.btn.btn-info Search
 		
 		div.row
 			for image in images
