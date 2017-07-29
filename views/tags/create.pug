@@ -46,9 +46,9 @@ block main
 							a.ml-2(href='https://guides.github.com/features/mastering-markdown/', rel="noopener noreferrer" target="_blank") Markdown Guild
 						textarea#markdown.form-control(name='wiki')= body.wiki
 
-					button.btn.btn-primary(type='submit') Submit Edit
 				div.col-lg-6
 					div#cont_markdown
+			button.btn.btn-primary(type='submit') Submit Edit
 
 block foot
 	script(src='https://cdnjs.cloudflare.com/ajax/libs/marked/0.3.6/marked.min.js')
@@ -57,7 +57,7 @@ block foot
 
 	script#tmpl_slaves(type='text/x-jsrender')
 		li #[small.text-muted.mr-1 #{'{{: namespace}}'}:]#{'{{: slave}} {{if index==0}} - current master{{/if}}'}
-			input(type='text', name='slaves[{{: index}}]', value='{{: slave}}', hidden)
+			input(type='text', name='slaves', value='{{: slave}}', hidden)
 
 	script.
 		// init markdown rendering

@@ -18,7 +18,7 @@ block head
 		}
 
 block main
-	form(method='post', encType='multipart/form-data', action='/echo/body')
+	form(method='post', encType='multipart/form-data')
 		div.jumbotron.jumbotron-fluid.mb-1
 			div.container
 				div
@@ -37,20 +37,9 @@ block main
 				div.col-md-6
 					div.form-group
 						label Tags
-						input#text_tags.form-control(type='text', placeholder='さなえさん')
+						input#text_tags.form-control(type='text', placeholder='さなえさん', value=body.masters)
 						div#cont_tags_complete.autocomplete(style='display: none;')
-							div.p-1
-								a.tag.mr-2(href='javascript:void(0)') asdfdfa
-								span.text-muted.small dflskajdflaksjfdsd lkas jflkasj flkasd flkasj flksa lsd jflksaj fklasj dflksaflksa jfskald fsakd fjlkasd flkd asf
-							div.p-1
-								a.tag.mr-2(href='javascript:void(0)') asdfdfa
-								span.text-muted.small dflskajdflaksjfdsd lkas jflkasj flkasd flkasj flksa lsd jflksaj fklasj dflksaflksa jfskald fsakd fjlkasd flkd asf
 						div#cont_tags.mt-2
-							a.tag.mr-2(href='') sdfsdf
-								input(type='text', name='tags[0]', value='sadfsadf', hidden)
-							a.tag.mr-2(href='') sdfsdf
-							a.tag.mr-2(href='') sdfsdf
-							a.tag.mr-2(href='') sdfsdf
 
 			+error_alerts(true, true)
 
@@ -62,7 +51,8 @@ block foot
 
 	script#tmpl_tags(type='text/x-jsrender')
 		span.tag.mr-2(data-id='{{: id}}')= '{{: master}}'
-			input(type='text', name='tags[{{: index}}]', value='{{: id}}', hidden)
+			input(type='text', name='tags', value='{{: id}}', hidden)
+			input(type='text', name='masters', value='{{: master}}', hidden)
 
 	script#tmpl_tags_complete(type='text/x-jsrender')
 		div.p-1.tag_complete(data-id='{{: _id}}', data-master='{{: master}}', style='cursor: pointer')

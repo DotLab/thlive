@@ -48,7 +48,7 @@ if (isDevelopment) {
 	router.get('/api/users', developmentApi(require('../models/user')));
 
 	router.get('/api/tags', developmentApi(require('../models/tag')));
-	router.get('/api/tagdesignations', developmentApi(require('../models/tagdesignation')));
+	router.get('/api/designations', developmentApi(require('../models/designation')));
 	
 	router.get('/api/images', developmentApi(require('../models/image')));
 	
@@ -61,6 +61,9 @@ if (isDevelopment) {
 
 var tagApi = require('../controllers/api/tagApi');
 router.get('/api/tags/fuzzy', tagApi.fuzzy);
+
+var imageApi = require('../controllers/api/imageApi');
+router.get('/api/images/siblings', imageApi.siblings);
 
 var userController = require('../controllers/userController');
 router.get('/users', userController.list);
@@ -86,10 +89,10 @@ router.post('/tags/:id([a-f0-9]{24})/edit', forbidVisitor(), tagController.edit_
 router.get('/tags/:id([a-f0-9]{24})/history', tagController.history);
 
 var imageController = require('../controllers/imageController');
-// router.get('/images', imageController.list);
+router.get('/images', imageController.list);
 router.get('/images/upload', forbidVisitor(), imageController.upload);
 router.post('/images/upload', forbidVisitor(), imageController.upload_post);
-// router.get('/images/:id([a-f0-9]{24})', imageController.detail);
+router.get('/images/:id([a-f0-9]{24})', imageController.detail);
 
 var reviewController = require('../controllers/reviewController');
 router.get('/review', forbidVisitor(), reviewController.list);

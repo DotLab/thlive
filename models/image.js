@@ -24,4 +24,16 @@ ImageSchema.virtual('src').get(function () {
 	return '/upload/images/' + this.sha1 + '.' + this.format;
 });
 
+ImageSchema.virtual('thumb').get(function () {
+	return '/upload/images/' + this.sha1 + '-thumb.jpg';
+});
+
+ImageSchema.virtual('preview').get(function () {
+	return '/upload/images/' + this.sha1 + '-preview.jpg';
+});
+
+ImageSchema.virtual('url').get(function () {
+	return '/images/' + this._id;
+});
+
 module.exports = mongoose.model('Image', ImageSchema);

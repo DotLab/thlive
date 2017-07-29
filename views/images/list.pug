@@ -1,0 +1,17 @@
+extends ../base
+
+block main
+	div.container.mt-4
+		a.btn.btn-sm.btn-primary.float-right(href='/images/upload') Upload Image
+		h4 Images
+		hr
+		
+		div.row
+			for image in images
+				div.col-lg-2.col-md-3.col-sm-4.text-center.pb-3
+					a(href=image.url)
+						img.rounded.shadow-item(src=image.thumb, width='128px', height='128px')
+						h4.text-ellip.text-muted.mt-2.mb-0.h6.small.font-weight-bold= image.title
+					div.small.text-muted.m-0= image._id
+					div.small.text-muted.m-0= 'uploaded ' + format.dateFromNow(image.date)
+		

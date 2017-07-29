@@ -5,7 +5,7 @@ var VoteSchema = new Schema({
 	user_id: { type: Schema.Types.ObjectId, ref: 'User', required: true },
 	date: { type: Date, required: true, default: Date.now },
 
-	kind: { type: String, required: true, enum: [ 'Edit', 'Tag', 'Image', 'TagDesignation' ] },
+	kind: { type: String, required: true, enum: [ 'Edit', 'Tag', 'Image', 'Designation' ] },
 	target_id: { type: Schema.Types.ObjectId, refPath: 'kind' },
 	comment: { type: String, trim: true },  // normal votes may not have a comment
 

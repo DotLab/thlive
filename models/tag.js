@@ -18,7 +18,7 @@ var TagSchema = new Schema({
 TagSchema.index({ namespace: 1, slaves: 1 }, { unique: true });
 
 TagSchema.virtual('master').get(function () {
-	return this.namespace.substring(0, 2) + ':' + this.slaves[0];
+	return this.namespace.substring(0, 1) + ':' + this.slaves[0];
 });
 
 TagSchema.virtual('url').get(function () {

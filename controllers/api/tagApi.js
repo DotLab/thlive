@@ -10,7 +10,7 @@ exports.fuzzy = function (req, res, next) {
 		result.throw();
 	}).then(() => {
 		return Tag.find({
-			slaves: new RegExp('^.*' + req.query.slaves + '.*$', 'i')
+			slaves: new RegExp('^.*' + req.query.slaves.trim() + '.*$', 'i')
 		});	
 	}).then(tags => {
 		tags = tags.map(e => e.toObject({ virtuals: true }));

@@ -1,0 +1,85 @@
+extends ../base
+
+block head
+	style.
+		a {
+			color: #258fb8;
+		}
+
+		a:hover {
+			color: #258fb8;
+		}
+
+		.sibling {
+			background-color: #f2f4f6;
+			border: 0;
+		}
+
+		.sibling .caret {
+			color: #becad7;
+		}
+
+		.sibling .title {
+			margin: 0 0.4rem;
+		}
+
+block main
+	div.container.mt-3
+		div.card.mb-3.sibling
+			div.card-block.px-2.py-0
+				div#cont_siblings.row(style='min-height: 64px')
+					//- div.col-lg-5.col-md-6.text-right.small(style='height: 60px')
+					//- 	|	&#9666;
+					//- 	|	橘ありすとバックエロ
+					//- 	img(src='/upload/images/' + image.name_local, style='height: 60px')
+					//- div.col-lg-2.text-center.hidden-md-down.d-flex.align-items-center.justify-content-center
+					//- 	a(href='/artists/' + artist._id)= artist.name
+					//- div.col-lg-5.col-md-6.text-left.small(style='height: 60px')
+					//- 	img(src='/upload/images/' + image.name_local, style='height: 60px')
+					//- 	|	橘ありすとバックエロ
+					//- 	|	&#9656;
+		h6.small.text-muted #{format.datetime(image.date)} | #{image.width}x#{image.height} | #{image.format}
+		h2.h4 #{image.title} #[small.text-muted.hidden-xs-down - #{image._id}]
+		
+		div.mt-3
+				for designation in designations
+					a.tag.mr-2(href='/images?tags=' + designation.tag_id.master) #{designation.tag_id.master}
+				a.small(href=image.url + '/edit') edit
+		
+		img.mt-3.img-fluid.d-block.mx-auto.shadow-card(src=image.preview, style='max-height: 600px')
+
+block foot
+	script(src='https://cdnjs.cloudflare.com/ajax/libs/jsrender/1.0.0-rc.70/jsrender.min.js')
+
+	script#tmpl_siblings(type='text/x-jsrender')
+		div.col-lg-5.col-md-6.text-right.small
+			a(href='{{: siblings[0].url}}')
+				span.title.mx-3 &larr; #{'{{: siblings[0].title}}'}
+				img.height-64(src='{{: siblings[0].thumb}}')
+
+		div.col-lg-2.m-0.p-0.text-center.hidden-md-down.d-flex.align-items-center.justify-content-center
+			a(href=image.user_id.url)= image.user_id.name
+
+		div.col-lg-5.col-md-6.text-left.small
+			a(href='{{: siblings[1].url}}')
+				img.height-64(src='{{: siblings[1].thumb}}')
+				span.title.mx-3 #{'{{: siblings[1].title}}'} &rarr;
+	
+	script.
+		$(function () {
+			$tmpl_siblings = $.templates('#tmpl_siblings');
+			$cont_siblings = $('#cont_siblings');
+			
+			$.getJSON('/api/images/siblings', {
+				id: '#{image._id}'
+			}).then(siblings => {
+				console.log(siblings);
+
+				if (siblings[0] && siblings[1])
+					$cont_siblings.html($tmpl_siblings.render({
+						siblings: siblings
+					}));
+				else
+					$('.sibling').hide();
+			});
+		});
