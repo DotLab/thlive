@@ -16,7 +16,12 @@ var ImageSchema = new Schema({
 	space: { type: String, trim: true, required: true },
 	depth: { type: String, trim: true, required: true },
 
-	has_alpha: { type: Boolean, required: true }
+	has_alpha: { type: Boolean, required: true },
+
+	tag_ids: [ { type: Schema.Types.ObjectId, ref: 'Tag' } ],
+
+	up_votes: { type: Number, required: true, default: 0 },
+	down_votes: { type: Number, required: true, default: 0 },
 });
 
 // local name should be of form ${sha1} + '.' + ${format}
@@ -34,6 +39,10 @@ ImageSchema.virtual('preview').get(function () {
 
 ImageSchema.virtual('url').get(function () {
 	return '/images/' + this._id;
+});
+
+ImageSchema.virtual('scores').get(function () {
+	return this.up_votes + this.down_votes;
 });
 
 module.exports = mongoose.model('Image', ImageSchema);

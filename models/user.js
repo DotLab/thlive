@@ -1,9 +1,12 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
+var regexpHelper = require('../helpers/regexpHelper');
+var schemaHelper = require('../helpers/schemaHelper');
+
 var UserSchema = new Schema({
-	name: { type: String, required: true, unique: true, trim: true, match: /^[a-zA-Z0-9 \u3040-\u309f\u30a0-\u30ff\u4E00-\u9FFF\uF900-\uFAFF]{1,20}$/ },
-	email: { type: String, required: true, unique: true, trim: true, match: /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/ },
+	name:{ type: String, required: true, unique: true, trim: true, match: regexpHelper.model.user.name },
+	email:{ type: String, required: true, unique: true, trim: true, match: regexpHelper.model.user.email },
 	
 	website: { type: String, trim: true },
 
@@ -17,18 +20,18 @@ var UserSchema = new Schema({
 	is_mod: { type: Boolean, required: true, default: false },
 	rep: { type: Number, required: true, default: 1 },
 	
-	views: { type: Number, required: true, default: 0 },
+	views: schemaHelper.requiredNumber(0),
 	
-	edits: { type: Number, required: true, default: 0 },
-	up_votes: { type: Number, required: true, default: 0 },
-	down_votes: { type: Number, required: true, default: 0 },
+	edits: schemaHelper.requiredNumber(0),
+	up_votes: schemaHelper.requiredNumber(0),
+	down_votes: schemaHelper.requiredNumber(0),
 
 	date: { type: Date, required: true, default: Date.now },
 	active_date: { type: Date, required: true, default: Date.now },
 
-	edit_scores: { type: Number, required: true, default: 0 },
-	tag_scores: { type: Number, required: true, default: 0 },
-	image_scores: { type: Number, required: true, default: 0 },
+	edit_scores: schemaHelper.requiredNumber(0),
+	tag_scores: schemaHelper.requiredNumber(0),
+	image_scores: schemaHelper.requiredNumber(0),
 });
 
 UserSchema.virtual('url').get(function () {

@@ -2,7 +2,6 @@ var debug = require('debug')('thlive:imageApi');
 
 var Image = require('../../models/image');
 
-
 exports.siblings = function (req, res, next) {
 	req.checkQuery('id').isMongoId();
 

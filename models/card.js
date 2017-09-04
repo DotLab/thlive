@@ -57,7 +57,12 @@ var CardSchema = new Schema({
 	icon_i_x: { type: Number, required: true },
 	icon_i_y: { type: Number, required: true },
 	icon_i_rot: { type: Number, required: true },
-	icon_i_scl: { type: Number, required: true }
+	icon_i_scl: { type: Number, required: true },
+
+	tag_ids: [ { type: Schema.Types.ObjectId, ref: 'Tag' } ],
+
+	up_votes: { type: Number, required: true, default: 0 },
+	down_votes: { type: Number, required: true, default: 0 },
 });
 
 CardSchema.virtual('url').get(function () {
@@ -88,6 +93,10 @@ CardSchema.virtual('level_no_bond').get(function () {
 // max level with bond
 CardSchema.virtual('level_max').get(function () {
 	return ({ n: 40, r: 60, sr: 80, ur: 100 })[this.rarity];
+});
+
+CardSchema.virtual('scores').get(function () {
+	return this.up_votes + this.down_votes;
 });
 
 CardSchema.methods.calcHaru = function (level) {

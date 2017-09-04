@@ -1,12 +1,14 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
+var regexpHelper = require('../helpers/regexpHelper');
+
 var TagSchema = new Schema({
 	edit_id: { type: Schema.Types.ObjectId, ref: 'Edit', required: true },
 
 	namespace: { type: String, required: true, enum: [ 'artist', 'character', 'location' ], index: true },
 
-	slaves: { type: [ { type: String, required: true, trim: true, match: /^[0-9a-z\.\-\+\# \u3040-\u309f\u30a0-\u30ff\u4E00-\u9FFF\uF900-\uFAFF]{1,30}$/ } ], index: true },
+	slaves: { type: [ { type: String, required: true, trim: true, match: regexpHelper.model.tag.slaves } ], index: true },
 
 	excerpt: { type: String, required: true, trim: true },
 	wiki: { type: String, trim: true },

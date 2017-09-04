@@ -9,18 +9,6 @@ var path = require('path');
 global.appRoot = path.resolve(__dirname);
 debug('appRoot', appRoot);
 
-// marked ----------------------------------------------------------------------------------------------------
-var marked = require('marked');
-var hljs = require('highlight.js');
-marked.setOptions({
-	highlight: code => hljs.highlightAuto(code).value,
-	langPrefix:'hljs '
-});
-
-// moment ----------------------------------------------------------------------------------------------------
-var moment = require('moment');
-moment.locale();
-
 // mongoose ----------------------------------------------------------------------------------------------------
 var mongoose = require('mongoose').set('debug', true);
 mongoose.Promise = global.Promise;
@@ -95,7 +83,13 @@ app.use(validator({
 }));
 
 // locals ----------------------------------------------------------------------------------------------------
+var marked = require('marked');
+var moment = require('moment');
+moment.locale();
 var numeral = require('numeral');
+
+var jsdiff = require('diff');
+var sanitizeHtml = require('sanitize-html');
 
 app.use(function (req, res, next) {
 	req.bindf = {};
@@ -149,8 +143,8 @@ app.use(function (req, res, next) {
 	res.locals.moment = moment;
 	res.locals.numeral = numeral;
 
-	res.locals.jsdiff = require('diff');
-	res.locals.sanitizeHtml = require('sanitize-html');
+	res.locals.jsdiff = jsdiff;
+	res.locals.sanitizeHtml = sanitizeHtml;
 
 	next();
 });

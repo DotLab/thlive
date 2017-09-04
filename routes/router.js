@@ -43,20 +43,6 @@ if (isDevelopment) {
 	router.post('/echo/params', (req, res) => res.send(req.params));
 	router.post('/echo/session', (req, res) => res.send(req.session));
 	router.post('/echo/bindf', (req, res) => res.send(req.bindf));
-
-	var developmentApi = require('../controllers/api/developmentApi');
-	router.get('/api/users', developmentApi(require('../models/user')));
-
-	router.get('/api/tags', developmentApi(require('../models/tag')));
-	router.get('/api/designations', developmentApi(require('../models/designation')));
-	
-	router.get('/api/images', developmentApi(require('../models/image')));
-	
-	router.get('/api/cards', developmentApi(require('../models/card')));
-	router.get('/api/cardinstances', developmentApi(require('../models/cardinstance')));
-	
-	router.get('/api/edits', developmentApi(require('../models/edit')));
-	router.get('/api/votes', developmentApi(require('../models/vote')));
 }
 
 var tagApi = require('../controllers/api/tagApi');
