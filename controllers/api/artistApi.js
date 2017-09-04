@@ -36,14 +36,14 @@ exports.list = function (req, res, next) {
 				href: '/artists/' + artists[i]._id,
 				avatar_src: artists[i].avatar ? '/upload/images/' + artists[i].avatar.name_local : '/img/64.svg',
 
-				hero_0_href: '/images/' + docs[i][0]._id,
-				hero_0_src: '/upload/images/' + docs[i][0].name_local,
+				hero_0_href: docs[i][0] ? '/images/' + docs[i][0]._id : '',
+				hero_0_src: docs[i][0] ? '/upload/images/' + docs[i][0].name_local : '',
 
-				hero_1_href: '/images/' + docs[i][1]._id,
-				hero_1_src: '/upload/images/' + docs[i][1].name_local,
+				hero_1_href: docs[i][1] ? '/images/' + docs[i][1]._id : '',
+				hero_1_src: docs[i][1] ? '/upload/images/' + docs[i][1].name_local : '',
 				
-				hero_2_href: '/images/' + docs[i][2]._id,
-				hero_2_src: '/upload/images/' + docs[i][2].name_local,
+				hero_2_href: docs[i][2] ? '/images/' + docs[i][2]._id : '',
+				hero_2_src: docs[i][2] ? '/upload/images/' + docs[i][2].name_local : '',
 				
 				hero_3_href: docs[i][3] ? '/images/' + docs[i][3]._id : '',
 				hero_3_src: docs[i][3] ? '/upload/images/' + docs[i][3].name_local : '',
