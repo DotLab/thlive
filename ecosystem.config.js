@@ -1,6 +1,6 @@
 module.exports = {
   apps : [{
-    name: 'thlive',
+    name: 'thlive-server',
     script: 'bin/www',
 
     instances: 1,
